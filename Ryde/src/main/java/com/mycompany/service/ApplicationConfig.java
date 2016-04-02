@@ -28,6 +28,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(com.mycompany.service.AuthenticationFilter.class);
         resources.add(com.mycompany.service.GroupTableFacadeREST.class);
         resources.add(com.mycompany.service.GroupTimeslotFacadeREST.class);
         resources.add(com.mycompany.service.GroupUserFacadeREST.class);

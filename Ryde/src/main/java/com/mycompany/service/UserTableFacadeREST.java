@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  * @author cloud
  */
 @Stateless
-@Path("com.mycompany.entity.usertable")
+@Path("/api")
 public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
@@ -38,6 +38,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(UserTable entity) {
+        System.out.println(entity.getLastName());
         super.create(entity);
     }
 
