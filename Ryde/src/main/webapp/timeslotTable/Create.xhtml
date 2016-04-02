@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.CreateTimeslotTableTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.CreateTimeslotTableLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{timeslotTableController.selected.id}" title="#{bundle.CreateTimeslotTableTitle_id}" required="true" requiredMessage="#{bundle.CreateTimeslotTableRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.CreateTimeslotTableLabel_passcode}" for="passcode" />
+                    <h:inputText id="passcode" value="#{timeslotTableController.selected.passcode}" title="#{bundle.CreateTimeslotTableTitle_passcode}" />
+                    <h:outputLabel value="#{bundle.CreateTimeslotTableLabel_startTime}" for="startTime" />
+                    <h:inputText id="startTime" value="#{timeslotTableController.selected.startTime}" title="#{bundle.CreateTimeslotTableTitle_startTime}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                    <h:outputLabel value="#{bundle.CreateTimeslotTableLabel_endTime}" for="endTime" />
+                    <h:inputText id="endTime" value="#{timeslotTableController.selected.endTime}" title="#{bundle.CreateTimeslotTableTitle_endTime}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                    </h:inputText>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{timeslotTableController.create}" value="#{bundle.CreateTimeslotTableSaveLink}" />
+                <br />
+                <br />
+                <h:commandLink action="#{timeslotTableController.prepareList}" value="#{bundle.CreateTimeslotTableShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:link outcome="/index" value="#{bundle.CreateTimeslotTableIndexLink}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
