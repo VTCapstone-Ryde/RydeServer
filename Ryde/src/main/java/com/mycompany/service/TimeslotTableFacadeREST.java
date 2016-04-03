@@ -8,6 +8,7 @@ import com.mycompany.entity.TimeslotTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -28,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private EntityManager em;
+    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
