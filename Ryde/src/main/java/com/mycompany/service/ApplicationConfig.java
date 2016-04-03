@@ -11,7 +11,7 @@ import javax.ws.rs.core.Application;
  *
  * @author cloud
  */
-@javax.ws.rs.ApplicationPath("webresources")
+@javax.ws.rs.ApplicationPath("api")
 public class ApplicationConfig extends Application {
 
     @Override

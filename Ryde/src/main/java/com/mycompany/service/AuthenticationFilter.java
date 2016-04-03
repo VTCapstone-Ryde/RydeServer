@@ -4,7 +4,6 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.UserTable;
 import java.io.IOException;
 import javax.annotation.Priority;
 import javax.ws.rs.NotAuthorizedException;
@@ -23,6 +22,8 @@ import javax.ws.rs.ext.Provider;
 @Provider
 @Priority(Priorities.AUTHENTICATION)
 public class AuthenticationFilter implements ContainerRequestFilter {
+    
+    private UserTableFacadeREST userTableFacadeREST;
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
@@ -32,13 +33,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
             requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
         // Check if the HTTP Authorization header is present and formatted correctly 
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) {
+        if (authorizationHeader == null) {
+            System.out.println("exception thrown in filter");
             throw new NotAuthorizedException("Authorization header must be provided");
         }
 
         // Extract the token from the HTTP Authorization header
-        String token = authorizationHeader.substring("Bearer".length()).trim();
-
+        String token = authorizationHeader;
+           
         try {
 
             // Validate the token
@@ -53,12 +55,14 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     private void validateToken(String token) throws Exception{
         // Check if it was issued by the server and if it's not expired
         // Throw an Exception if the token is invalid
-        
+        userTableFacadeREST = new UserTableFacadeREST();
         System.out.println(token);
-        
-        throw new Exception();
-        
-        
-        
+        String tok = userTableFacadeREST.findByToken(token).getFbTok();
+        //String tok = user.getFbTok();
+        System.out.println(tok);
+
+        if (!token.equals(tok)) {
+            throw new Exception();
+        }
     }
 }
