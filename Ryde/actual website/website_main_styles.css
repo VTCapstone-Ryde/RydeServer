@@ -1,0 +1,54 @@
+html, body, div#wrapper {
+    color: black;
+    font-family: sans-serif;
+    width: 100%;
+}
+
+ul li {
+    list-style: none;
+}
+li {
+    display: inline;
+}
+div#nav {
+    float: left;
+    width: 75%;
+    display: inline;
+}
+div#search {
+    float: left;
+    width: 15%;
+    display: inline;
+}
+div#logout {
+    float: left;
+    width: 10%;
+    display: inline;
+}
+
+div#social {
+    float: left;
+    width: 15%;
+    display: inline;
+}
+div#copyright {
+    float: left;
+    text-align: center;
+    width: 60%;
+    display: inline;
+    padding-top: 15px;
+}
+div#about{
+    float: left;
+    width: 10%;
+    padding-left: 11%;
+    display: inline;
+}
+div#content {
+    clear: both;
+    position: relative;
+}
+div#footer {
+    clear: both;
+    position: relative;
+}

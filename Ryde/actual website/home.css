@@ -1,0 +1,26 @@
+html, body, div#wrapper {
+    color: black;
+    font-family: sans-serif;
+    width: 100%;
+}
+
+
+ul li {
+    background: #cce5ff;
+    margin: 5px;
+    display: inline
+}
+li {
+    display: inline;
+}
+
+
+ul#groups_list {
+    width: 10%;
+    display: inline;
+}
+
+ul#active_groups_list {
+    width: 10%;
+    display: inline;    
+}

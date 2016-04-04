@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Home</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-table.css">
+    </head>
+
+    <body>
+
+
+        <div id="header">
+            <nav class="navbar navbar-dark bg-primary">
+                <a class="navbar-brand" href="#">Ryde</a>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Timeslots</a>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav pull-xs-right p-l-0">
+                    <li class="nav-item active">
+                        <button class="btn btn-primary" type="submit">Log Out</button>
+                    </li>
+                </ul>
+                <form class="form-inline pull-xs-right">
+                    <input class="form-control" type="text" placeholder="Search Groups">
+                    <button class="btn btn-primary" type="submit">Search</button>
+                </form>
+            </nav>
+        </div>
+
+        <div id="content">
+            <div class="row">
+                <div class="col-sm-1"></div>
+                <div class="col-sm-4" style="padding-top:2%">
+                    <h4>Your Groups</h4>
+                    <table id="groups">
+                        <thead>
+                            <tr>
+                                <th data-field="Group"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="col-sm-2"></div>
+                <div class="col-sm-4" style="padding-top:2%">
+                    <h4>Active Groups and TADs</h4>
+                    <table id="active_groups">
+                        <thead>
+                            <tr>
+                                <th data-field="Group"></th>
+                                <th data-field="Time"></th>
+                            </tr>
+                        </thead>
+                    </table>
+                    <form style="padding-top:5%">
+                        <input type="submit" class="btn btn-primary btn-lg" value="Create Group" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div id="footer">
+            <nav class="navbar navbar-light navbar-fixed-bottom bg-faded">
+                <ul class="nav navbar-nav pull-xs-left">
+                    <li class="nav-item">
+                        <a href="https://www.facebook.com/">
+                            <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://twitter.com/">
+                            <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.instagram.com">
+                            <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.linkedin.com/">
+                            <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
+
+                <ul class="nav navbar-nav pull-xs-right">
+                    <li class="nav-item">
+                        <a href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Contact Us</a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="home.js"></script>
+        <script type="text/javascript" src="bootstrap-table.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    </body>
+
+
+</html>
+
