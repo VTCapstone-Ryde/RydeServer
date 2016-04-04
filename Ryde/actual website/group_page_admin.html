@@ -7,6 +7,7 @@
         <meta http-equiv="x-ua-compatible" content="ie=edge">
         <title>Your Profile</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     </head>
 
     <body>
@@ -28,137 +29,147 @@
                 </ul>
                 <ul class="nav navbar-nav pull-xs-right p-l-1">
                     <li class="nav-item active">
-                        <button class="btn btn-danger" type="submit">Log Out</button>
+                        <button class="btn btn-default" type="submit">Log Out</button>
                     </li>
                 </ul>
                 <form class="form-inline pull-xs-right">
                     <input class="form-control" type="text" placeholder="Search Groups">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-default" type="submit">Search</button>
                 </form>
             </nav>
         </div>
 
         <div id="content">
             <div class="row">
-                <div class="col-sm-5">
+                <div class="col-sm-3">
                     <div id ="group_name">
                         <h1>Beta Balci Beta</h1>
                     </div>
                     <div id ="description">
-                        <h4>Description</h4>
                         <p>Mock description..</p>
                     </div>
+                </div>
+                <div class="col-sm-5">
                     <div id ="admins">
                         <h4>Admins</h4>
-                        <ul id="admins">
-                            <li>
-                                <a href="#">Admin 1</a>
-                            </li>
-                            <li>
-                                <a href="#">Admin 2</a>
-                            </li>
-                            <li>
-                                <a href="#">Admin 3</a>
-                            </li>
-                        </ul>                    
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr class="clickable-row">
+                                    <td>Mary </td>
+                                </tr>
+                                <tr>
+                                    <td>Bob</td>
+                                </tr>
+                                <tr>
+                                    <td>Joe</td>
+                                </tr>
+                            </tbody>
+                        </table>                    
                     </div>
                     <div id ="group_members">
                         <h4>Group Members</h4>
-                        <ul id="admins">
-                            <li>
-                                <a href="#">Group Member 1</a>
-                                <button class="btn btn-success btn-sm" type="submit">Admin</button>
-                                <button class="btn btn-danger btn-sm" type="submit">Kick</button>
-                            </li>
-                            <li>
-                                <a href="#">Group Member 2</a>
-                                <button class="btn btn-success btn-sm" type="submit">Admin</button>
-                                <button class="btn btn-danger btn-sm" type="submit">Kick</button>
-                            </li>
-                            <li>
-                                <a href="#">Group Member 3 (Admin)</a>
-                            </li>
-                            <li>
-                                <a href="#">Group Member 4 (Admin)</a>
-                            </li>
-                        </ul>                    
+                        <table class="table table-hover">
+                            <tbody>
+                                <tr class="clickable-row">
+                                    <td>Mary</td>
+                                    <td><button class="btn btn-danger btn-sm" type="submit">Demote</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Joe</td>
+                                    <td><button class="btn btn-danger btn-sm" type="submit">Demote</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Bob</td>
+                                    <td><button class="btn btn-danger btn-sm" type="submit">Demote</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Chris</td>
+                                    <td><button class="btn btn-success btn-sm" type="submit">Admin</button>
+                                    <button class="btn btn-danger btn-sm" type="submit">Kick</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Amanda</td>
+                                    <td><button class="btn btn-success btn-sm" type="submit">Admin</button>
+                                    <button class="btn btn-danger btn-sm" type="submit">Kick</button></td>
+                                </tr>
+                            </tbody>  
+                        </table>
                     </div>
                 </div>
-                <div class="col-sm-4">
-                    <div id="timeslot_button">
-                        
-                        <form>
-                            <button class="btn btn-default btn-lg" type="submit">Timeslots</button>
-                        </form>
-                    </div>
-                    <div id="assign_drivers_button">
-                        <form>
-                            <button class="btn btn-default btn-lg" type="submit">Assign Drivers</button>
-                        </form>
-                    </div>
-                    <div id="invite_members_button">
-                        <form>
-                            <button class="btn btn-default btn-lg" type="submit">Invite Members</button>
-                        </form>
-                    </div>
-                    <div id="view_reports_button">
-                        <form>
-                            <button class="btn btn-default btn-lg" type="submit">View Reports</button>
-                        </form>
-                    </div>
-                    <div id="leave_group_button">
-                        <form>
-                            <button class="btn btn-default btn-lg" type="submit">Leave Group</button>
-                        </form>
-                    </div>
+            <div class="col-sm-4">
+                <div id="timeslot_button">
+
+                    <form>
+                        <button class="btn btn-default btn-lg" type="submit">Timeslots</button>
+                    </form>
+                </div>
+                <div id="assign_drivers_button">
+                    <form>
+                        <button class="btn btn-default btn-lg" type="submit">Assign Drivers</button>
+                    </form>
+                </div>
+                <div id="invite_members_button">
+                    <form>
+                        <button class="btn btn-default btn-lg" type="submit">Invite Members</button>
+                    </form>
+                </div>
+                <div id="view_reports_button">
+                    <form>
+                        <button class="btn btn-default btn-lg" type="submit">View Reports</button>
+                    </form>
+                </div>
+                <div id="leave_group_button">
+                    <form>
+                        <button class="btn btn-default btn-lg" type="submit">Leave Group</button>
+                    </form>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div id="footer">
-            <nav class="navbar navbar-light navbar-bottom bg-faded">
-                <ul class="nav navbar-nav pull-xs-left">
-                    <li class="nav-item">
-                        <a href="https://www.facebook.com/">
-                            <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://twitter.com/">
-                            <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://www.instagram.com">
-                            <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://www.linkedin.com/">
-                            <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                </ul>
+    <div id="footer">
+        <nav class="navbar navbar-light navbar-fixed-bottom bg-faded">
+            <ul class="nav navbar-nav pull-xs-left">
+                <li class="nav-item">
+                    <a href="https://www.facebook.com/">
+                        <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://twitter.com/">
+                        <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://www.instagram.com">
+                        <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="https://www.linkedin.com/">
+                        <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
+                    </a>
+                </li>
+            </ul>
 
-                <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
+            <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
 
-                <ul class="nav navbar-nav pull-xs-right">
-                    <li class="nav-item">
-                        <a href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#">Contact Us</a>
-                    </li>
-                </ul>
+            <ul class="nav navbar-nav pull-xs-right">
+                <li class="nav-item">
+                    <a href="#">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#">Contact Us</a>
+                </li>
+            </ul>
 
-            </nav>
-        </div>
+        </nav>
+    </div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
-    </body>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+</body>
 
 
 </html>
-
-
