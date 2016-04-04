@@ -87,4 +87,25 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return em;
     }
     
+    /*
+    The following methods were added after code generation
+    */
+    
+    public UserTable findByToken(String token) {
+        try {
+            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token)
+                    .getResultList().isEmpty()) {
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token).getSingleResult();
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
+    }
+    
 }
