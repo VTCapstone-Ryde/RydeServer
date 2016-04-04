@@ -1,0 +1,16 @@
+.navbar {
+	margin-bottom: 0px;
+	margin-top: 0px;
+	position: absolute;
+  	width: 100%;
+  	background-color: rgba(0, 0, 0, 0.80);
+}
+
+.jumbotron{
+	background: url("./img/splashBG.PNG");
+    height: 100vh;
+    margin-bottom: 0px;
+    background-repeat: no-repeat;
+  	text-align: center;
+ 	background-size: 100% 100%
+}

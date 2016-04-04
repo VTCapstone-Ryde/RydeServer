@@ -2,58 +2,96 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Splash</title>
+
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Your Profile</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        
+        <link rel="stylesheet" type="text/css" href="splash.css">
     </head>
 
     <body>
 
 
-        <div id="wrapper">
-
-            <div id="header">
-                <a href="https://www.facebook.com/">
-                    <img title="Log In With Facebook" alt="Log In With Facebook" src=".\img\LogInWithFacebook.PNG" width="200" height="35" />
-                </a>
-            </div>
-
-            <div id="content">
-                <img title="Ryde Logo" alt="Ryde Logo" src=".\img\Ryde Logo.png" width="500" height="500" />
-
-            </div>
-
-            <div id="footer">
-                <ul id="social_media">
-                    <li><a href="https://www.facebook.com/">
-                            <img title="Facebook" alt="Facebook" src="https://socialmediawidgets.files.wordpress.com/2014/03/02_facebook1.png" width="35" height="35" />
-                        </a></li>
-                    <li><a href="https://twitter.com/">
-                            <img title="Twitter" alt="Twitter" src="https://socialmediawidgets.files.wordpress.com/2014/03/01_twitter1.png" width="35" height="35" />
-                        </a></li>
-                    <li><a href="https://www.instagram.com/">
-                            <img title="Instagram" alt="RSS" src="https://socialmediawidgets.files.wordpress.com/2014/03/10_instagram.png" width="35" height="35" />
-                        </a></li>
-                    <li><a href="https://www.linkedin.com/">
-                            <img title="LinkedIn" alt="LinkedIn" src="https://socialmediawidgets.files.wordpress.com/2014/03/07_linkedin1.png" width="35" height="35" />
-                        </a></li>
+        <div id="header">
+            <nav class="navbar navbar-dark bg-primary">
+                <a class="navbar-brand" href="#">Ryde</a>
+                <ul class="nav navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Profile</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Timeslots</a>
+                    </li>
                 </ul>
-                <div id ="copyright">
-                    Copyright 2016 Ryde
-                </div>
-                <div id ="about_contact">
-                    <ul id ="about_contact">
-                        <li>
-                            <a href="#">About</a>
-                        </li>
-                        <li>
-                            <a href="#">Contact</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
+                <ul class="nav navbar-nav pull-xs-right p-l-1">
+                    <li class="nav-item active">
+                        <button class="btn btn-danger" type="submit">Log Out</button>
+                    </li>
+                </ul>
+                <form class="form-inline pull-xs-right">
+                    <input class="form-control" type="text" placeholder="Search Groups">
+                    <button class="btn btn-success" type="submit">Search</button>
+                </form>
+            </nav>
         </div>
 
+        <div id="content">
+            <div class="jumbotron jumbotron-fluid">
+                <div class="container">
+                    <h1 class="display-3 text-xs-center">Ryde</h1>
+                    <p class="lead">Giving Rides and Saving Lives.</p>
+                </div>
+            </div>
+        </div>
 
+        <div id="footer">
+            <nav class="navbar navbar-light navbar-bottom bg-faded">
+                <ul class="nav navbar-nav pull-xs-left">
+                    <li class="nav-item">
+                        <a href="https://www.facebook.com/">
+                            <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://twitter.com/">
+                            <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.instagram.com">
+                            <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="https://www.linkedin.com/">
+                            <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
+                        </a>
+                    </li>
+                </ul>
+
+                <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
+
+                <ul class="nav navbar-nav pull-xs-right">
+                    <li class="nav-item">
+                        <a href="#">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="#">Contact Us</a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
     </body>
 
 
