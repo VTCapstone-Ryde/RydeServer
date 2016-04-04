@@ -1,13 +1,11 @@
 /*
- * Created by Joe Fletcher on 2016.04.02  * 
- * Copyright © 2016 Joe Fletcher. All rights reserved. * 
+ * Created by Cameron Gibson on 2016.04.04  * 
+ * Copyright © 2016 Cameron Gibson. All rights reserved. * 
  */
 package com.mycompany.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,15 +13,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author cloud
+ * @author cameron
  */
 @Entity
 @Table(name = "User_Table")
@@ -35,6 +31,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "UserTable.findByLastName", query = "SELECT u FROM UserTable u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "UserTable.findByFirstName", query = "SELECT u FROM UserTable u WHERE u.firstName = :firstName"),
     @NamedQuery(name = "UserTable.findByFbTok", query = "SELECT u FROM UserTable u WHERE u.fbTok = :fbTok"),
+    @NamedQuery(name = "UserTable.findByFbId", query = "SELECT u FROM UserTable u WHERE u.fbId = :fbId"),
     @NamedQuery(name = "UserTable.findByPhoneNumber", query = "SELECT u FROM UserTable u WHERE u.phoneNumber = :phoneNumber"),
     @NamedQuery(name = "UserTable.findByCarMake", query = "SELECT u FROM UserTable u WHERE u.carMake = :carMake"),
     @NamedQuery(name = "UserTable.findByCarModel", query = "SELECT u FROM UserTable u WHERE u.carModel = :carModel"),
@@ -58,6 +55,9 @@ public class UserTable implements Serializable {
     @Size(max = 256)
     @Column(name = "fb_tok")
     private String fbTok;
+    @Size(max = 256)
+    @Column(name = "fb_id")
+    private String fbId;
     @Size(max = 15)
     @Column(name = "phone_number")
     private String phoneNumber;
@@ -70,10 +70,6 @@ public class UserTable implements Serializable {
     @Size(max = 32)
     @Column(name = "car_color")
     private String carColor;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<GroupUser> groupUserCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Collection<TimeslotUser> timeslotUserCollection;
 
     public UserTable() {
     }
@@ -122,6 +118,14 @@ public class UserTable implements Serializable {
         this.fbTok = fbTok;
     }
 
+    public String getFbId() {
+        return fbId;
+    }
+
+    public void setFbId(String fbId) {
+        this.fbId = fbId;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -152,24 +156,6 @@ public class UserTable implements Serializable {
 
     public void setCarColor(String carColor) {
         this.carColor = carColor;
-    }
-
-    @XmlTransient
-    public Collection<GroupUser> getGroupUserCollection() {
-        return groupUserCollection;
-    }
-
-    public void setGroupUserCollection(Collection<GroupUser> groupUserCollection) {
-        this.groupUserCollection = groupUserCollection;
-    }
-
-    @XmlTransient
-    public Collection<TimeslotUser> getTimeslotUserCollection() {
-        return timeslotUserCollection;
-    }
-
-    public void setTimeslotUserCollection(Collection<TimeslotUser> timeslotUserCollection) {
-        this.timeslotUserCollection = timeslotUserCollection;
     }
 
     @Override

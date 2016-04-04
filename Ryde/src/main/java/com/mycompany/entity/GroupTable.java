@@ -1,13 +1,11 @@
 /*
- * Created by Joe Fletcher on 2016.04.02  * 
- * Copyright © 2016 Joe Fletcher. All rights reserved. * 
+ * Created by Cameron Gibson on 2016.04.04  * 
+ * Copyright © 2016 Cameron Gibson. All rights reserved. * 
  */
 package com.mycompany.entity;
 
 import java.io.Serializable;
-import java.util.Collection;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,16 +13,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
- * @author cloud
+ * @author cameron
  */
 @Entity
 @Table(name = "Group_Table")
@@ -33,7 +29,8 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "GroupTable.findAll", query = "SELECT g FROM GroupTable g"),
     @NamedQuery(name = "GroupTable.findById", query = "SELECT g FROM GroupTable g WHERE g.id = :id"),
     @NamedQuery(name = "GroupTable.findByTitle", query = "SELECT g FROM GroupTable g WHERE g.title = :title"),
-    @NamedQuery(name = "GroupTable.findByDescription", query = "SELECT g FROM GroupTable g WHERE g.description = :description")})
+    @NamedQuery(name = "GroupTable.findByDescription", query = "SELECT g FROM GroupTable g WHERE g.description = :description"),
+    @NamedQuery(name = "GroupTable.findByDirectoryPath", query = "SELECT g FROM GroupTable g WHERE g.directoryPath = :directoryPath")})
 public class GroupTable implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -52,10 +49,11 @@ public class GroupTable implements Serializable {
     @Size(min = 1, max = 64)
     @Column(name = "description")
     private String description;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")
-    private Collection<GroupUser> groupUserCollection;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "groupId")
-    private Collection<GroupTimeslot> groupTimeslotCollection;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 64)
+    @Column(name = "directory_path")
+    private String directoryPath;
 
     public GroupTable() {
     }
@@ -64,10 +62,11 @@ public class GroupTable implements Serializable {
         this.id = id;
     }
 
-    public GroupTable(Integer id, String title, String description) {
+    public GroupTable(Integer id, String title, String description, String directoryPath) {
         this.id = id;
         this.title = title;
         this.description = description;
+        this.directoryPath = directoryPath;
     }
 
     public Integer getId() {
@@ -94,22 +93,12 @@ public class GroupTable implements Serializable {
         this.description = description;
     }
 
-    @XmlTransient
-    public Collection<GroupUser> getGroupUserCollection() {
-        return groupUserCollection;
+    public String getDirectoryPath() {
+        return directoryPath;
     }
 
-    public void setGroupUserCollection(Collection<GroupUser> groupUserCollection) {
-        this.groupUserCollection = groupUserCollection;
-    }
-
-    @XmlTransient
-    public Collection<GroupTimeslot> getGroupTimeslotCollection() {
-        return groupTimeslotCollection;
-    }
-
-    public void setGroupTimeslotCollection(Collection<GroupTimeslot> groupTimeslotCollection) {
-        this.groupTimeslotCollection = groupTimeslotCollection;
+    public void setDirectoryPath(String directoryPath) {
+        this.directoryPath = directoryPath;
     }
 
     @Override

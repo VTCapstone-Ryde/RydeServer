@@ -4,7 +4,7 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.UserTable;
+import com.mycompany.entity.Event;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,27 +24,27 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("com.mycompany.entity.usertable")
-public class UserTableFacadeREST extends AbstractFacade<UserTable> {
+@Path("com.mycompany.entity.event")
+public class EventFacadeREST extends AbstractFacade<Event> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
 
-    public UserTableFacadeREST() {
-        super(UserTable.class);
+    public EventFacadeREST() {
+        super(Event.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(UserTable entity) {
+    public void create(Event entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, UserTable entity) {
+    public void edit(@PathParam("id") Integer id, Event entity) {
         super.edit(entity);
     }
 
@@ -57,21 +57,21 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public UserTable find(@PathParam("id") Integer id) {
+    public Event find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<UserTable> findAll() {
+    public List<Event> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<UserTable> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Event> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
