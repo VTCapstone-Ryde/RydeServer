@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author cloud
  */
 @Stateless
-@Path("com.mycompany.entity.grouptable")
+@Path("/group")
 public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")

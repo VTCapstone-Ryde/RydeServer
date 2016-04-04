@@ -1,6 +1,8 @@
 DROP TABLE IF EXISTS GroupUser;
 DROP TABLE IF EXISTS GroupTimeslot;
 DROP TABLE IF EXISTS TimeslotUser;
+DROP TABLE IF EXISTS Ride;
+DROP TABLE IF EXISTS Event;
 DROP TABLE IF EXISTS User_Table;
 DROP TABLE IF EXISTS Group_Table;
 DROP TABLE IF EXISTS Timeslot_Table;
@@ -23,7 +25,8 @@ CREATE TABLE Group_Table
 (
     id INT NOT NULL AUTO_INCREMENT,
     title VARCHAR (64) NOT NULL,
-    description VARCHAR (64) NOT NULL,    
+    description VARCHAR (64) NOT NULL, 
+    directory_path VARCHAR (64) NOT NULL,
     PRIMARY KEY (id)
 );
 
@@ -65,5 +68,33 @@ CREATE TABLE GroupTimeslot
     group_id INT NOT NULL,
     ts_id INT NOT NULL,
     FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Ride
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    driver_user_id INT NOT NULL,
+    rider_user_id INT NOT NULL,
+    ts_id INT NOT NULL,
+    start_lat DOUBLE NOT NULL,
+    start_lon DOUBLE NOT NULL,
+    end_lat DOUBLE,
+    end_lon DOUBLE,
+    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
+    FOREIGN KEY (rider_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+);
+
+CREATE TABLE Event
+(
+    id INT NOT NULL AUTO_INCREMENT,
+    PRIMARY KEY (id),
+    driver_user_id INT NOT NULL,
+    ts_id INT NOT NULL,
+    datetime DATETIME NOT NULL,
+    event_type ENUM('online', 'offline', 'rideCompleteled', 'rideCancelled'),
+    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
     FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
 );
