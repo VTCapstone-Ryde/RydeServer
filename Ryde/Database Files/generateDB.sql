@@ -14,6 +14,7 @@ CREATE TABLE User_Table
     last_name VARCHAR (64),
     first_name VARCHAR (64),
     fb_tok VARCHAR(256),
+    fb_id VARCHAR(256),
     phone_number VARCHAR (15),
     car_make VARCHAR (32),
     car_model VARCHAR (32),
