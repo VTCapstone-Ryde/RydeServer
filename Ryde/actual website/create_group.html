@@ -5,8 +5,12 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Your Profile</title>
+        <title>Create Group</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="bootstrap-table.css">
+        <link rel="stylesheet" type="text/css" href="create_group.css">
     </head>
 
     <body>
@@ -38,50 +42,59 @@
             </nav>
         </div>
 
-        <div id="content">
-            <div id="name">
-                <h4>Name</h4>
-                <form class="form-inline">
-                    <input class="form-control" type="text" placeholder="Enter a name">
-                </form>
-            </div>
-            <div id="description">
-                <h4>Description</h4>
-                <form class="form-inline">
-                    <textarea placeholder="Enter a description" rows="3" cols="50">
-                    </textarea>
-                </form>
-            </div>
-            <div id="add_group_members">
-                <h4>Add group members</h4>
-                <div id="search">
-                    <form class="form-inline">
-                        <input class="form-control" type="text" placeholder="Search Friends">
-                        <button class="btn btn-success" type="submit">Search</button>
-                    </form>
+        <div class="container-fluid">
+            <h1 class="text-xs-center p-b-1">Create a new group!</h1>
+            <p class="text-xs-center p-b-1">All information below is required</p>
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label for="inputGroupName" class="col-sm-4 control-label">Group name</label>
+                    <div class="col-sm-4">
+                        <input type="text" class="form-control" placeholder="Enter a name" id="groupName">
+                    </div>
                 </div>
-                <div id="friends">
-                    <ul id="friends_list">
-                        <li>
-                            <a href="#">Friend 1</a>
-                            <button class="btn btn-danger btn-sm" type="submit">Remove</button>
-                        </li>
-                        <li>
-                            <a href="#">Friend 2</a>
-                            <button class="btn btn-danger btn-sm" type="submit">Remove</button>
-                        </li>
-                        <li>
-                            <a href="#">Friend 3</a>
-                            <button class="btn btn-danger btn-sm" type="submit">Remove</button>
-                        </li>
-                    </ul>
+                <div class="form-group">
+                    <label for="inputDescription" class="col-sm-4 control-label">Description</label>
+                    <div class="col-sm-4">
+                        <textarea name="descriptionTextArea" placeholder="Enter a description" cols="56" rows="5" ></textarea>
+                    </div>
                 </div>
-            </div>
-            <div id="submit">
-                <form class="form-inline">
-                    <button class="btn btn-success" type="submit">Submit</button>
-                </form>
-            </div>
+                <div class="form-group">
+                    <label for="toolbar" class="col-sm-4 control-label">Search Friends</label>
+                    <div class="col-sm-offset-4 col-sm-4">
+                        <div id="toolbar" class="btn-group">
+                            <button type="button" class="btn btn-default">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <i class="glyphicon glyphicon-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-4 col-sm-6">
+                        <table id="table"
+                               data-click-to-select="true"
+                               data-search="true"
+                               data-show-refresh="true"
+                               data-show-toggle="true"
+                               data-show-columns="true"
+                               data-toolbar="#toolbar">
+                            <thead>
+                                <tr>
+                                    <th data-field="state" data-checkbox="true"></th>
+                                    <th data-field="Name">Name</th>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-5 col-sm-6">
+                        <button type="submit" class="btn btn-default">Create group</button>
+                    </div>
+                </div>
+            </form>
         </div>
 
         <div id="footer">
@@ -125,6 +138,8 @@
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="bootstrap-table.min.js"></script>
+        <script src="create_group.js"></script>
     </body>
 
 

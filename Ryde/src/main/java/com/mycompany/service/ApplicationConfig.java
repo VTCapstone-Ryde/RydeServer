@@ -29,9 +29,11 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(com.mycompany.service.AuthenticationFilter.class);
+        resources.add(com.mycompany.service.EventFacadeREST.class);
         resources.add(com.mycompany.service.GroupTableFacadeREST.class);
         resources.add(com.mycompany.service.GroupTimeslotFacadeREST.class);
         resources.add(com.mycompany.service.GroupUserFacadeREST.class);
+        resources.add(com.mycompany.service.RideFacadeREST.class);
         resources.add(com.mycompany.service.TimeslotTableFacadeREST.class);
         resources.add(com.mycompany.service.TimeslotUserFacadeREST.class);
         resources.add(com.mycompany.service.UserTableFacadeREST.class);

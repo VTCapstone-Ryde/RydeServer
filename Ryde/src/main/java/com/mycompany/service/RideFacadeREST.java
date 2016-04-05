@@ -4,7 +4,7 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.UserTable;
+import com.mycompany.entity.Ride;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -24,27 +24,27 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("com.mycompany.entity.usertable")
-public class UserTableFacadeREST extends AbstractFacade<UserTable> {
+@Path("com.mycompany.entity.ride")
+public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
 
-    public UserTableFacadeREST() {
-        super(UserTable.class);
+    public RideFacadeREST() {
+        super(Ride.class);
     }
 
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(UserTable entity) {
+    public void create(Ride entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void edit(@PathParam("id") Integer id, UserTable entity) {
+    public void edit(@PathParam("id") Integer id, Ride entity) {
         super.edit(entity);
     }
 
@@ -57,21 +57,21 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("{id}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public UserTable find(@PathParam("id") Integer id) {
+    public Ride find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<UserTable> findAll() {
+    public List<Ride> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<UserTable> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
+    public List<Ride> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
 
@@ -85,27 +85,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
-    }
-    
-    /*
-    The following methods were added after code generation
-    */
-    
-    public UserTable findByToken(String token) {
-        try {
-            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token)
-                    .getResultList().isEmpty()) {
-                return null;
-            }
-            else {
-                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token).getSingleResult();
-                            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
     }
     
 }
