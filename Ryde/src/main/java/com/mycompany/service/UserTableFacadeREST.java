@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("user")
+@Path("/user")
 public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
