@@ -8,10 +8,15 @@
         <title>Your Profile</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        
+        <style type="text/css">
+            .navbar {
+                padding-bottom: 0px
+            }
+        </style>
     </head>
 
     <body>
-
 
         <div id="header">
             <nav class="navbar navbar-dark bg-primary">
@@ -39,85 +44,247 @@
             </nav>
         </div>
 
-        <div id="content">
-            <div id="personal_info">
-                <h1 id="user_name">
-                    User Name
-                </h1>
-                <div id="profile_picture">
-                    <img title="Profile Picture" alt="Profile Picture" src="./img/Facebook.png" width="100" height="100" />
-                </div>
-                <div id="contact_information">
-                    <h3 id="conInfo_header">
-                        Contact Information
-                    </h3>
-                    <p id="phone_number">
-                        703-975-3282
-                    </p>
+        <div class="container">
+            <h1 class="display-3 text-xs-center col-xs-12">Your Name</h1><br>
+            <img title="Profile Picture" alt="Profile Picture" src="./img/Facebook.png" width="100" height="100" class="center-block img-thumbnail"/>
+            <h3 class="text-xs-center col-xs-12">Contact Information</h3><br>
 
-                </div>
-                <div id="car_information">
-                    <h3 id="carInfo_header">
-                        Car Information
-                    </h3>
-                    <p id="car_make" class="car_stuff">
-                        Car Make
-                    </p>
-                    <p id="car_model" class="car_stuff">
-                        Car Model
-                    </p>
-                    <p id="car_color" class="car_stuff">
-                        Car Color
-                    </p>
-                    <p id="car_seats" class="car_stuff">
-                        Car Seats
-                    </p>
+            <!--Modal for Contact Information-->
+            <div class="col-xs-4"></div>
+            <p class="col-xs-2 text-center">Phone Number:</p
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#phoneNumberModal" id="phone_number">
+                703-975-282
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="phoneNumberModal" tabindex="-1" role="dialog" aria-labelledby="phoneNumberLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="phoneNumberLabel">Enter New Phone Number</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="phoneNumberForm">
+                                <div class="form-group">
+                                    <label for="new_phone_number" class="form-control-label">New Number In xxx-xxx-xxxx Format:</label>
+                                    <input type="text" class="form-control" id="new_phone_number">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onClick="changeNumber();" data-dismiss="modal">Save Changes</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div id="footer">
-            <nav class="navbar navbar-light navbar-bottom bg-faded">
-                <ul class="nav navbar-nav pull-xs-left">
-                    <li class="nav-item">
-                        <a href="https://www.facebook.com/">
-                            <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://twitter.com/">
-                            <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://www.instagram.com">
-                            <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="https://www.linkedin.com/">
-                            <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
-                        </a>
-                    </li>
-                </ul>
-                
-                <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
-                
-                <ul class="nav navbar-nav pull-xs-right">
-                    <li class="nav-item">
-                        <a href="#">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="#">Contact Us</a>
-                    </li>
-                </ul>
-                
-            </nav>
-        </div>
+            <div class="col-xs-5"></div>
 
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+            <!--Car Information part-->
+            <h3 class="text-xs-center col-xs-12">Car Information</h3><br>
+            <div class="col-xs-4"></div>
+            <p class="col-xs-2 text-xs-center">Car Make:</p>
+
+            <!--Modal for Car Make-->
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carMakeModal" id="car_make">
+                Toyota
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="carMakeModal" tabindex="-1" role="dialog" aria-labelledby="carMakeLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="carMakeLabel">Enter a Different Car Make</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="carMakeForm">
+                                <div class="form-group">
+                                    <label for="new_car_make" class="form-control-label">New Car Make:</label>
+                                    <input type="text" class="form-control" id="new_car_make">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onClick="changeMake();" data-dismiss="modal">Save Changes</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5"></div>
+            
+            
+            <!--Modal for Car Model-->
+            <h4 class="col-xs-12"></h4><br>
+            <div class="col-xs-4"></div>
+            <p class="col-xs-2 text-center">Car Model:</p>
+            
+            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carModelModal" id="car_model">
+                Camry
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="carModelModal" tabindex="-1" role="dialog" aria-labelledby="carModelLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="carModelLabel">Enter a Different Car Make</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="carModelForm">
+                                <div class="form-group">
+                                    <label for="new_car_model" class="form-control-label">New Car Model:</label>
+                                    <input type="text" class="form-control" id="new_car_model">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onClick="changeModel();" data-dismiss="modal">Save Changes</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5"></div>
+            
+            
+            <!--Modal for Car Color-->
+            <h4 class="col-xs-12"></h4><br>
+            <div class="col-xs-4"></div>
+            <p class="col-xs-2 text-center">Car Color:</p>
+            
+            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carColorModal" id="car_color">
+                Blue
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="carColorModal" tabindex="-1" role="dialog" aria-labelledby="carColorLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="carColorLabel">Enter a Different Car Color</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="carColorForm">
+                                <div class="form-group">
+                                    <label for="new_car_color" class="form-control-label">New Car Color:</label>
+                                    <input type="text" class="form-control" id="new_car_color">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onClick="changeColor();" data-dismiss="modal">Save Changes</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5"></div>
+            
+            <!--Modal for Car Seats-->
+            <h4 class="col-xs-12"></h4><br>
+            <div class="col-xs-4"></div>
+            <p class="col-xs-2 text-center">Car Seats:</p>
+            
+            
+            <!-- Button trigger modal -->
+            <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carSeatsModal" id="car_seats">
+                5
+            </button>
+
+            <!-- Modal -->
+            <div class="modal fade" id="carSeatsModal" tabindex="-1" role="dialog" aria-labelledby="carSeatsLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <h4 class="modal-title" id="carColorLabel">How Many Passengers Can You Take Now?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form id="carSeatsForm">
+                                <div class="form-group">
+                                    <label for="new_car_seats" class="form-control-label">New Amount Of Passengers:</label>
+                                    <input type="text" class="form-control" id="new_car_seats">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onClick="changeSeats();" data-dismiss="modal">Save Changes</button>
+                            <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-5"></div>
+            
+
+
+
+
+            <div id="footer">
+                <nav class="navbar navbar-light navbar-fixed-bottom bg-faded">
+                    <ul class="nav navbar-nav pull-xs-left">
+                        <li class="nav-item">
+                            <a href="https://www.facebook.com/">
+                                <img title="Facebook" alt="Facebook" src="./img/Facebook.png" width="35" height="35" class="img-circle"/>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://twitter.com/">
+                                <img title="Twitter" alt="Twitter" src="./img/Twitter.png" width="35" height="35" class="img-circle"/>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.instagram.com">
+                                <img title="Instagram" alt="RSS" src="./img/Instagram.png" width="35" height="35" class="img-circle"/>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="https://www.linkedin.com/">
+                                <img title="LinkedIn" alt="LinkedIn" src="./img/LinkedIn.png" width="35" height="35" class="img-circle"/>
+                            </a>
+                        </li>
+                    </ul>
+
+                    <p class="text-xs-center font-italic"> Copyright Ryde 2016</p>
+
+                    <ul class="nav navbar-nav pull-xs-right">
+                        <li class="nav-item">
+                            <a href="#">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#">Contact Us</a>
+                        </li>
+                    </ul>
+
+                </nav>
+            </div>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+
+            <script type="text/javascript" src="userProfile.js"></script>
     </body>
 
 
