@@ -5,7 +5,7 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Your Profile</title>
+        <title>Create Timeslot</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
@@ -17,26 +17,26 @@
 
         <div id="header">
             <nav class="navbar navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Ryde</a>
+                <a class="navbar-brand" href="home.html">Ryde</a>
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" href="userProfile.html">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Timeslots</a>
+                        <a class="nav-link" href="timeslots.html">Timeslots</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav pull-xs-right p-l-1">
                     <li class="nav-item active">
-                        <button class="btn btn-danger" type="submit">Log Out</button>
+                        <button class="btn btn-danger" type="submit" onclick="location.href = 'splash.html';">Log Out</button>
                     </li>
                 </ul>
                 <form class="form-inline pull-xs-right">
                     <input class="form-control" type="text" placeholder="Search Groups">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <button class="btn btn-success" type="submit" onclick="location.href = 'splash.html';">Search</button>
                 </form>
             </nav>
         </div>
@@ -94,7 +94,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-5 col-sm-6">
-                        <button type="submit" class="btn btn-default">Create timeslot</button>
+                        <button type="submit" class="btn btn-default" onclick="location.href = 'group_timeslots_admin';">Create timeslot</button>
                     </div>
                 </div>
             </form>

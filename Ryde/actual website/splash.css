@@ -1,16 +1,68 @@
 .navbar {
-	margin-bottom: 0px;
-	margin-top: 0px;
-	position: absolute;
-  	width: 100%;
-  	background-color: rgba(0, 0, 0, 0.80);
+    margin-bottom: 0px;
+    margin-top: 0px;
+    text-align: center;
 }
 
-.jumbotron{
-	background: url("./img/splashBG.PNG");
+#menu {
+	background:rgba(0,0,0,0.3);
+}
+
+.jumbotron {
+    margin-bottom: 0px;
+}
+
+#jumbotron1{
+    background: url("./img/splashBG.PNG");
     height: 100vh;
     margin-bottom: 0px;
     background-repeat: no-repeat;
-  	text-align: center;
- 	background-size: 100% 100%
+    text-align: center;
+    background-size: 100% 100%
+}
+
+.container {
+	height: 100%;
+	width: 100%;
+}
+
+#ryde {
+	padding-top: 30px;
+}
+
+#ryde2 {
+	font-size: 800%;
+}
+
+#subTitle {
+	font-size: 250%;
+}
+
+#subDownloadTitle {
+	font-size: 150%;
+}
+
+#extraPadding {
+	padding-bottom: 50px;
+}
+
+#aboutNavbar {
+	font-size: 200%
+}
+
+#navBarList {
+	padding-top: 25px;
+}
+
+.card-img-top {
+    width: 100%;
+}
+
+#aboutUsContainer {
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+#aboutUs {
+	margin-top: 25px;
 }
