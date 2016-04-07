@@ -5,6 +5,7 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.GroupTimeslot;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -26,6 +27,21 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
 
     public GroupTimeslotFacade() {
         super(GroupTimeslot.class);
+    }
+    
+    /*
+        The following methods were added to the generated code
+    */
+
+    /**
+     *
+     * @param groupId
+     * @return
+     */
+
+    
+    public List<Integer> findTimeslotsForGroup(Integer groupId) {
+        return null;
     }
     
 }

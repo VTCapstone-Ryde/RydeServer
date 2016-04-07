@@ -21,10 +21,6 @@ INSERT INTO Timeslot_Table (passcode, start_time, end_time) VALUES
 ('123', '2016-03-15 15:00:00', '2016-03-15 17:00:00'),
 ('456', CAST(N'2016-03-15 13:00:00' AS DATETIME), CAST(N'2016-03-15 19:00:00' AS DATETIME));
 
-INSERT INTO GroupUser (user_id, group_id) VALUES 
-('1', '1'),
-('2', '2');
-
 INSERT INTO TimeslotUser (user_id, ts_id, driver) VALUES 
 ('1', '1', '1'),
 ('4', '1', '0'),

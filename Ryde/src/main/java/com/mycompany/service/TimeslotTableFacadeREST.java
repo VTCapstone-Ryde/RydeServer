@@ -5,6 +5,9 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.TimeslotTable;
+import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.TimeslotUserFacade;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,6 +33,9 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    
+    private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
+    private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -86,6 +92,23 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    /*
+        The following methods are added to the generated code
+    */
+    
+    @GET
+    @Path("timeslotsForGroup/{groupId}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupdId) {
+        List<Integer> timeslotIds = groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupdId));
+        List<TimeslotTable> timeslots = Collections.EMPTY_LIST;
+        for (Integer i : timeslotIds) {
+            timeslots.add(find(i));
+        }
+        System.out.println(timeslots);
+        return timeslots;
     }
     
 }
