@@ -38,16 +38,19 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
         Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
         q.setFirstResult(0);
         List<GroupUser> results = q.getResultList();
+        //TODO add empty result handling
         ArrayList<GroupTable> groupsToReturn = new ArrayList<>();
         for (GroupUser groupUser: results) {
             groupsToReturn.add(groupUser.getGroupId());
         }
         return groupsToReturn;
     }
+    
     public List<UserTable> findAdminsForGroup(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupUser.findAdminsByGroupId").setParameter("id", id);
         q.setFirstResult(0);
         List<GroupUser> results = q.getResultList();
+        //TODO add empty result handling
         ArrayList<UserTable> usersToReturn = new ArrayList<>();
         for (GroupUser groupUser: results) {
             usersToReturn.add(groupUser.getUserId());

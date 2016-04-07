@@ -55,7 +55,7 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
             else {
                  return em.createQuery("SELECT g FROM GroupTimeslot g WHERE g.id = :id", GroupTimeslot.class)
                     .setParameter("id", groupId).getResultList();
-                            }
+            }
         } catch (Exception e) {
              e.printStackTrace();
         }
@@ -79,10 +79,12 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         }
         return null;
     }
+    
     public GroupTable findGroupForTimeslot(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
         q.setFirstResult(0);
         List<GroupTimeslot> result = q.getResultList();
+        //TODO add empty result handling
         return result.get(0).getGroupId();
     } 
 }
