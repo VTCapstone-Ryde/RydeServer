@@ -5,6 +5,8 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
+import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.GroupUserFacade;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,7 +32,10 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-
+    //Our facades for relational information
+    private final GroupUserFacade groupUserFacade = new GroupUserFacade();
+    private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
+    
     public GroupTableFacadeREST() {
         super(GroupTable.class);
     }
@@ -87,5 +92,19 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    //The following has been added to the auto-generated code
+    public GroupUserFacade getGroupUserFacade() {
+        return groupUserFacade;
+    }
+
+    public GroupTimeslotFacade getGroupTimeslotFacade() {
+        return groupTimeslotFacade;
+    }
     
+    @GET
+    @Path("user/{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public GroupTable findGroupsForUser(@PathParam("id") Integer id) {
+        return super.find(groupUserFacade.find(id));
+    }
 }
