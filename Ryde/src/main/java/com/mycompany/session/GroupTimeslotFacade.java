@@ -6,8 +6,7 @@ package com.mycompany.session;
 
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
-import com.mycompany.entity.GroupUser;
-import java.util.ArrayList;
+import com.mycompany.entity.TimeslotUser;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -34,11 +33,58 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         super(GroupTimeslot.class);
     }
     
-    public GroupTable findGroupForTimeslot(Integer id) {
+    /*
+        The following methods were added to the generated code
+    */
+
+    /**
+     *
+     * @param groupId
+     * @return
+     */
+
+    
+    public List<GroupTimeslot> findTimeslotsForGroup(Integer groupId) {
+        try {
+            if (em.createQuery("SELECT g FROM GroupTimeslot g WHERE g.id = :id", GroupTimeslot.class)
+                    .setParameter("id", groupId)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + groupId);
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT g FROM GroupTimeslot g WHERE g.id = :id", GroupTimeslot.class)
+                    .setParameter("id", groupId).getResultList();
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<TimeslotUser> findTimeslotsForUser(Integer userId) {
+        try {
+            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
+                    .setParameter("id", userId)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + userId);
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
+                    .setParameter("id", userId).getResultList();
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
+    }
+    
+     public GroupTable findGroupForTimeslot(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
         q.setFirstResult(0);
         List<GroupTimeslot> result = q.getResultList();
         return result.get(0).getGroupId();
-    }  
+    } 
     
 }

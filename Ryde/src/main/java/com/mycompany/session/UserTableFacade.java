@@ -7,6 +7,7 @@ package com.mycompany.session;
 import com.mycompany.entity.UserTable;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 
 /**
@@ -17,7 +18,7 @@ import javax.persistence.PersistenceContext;
 public class UserTableFacade extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private EntityManager em;
+    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
     @Override
     protected EntityManager getEntityManager() {
