@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -115,10 +116,22 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     public GroupTable findGroupForTimeslot(@PathParam("id") Integer id) {
         return getGroupTimeslotFacade().findGroupForTimeslot(id);
     }
+    
     @GET
     @Path("admin/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findAdminsForGroup(@PathParam("id") Integer id) {
         return getGroupUserFacade().findAdminsForGroup(id);
-    }    
+    }
+
+    @GET
+    @Path("title/{title}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<GroupTable> findAdminsForGroup(@PathParam("title") String title) {
+        String addSpacesToTitle = title.replaceAll("\\+", " ");
+        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", addSpacesToTitle);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }      
 }
