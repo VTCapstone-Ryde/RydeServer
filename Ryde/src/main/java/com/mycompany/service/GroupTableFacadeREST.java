@@ -5,6 +5,7 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
+import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
 import java.util.List;
@@ -103,8 +104,21 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     
     @GET
     @Path("user/{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public GroupTable findGroupsForUser(@PathParam("id") Integer id) {
-        return super.find(groupUserFacade.find(id));
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<GroupTable> findGroupsForUser(@PathParam("id") Integer id) {
+        return getGroupUserFacade().findGroupsForUser(id);
     }
+    
+    @GET
+    @Path("timeslot/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public GroupTable findGroupForTimeslot(@PathParam("id") Integer id) {
+        return getGroupTimeslotFacade().findGroupForTimeslot(id);
+    }
+    @GET
+    @Path("admin/{id}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findAdminsForGroup(@PathParam("id") Integer id) {
+        return getGroupUserFacade().findAdminsForGroup(id);
+    }    
 }
