@@ -8,6 +8,7 @@ import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -24,11 +25,11 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("com.mycompany.entity.usertable")
+@Path("/user")
 public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private EntityManager em;
+    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
     public UserTableFacadeREST() {
         super(UserTable.class);
@@ -81,6 +82,18 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     public String countREST() {
         return String.valueOf(super.count());
     }
+    
+    @GET
+    @Path("validateToken/{token}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public String validateToken(@PathParam("token") String token) {
+        if (findByToken(token) == null) {
+            return "false";
+        }
+        else {
+            return "true";
+        }
+    }
 
     @Override
     protected EntityManager getEntityManager() {
@@ -96,6 +109,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
             if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                     .setParameter("fbTok", token)
                     .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + token);
                 return null;
             }
             else {

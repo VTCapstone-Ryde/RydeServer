@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author cloud
  */
 @Stateless
-@Path("com.mycompany.entity.groupuser")
+@Path("/groupuser")
 public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")

@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author cloud
  */
 @Stateless
-@Path("com.mycompany.entity.timeslotuser")
+@Path("/timeslotuser")
 public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")

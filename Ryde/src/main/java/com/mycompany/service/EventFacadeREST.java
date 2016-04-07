@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("com.mycompany.entity.event")
+@Path("/event")
 public class EventFacadeREST extends AbstractFacade<Event> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
