@@ -5,13 +5,17 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Your Profile</title>
+        <title>Profile</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
         
         <style type="text/css">
             .navbar {
                 padding-bottom: 0px
+            }
+
+            .container {
+                height: 100vh;
             }
         </style>
     </head>
@@ -20,33 +24,33 @@
 
         <div id="header">
             <nav class="navbar navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Ryde</a>
+                <a class="navbar-brand" href="home.html">Ryde</a>
                 <ul class="nav navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
+                        <a class="nav-link" href="userProfile.html">Profile</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Timeslots</a>
+                        <a class="nav-link" href="timeslots.html">Timeslots</a>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav pull-xs-right p-l-1">
                     <li class="nav-item active">
-                        <button class="btn btn-danger" type="submit">Log Out</button>
+                        <button class="btn btn-danger" type="submit" onclick="location.href = 'splash.html';">Log Out</button>
                     </li>
                 </ul>
                 <form class="form-inline pull-xs-right">
                     <input class="form-control" type="text" placeholder="Search Groups">
-                    <button class="btn btn-success" type="submit">Search</button>
+                    <input class="btn btn-success" type="button" onclick="location.href = 'search_results.html';" value="Search">
                 </form>
             </nav>
         </div>
 
         <div class="container">
-            <h1 class="display-3 text-xs-center col-xs-12">Your Name</h1><br>
-            <img title="Profile Picture" alt="Profile Picture" src="./img/Facebook.png" width="100" height="100" class="center-block img-thumbnail"/>
+            <h1 class="display-3 text-xs-center col-xs-12">Osman Balci</h1><br>
+            <img title="Profile Picture" alt="Profile Picture" src="./img/balciPic.jpg" width="100" height="100" class="center-block img-thumbnail"/>
             <h3 class="text-xs-center col-xs-12">Contact Information</h3><br>
 
             <!--Modal for Contact Information-->
@@ -54,7 +58,7 @@
             <p class="col-xs-2 text-center">Phone Number:</p
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#phoneNumberModal" id="phone_number">
-                703-975-282
+                540-231-4841
             </button>
 
             <!-- Modal -->
@@ -92,7 +96,7 @@
             <!--Modal for Car Make-->
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carMakeModal" id="car_make">
-                Toyota
+                Lamborghini
             </button>
 
             <!-- Modal -->
@@ -131,7 +135,7 @@
             
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carModelModal" id="car_model">
-                Camry
+                SPYDER
             </button>
 
             <!-- Modal -->
@@ -208,7 +212,7 @@
             
             <!-- Button trigger modal -->
             <button type="button" class="btn btn-primary btn-sm col-xs-1" data-toggle="modal" data-target="#carSeatsModal" id="car_seats">
-                5
+                2
             </button>
 
             <!-- Modal -->

@@ -25,7 +25,7 @@ import javax.ws.rs.core.MediaType;
  * @author cameron
  */
 @Stateless
-@Path("user")
+@Path("/user")
 public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
@@ -37,14 +37,14 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(UserTable entity) {
         super.create(entity);
     }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, UserTable entity) {
         super.edit(entity);
     }
@@ -57,21 +57,21 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public UserTable find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
@@ -85,7 +85,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     
     @GET
     @Path("validateToken/{token}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public String validateToken(@PathParam("token") String token) {
         if (findByToken(token) == null) {
             return "false";

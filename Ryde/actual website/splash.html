@@ -5,10 +5,10 @@
 
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta http-equiv="x-ua-compatible" content="ie=edge">
-        <title>Your Profile</title>
+        <title>Ryde</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="splash.css">
     </head>
 
@@ -16,42 +16,88 @@
 
 
         <div id="header">
-            <nav class="navbar navbar-dark bg-primary">
-                <a class="navbar-brand" href="#">Ryde</a>
-                <ul class="nav navbar-nav">
+            <nav class="navbar navbar-inverse navbar-fixed-top" id="menu">
+                <a class="pull-xs-left" href="#"><img src="./img/r-logo.PNG" width="100" height="75"></a>
+                <ul class="nav navbar-nav" id="navBarList">
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Profile</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Timeslots</a>
+                        <a class="nav-link" id="aboutNavbar" href="#aboutUs">About</a>
                     </li>
                 </ul>
-                <ul class="nav navbar-nav pull-xs-right p-l-1">
-                    <li class="nav-item active">
-                        <button class="btn btn-danger" type="submit">Log Out</button>
+                <ul class="nav navbar-nav pull-xs-right" id="navBarList2">
+                    <li class="nav-item">
+                        <button class="nav-link btn btn" id="login" onclick="location.href = 'home.html';">
+                            <img title="facebook" alt="facebook" src="./img/Facebook.PNG" class="img-square" width="35" height="35">
+                            Login with Facebook
+                        </button>
                     </li>
                 </ul>
-                <form class="form-inline pull-xs-right">
-                    <input class="form-control" type="text" placeholder="Search Groups">
-                    <button class="btn btn-success" type="submit">Search</button>
-                </form>
             </nav>
         </div>
 
-        <div id="content">
-            <div class="jumbotron jumbotron-fluid">
+
+        <div id="container">
+            <div class="jumbotron jumbotron-fluid" id="jumbotron1">
                 <div class="container">
-                    <h1 class="display-3 text-xs-center">Ryde</h1>
-                    <p class="lead">Giving Rides and Saving Lives.</p>
+                    <div class="row">
+                        <div id="r-logo" class="col-xs-6 p-r-0">
+                            <img title="r-logo" alt="r-logo" src="./img/r-logo.PNG" width="250" height="225" class="pull-right">
+                        </div>
+                        <div id="ryde" class="col-xs-6 text-left p-l-0">
+                            <h1 id="ryde2" class="display-3">Ryde</h1>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p class="text-center" id="subTitle">Giving Rides and Saving Lives.</p>
+                    </div>
+                    <div class="row" id="extraPadding">
+                        <button type="button" class="btn btn-primary nav-link" onclick="location.href = '#aboutUs';"href="#aboutUs">Learn More</button>
+                    </div>
+                    <div class="row">
+                        <h3>Download Ryde!</h3>
+                        <p id="subDownloadTitle">Start catching rides with your friends today.</p>
+                        <p><a href=""><img id="appStoreIcon" src="./img/App-Store-Icon.PNG" width="200"></a></p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="container" id="aboutUs">
+            <div class="row text-center">
+                <h1>About Us</h1>
+                <p class="lead">A little bit about who we are, and what Ryde is. </p>
+            </div>
+        </div>
+        <div class="container" id="aboutUsContainer">
+            <div class="card-deck-wrapper">
+                <div class="card-deck">
+                    <div class="card">
+                        <img title="Facebook Pic" alt="Facebook Pic" class="card-img-top" src="./img/Facebook.PNG">
+                        <div class="card-block">
+                            <h4 class="card-title"><i class="fa fa-graduation-cap"></i> About Us</h4>
+                            <p class="card-text">Content Here</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img title="Facebook Pic" alt="Facebook Pic" class="card-img-top" src="./img/Facebook.PNG">
+                        <div class="card-block">
+                            <h4 class="card-title"><i class="fa fa-car"></i> About Ryde</h4>
+                            <p class="card-text">Content Here</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img title="Facebook Pic" alt="Facebook Pic" class="card-img-top" src="./img/Facebook.PNG">
+                        <div class="card-block">
+                            <h4 class="card-title"><i class="fa fa-user"></i> Our Website</h4>
+                            <p class="card-text">Content Here</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div id="footer">
-            <nav class="navbar navbar-light navbar-bottom bg-faded">
+            <nav class="navbar navbar-light navbar-static-bottom bg-faded">
                 <ul class="nav navbar-nav pull-xs-left">
                     <li class="nav-item">
                         <a href="https://www.facebook.com/">

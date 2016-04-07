@@ -28,4 +28,19 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
         super(UserTable.class);
     }
     
+    public UserTable findByName(String firstName, String lastName) {
+        if (em.createQuery("SELECT u FROM UserTable u WHERE u.firstName = :firstName AND u.lastName = :lastName")
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .getResultList().isEmpty()) {
+            return null;
+        }
+        else {
+            return em.createQuery("SELECT u FROM UserTable u WHERE u.firstName = :firstName AND u.lastName = :lastName", UserTable.class)
+                .setParameter("firstName", firstName)
+                .setParameter("lastName", lastName)
+                .getSingleResult();
+        }
+    }
+    
 }
