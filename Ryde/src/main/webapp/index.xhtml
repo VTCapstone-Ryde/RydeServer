@@ -3,31 +3,34 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Users</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
         <h:outputStylesheet name="css/jsfcrud.css"/>
+        <h:outputStylesheet library="css" name="globalStyles.css"/>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-        <br />
-        <h:link outcome="/groupTable/List" value="Show All GroupTable Items"/>
-        <br />
-        <h:link outcome="/groupTimeslot/List" value="Show All GroupTimeslot Items"/>
-        <br />
-        <h:link outcome="/groupUser/List" value="Show All GroupUser Items"/>
-        <br />
-        <h:link outcome="/timeslotTable/List" value="Show All TimeslotTable Items"/>
-        <br />
-        <h:link outcome="/timeslotUser/List" value="Show All TimeslotUser Items"/>
-        <br />
-        <h:link outcome="/userTable/List" value="Show All UserTable Items"/>
+        <div align="center">
+            <h:form class="form-signin">
+                <div align="center">
+                
+                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                    <h:outputLabel styleClass="outputLabel" for="firstName" value="First Name: " />
+                    <h:inputText class="form-control" id="firstName" value="#{loginManager.firstName}"/>
+                    
+                    <h:outputLabel styleClass="outputLabel" for="lastName" value="Last Name " />
+                    <h:inputSecret class="form-control"  id="lastName" value="#{loginManager.lastName}"/>
+                
+                </h:panelGrid>
+                <br/>
+                <fieldset style="width:40%; margin:0 auto;">
+                    <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
+                </fieldset>  
+                </div>
+                <br/>
+                <h:outputLabel value ="#{loginManager.errorMessage}" />  
+            </h:form>
+        </div>
     </h:body>
 
-
-
-
-
-
 </html>
-
