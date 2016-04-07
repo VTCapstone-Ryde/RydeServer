@@ -79,12 +79,10 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         }
         return null;
     }
-    
-     public GroupTable findGroupForTimeslot(Integer id) {
+    public GroupTable findGroupForTimeslot(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
         q.setFirstResult(0);
         List<GroupTimeslot> result = q.getResultList();
         return result.get(0).getGroupId();
     } 
-    
 }
