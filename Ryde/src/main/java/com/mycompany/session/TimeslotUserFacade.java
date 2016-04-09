@@ -5,6 +5,7 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.TimeslotUser;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -27,6 +28,25 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
 
     public TimeslotUserFacade() {
         super(TimeslotUser.class);
+    }
+    
+    public List<TimeslotUser> findUsersForTimeslot(Integer tsId) {
+        try {
+            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.tsId = :tsId", TimeslotUser.class)
+                    .setParameter("tsId", tsId)
+                    .getResultList().isEmpty()) {
+                System.out.println("No users in timeslot with id: " + tsId);
+                return null;
+            } 
+            else {
+                return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.tsId = :tsId", TimeslotUser.class)
+                    .setParameter("tsId", tsId)
+                    .getResultList();
+            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
     }
     
 }

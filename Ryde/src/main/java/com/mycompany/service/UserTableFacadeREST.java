@@ -4,7 +4,12 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupUser;
+import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupUserFacade;
+import com.mycompany.session.TimeslotUserFacade;
+import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -31,6 +36,9 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
+    private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
+    private final GroupUserFacade groupUserFacade = new GroupUserFacade();
+    
     public UserTableFacadeREST() {
         super(UserTable.class);
     }
@@ -83,18 +91,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return String.valueOf(super.count());
     }
     
-    @GET
-    @Path("validateToken/{token}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public String validateToken(@PathParam("token") String token) {
-        if (findByToken(token) == null) {
-            return "false";
-        }
-        else {
-            return "true";
-        }
-    }
-
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -103,6 +99,52 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     /*
     The following methods were added after code generation
     */
+
+    public TimeslotUserFacade getTimeslotUserFacade() {
+        return timeslotUserFacade;
+    }
+
+    public GroupUserFacade getGroupUserFacade() {
+        return groupUserFacade;
+    }
+    
+    @GET
+    @Path("validateToken/{token}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public String validateToken(@PathParam("token") String token) {
+        if (findByToken(token) == null) {
+            return "false";
+        }
+        else {
+            return "true";
+        }
+    }
+    
+    @GET
+    @Path("inGroup/{groupId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserTable> findUsersInGroup(@PathParam("groupId") String groupId) {
+        List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
+        List<UserTable> users = Collections.EMPTY_LIST;
+        for (GroupUser g : userIds) {
+            users.add(find(g.getUserId()));
+        }
+        System.out.println(users);
+        return users;
+    }
+    
+    @GET
+    @Path("inTimeslot/{timeslotId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<UserTable> findUsersInTimeslot(@PathParam("timeslotId") String timeslotId) {
+        List<TimeslotUser> userIds = timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
+        List<UserTable> users = Collections.EMPTY_LIST;
+        for (TimeslotUser t : userIds) {
+            users.add(find(t.getUserId()));
+        }
+        System.out.println(users);
+        return users;
+    }
     
     public UserTable findByToken(String token) {
         try {
