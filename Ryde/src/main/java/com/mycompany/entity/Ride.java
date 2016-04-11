@@ -6,6 +6,7 @@ package com.mycompany.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -60,13 +61,13 @@ public class Ride implements Serializable {
     @Column(name = "end_lon")
     private Double endLon;
     @JoinColumn(name = "driver_user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private UserTable driverUserId;
     @JoinColumn(name = "rider_user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private UserTable riderUserId;
     @JoinColumn(name = "ts_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
     private TimeslotTable tsId;
 
     public Ride() {
@@ -80,6 +81,16 @@ public class Ride implements Serializable {
         this.id = id;
         this.startLat = startLat;
         this.startLon = startLon;
+    }
+    
+    public Ride(double startLat, double startLon, double endLat, double endLon, 
+            UserTable riderUserID, TimeslotTable tsId) {
+        this.startLat = startLat;
+        this.startLon = startLon;
+        this.endLat = endLat;
+        this.endLon = endLon; 
+        this.riderUserId = riderUserID;
+        this.tsId = tsId;
     }
 
     public Integer getId() {

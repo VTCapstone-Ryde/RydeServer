@@ -7,7 +7,6 @@ package com.mycompany.service;
 import com.mycompany.entity.Event;
 import com.mycompany.entity.Ride;
 import com.mycompany.session.EventFacade;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +47,21 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     public void create(Ride entity) {
         super.create(entity);
     }
+    
+//    @POST
+//    @Consumes({MediaType.APPLICATION_JSON})
+//    public void create(Request request) {
+//        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+//            .setParameter("fbTok", request.getFbTok()).getSingleResult();
+//        
+//        TimeslotTable ts = new TimeslotTable(1);
+//        
+//        Ride entity = new Ride(request.getStartLat(), request.getStartLon(),
+//            request.getEndLat(), request.getEndLon(),
+//            user, ts);
+//        
+//        super.create(entity);
+//    }
 
     @PUT
     @Path("{id}")

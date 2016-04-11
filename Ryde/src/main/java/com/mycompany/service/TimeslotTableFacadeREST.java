@@ -7,8 +7,10 @@ package com.mycompany.service;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
+import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,6 +41,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     
     private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
     private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
+    private final UserTableFacade userTableFacade = new UserTableFacade();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -127,5 +130,18 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         return timeslots;
     }
 
-    
+    @GET
+    @Path("timeslotsForToken/{token}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findTimeslotsForToken(@PathParam("token") String token) {
+        UserTable ut = userTableFacade.findByToken(token);
+        int userId = ut.getId();
+        List<TimeslotUser> timeslotIds = timeslotUserFacade.findTimeslotsForUser(userId);
+        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
+        for (TimeslotUser i : timeslotIds) {
+            timeslots.add(i.getTsId());
+        }
+        System.out.println(timeslots);
+        return timeslots;
+    }
 }
