@@ -40,8 +40,26 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
             return em.createQuery("SELECT u FROM UserTable u WHERE u.firstName = :firstName AND u.lastName = :lastName", UserTable.class)
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName)
-                .getSingleResult();
+                .getResultList().get(0);
         }
+    }
+    
+    public UserTable findByToken(String token) {
+        try {
+            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + token);
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token).getResultList().get(0);
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
     }
     
 }
