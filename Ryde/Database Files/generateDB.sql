@@ -83,6 +83,7 @@ CREATE TABLE Ride
     start_lon DOUBLE NOT NULL,
     end_lat DOUBLE,
     end_lon DOUBLE,
+    active boolean NOT NULL,
     FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
     FOREIGN KEY (rider_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
     FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
