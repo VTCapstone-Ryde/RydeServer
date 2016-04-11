@@ -6,6 +6,7 @@ package com.mycompany.service;
 
 import com.mycompany.entity.Event;
 import com.mycompany.entity.Ride;
+import com.mycompany.entity.UserTable;
 import com.mycompany.session.EventFacade;
 import java.util.ArrayList;
 import java.util.Date;
@@ -110,9 +111,10 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
     
     @GET
-    @Path("getQueue/{timeslotId}")
+    @Path("getQueue/{timeslotId}/{driverToken}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId) {
+    public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId, @PathParam("driverToken") Integer driverToken) {
+        UserTable driver = findByToken(Integer.toString(driverToken));
         List<Ride> allRides = findAll();
         ArrayList<Ride> ridesForTimeslot = new ArrayList<Ride>();
         for (Ride i : allRides) {
@@ -123,6 +125,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         if (!ridesForTimeslot.isEmpty()) {
             Ride activeRide = ridesForTimeslot.get(0);
             activeRide.setActive(true);
+            activeRide.setDriverUserId(driver);
             em.merge(activeRide);
         }
         System.out.println(ridesForTimeslot);
@@ -153,5 +156,23 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             return rideToDelete;
         }
         return null; 
+    }
+    
+    public UserTable findByToken(String token) {
+        try {
+            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + token);
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token).getResultList().get(0);
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -61,7 +61,7 @@ public class Ride implements Serializable {
     @Column(name = "end_lon")
     private Double endLon;
     @JoinColumn(name = "driver_user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserTable driverUserId;
     @JoinColumn(name = "rider_user_id", referencedColumnName = "id")
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
