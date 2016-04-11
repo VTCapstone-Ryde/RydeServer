@@ -127,7 +127,7 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @GET
     @Path("title/{title}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<GroupTable> findAdminsForGroup(@PathParam("title") String title) {
+    public List<GroupTable> findGroupsByTitle(@PathParam("title") String title) {
         String addSpacesToTitle = title.replaceAll("\\+", " ");
         Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", addSpacesToTitle);
         q.setFirstResult(0);
