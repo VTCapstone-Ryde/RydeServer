@@ -147,6 +147,13 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return users;
     }
     
+    @GET
+    @Path("findByToken/{fbTok}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserTable findUserByToken(@PathParam("fbTok") String fbTok) {
+        return this.findUserByToken(fbTok);
+    }
+    
     public UserTable findByToken(String token) {
         try {
             if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
