@@ -6,6 +6,7 @@ package com.mycompany.session;
 
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -33,35 +34,13 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         super(GroupTimeslot.class);
     }
     
-    /*
-        The following methods were added to the generated code
-    */
-
-    /**
-     *
-     * @param groupId
-     * @return
-     */
-
-    
-    public List<GroupTimeslot> findTimeslotsForGroup(Integer groupId) {
-        try {
-            if (em.createQuery("SELECT g FROM GroupTimeslot g WHERE g.id = :id", GroupTimeslot.class)
-                    .setParameter("id", groupId)
-                    .getResultList().isEmpty()) {
-                System.out.println("No user found with token: " + groupId);
-                return null;
-            }
-            else {
-                 return em.createQuery("SELECT g FROM GroupTimeslot g WHERE g.id = :id", GroupTimeslot.class)
-                    .setParameter("id", groupId).getResultList();
-            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
+    public List<TimeslotTable> findTimeslotsForGroup(Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findTimeslotsByGroupId").setParameter("id", groupId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
-
+    
     public List<TimeslotUser> findTimeslotsForUser(Integer userId) {
         try {
             if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
@@ -79,6 +58,7 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         }
         return null;
     }
+    
     
     public GroupTable findGroupForTimeslot(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);

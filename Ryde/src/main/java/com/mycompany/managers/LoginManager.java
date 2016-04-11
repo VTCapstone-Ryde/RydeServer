@@ -75,7 +75,7 @@ public class LoginManager implements Serializable {
       if (user.getFirstName().equals(getFirstName()) && user.getLastName().equals(getLastName())) {
         errorMessage = "";
         initializeSessionMap(user);
-        return "Profile";
+        return "Home";
       }
       errorMessage = "Invalid username or password!";
       return "";

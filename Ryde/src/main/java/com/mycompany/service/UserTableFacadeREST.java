@@ -123,27 +123,16 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("inGroup/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInGroup(@PathParam("groupId") String groupId) {
-        List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
-        List<UserTable> users = Collections.EMPTY_LIST;
-        for (GroupUser g : userIds) {
-            users.add(find(g.getUserId()));
-        }
-        System.out.println(users);
+    public List<UserTable> findUsersInGroupEdit(@PathParam("groupId") String groupId) {
+        List<UserTable> users = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
         return users;
     }
     
     @GET
     @Path("inTimeslot/{timeslotId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInTimeslot(@PathParam("timeslotId") String timeslotId) {
-        List<TimeslotUser> userIds = timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
-        List<UserTable> users = Collections.EMPTY_LIST;
-        for (TimeslotUser t : userIds) {
-            users.add(find(t.getUserId()));
-        }
-        System.out.println(users);
-        return users;
+    public List<UserTable> findUsersInTimeslotEdit(@PathParam("timeslotId") String timeslotId) {
+        return timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
     }
     
     public UserTable findByToken(String token) {

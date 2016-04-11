@@ -4,11 +4,14 @@
  */
 package com.mycompany.session;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.TimeslotTable;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -28,5 +31,4 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
     public TimeslotTableFacade() {
         super(TimeslotTable.class);
     }
-    
 }

@@ -104,27 +104,16 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupdId) {
-        List<GroupTimeslot> timeslotIds = groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupdId));
-        List<TimeslotTable> timeslots = Collections.EMPTY_LIST;
-        for (GroupTimeslot i : timeslotIds) {
-            timeslots.add(find(i.getTsId()));
-        }
-        System.out.println(timeslots);
-        return timeslots;
+    public List<TimeslotTable> findTimeslotsForGroupEdit(@PathParam("groupId") String groupId) {
+        return groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupId));
     }
     
     @GET
     @Path("timeslotsForUser/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForUser(@PathParam("userId") String userId) {
-        List<TimeslotUser> timeslotIds = groupTimeslotFacade.findTimeslotsForUser(Integer.parseInt(userId));
-        List<TimeslotTable> timeslots = Collections.EMPTY_LIST;
-        for (TimeslotUser i : timeslotIds) {
-            timeslots.add(find(i.getTsId()));
-        }
-        System.out.println(timeslots);
-        return timeslots;
+    public List<TimeslotTable> findTimeslotsForUserEdit(@PathParam("userId") String userId) {
+        return timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
+
     }
 
     
