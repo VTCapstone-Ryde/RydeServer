@@ -156,7 +156,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
             }
             else {
                  return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token).getSingleResult();
+                    .setParameter("fbTok", token).getResultList().get(0);
                             }
         } catch (Exception e) {
              e.printStackTrace();

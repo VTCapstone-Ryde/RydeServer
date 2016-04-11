@@ -7,7 +7,6 @@ package com.mycompany.service;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
-import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import java.util.Collections;

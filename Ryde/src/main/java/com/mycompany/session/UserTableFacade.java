@@ -40,7 +40,7 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
             return em.createQuery("SELECT u FROM UserTable u WHERE u.firstName = :firstName AND u.lastName = :lastName", UserTable.class)
                 .setParameter("firstName", firstName)
                 .setParameter("lastName", lastName)
-                .getSingleResult();
+                .getResultList().get(0);
         }
     }
     
