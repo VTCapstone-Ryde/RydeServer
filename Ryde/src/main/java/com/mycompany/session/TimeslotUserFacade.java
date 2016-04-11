@@ -48,5 +48,23 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
         }
         return null;
     }
+
+    public List<TimeslotUser> findTimeslotsForUser(Integer userId) {
+        try {
+            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
+                    .setParameter("id", userId)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + userId);
+                return null;
+            }
+            else {
+                 return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
+                    .setParameter("id", userId).getResultList();
+                            }
+        } catch (Exception e) {
+             e.printStackTrace();
+        }
+        return null;
+    }
     
 }

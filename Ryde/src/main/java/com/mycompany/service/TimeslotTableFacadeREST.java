@@ -9,6 +9,7 @@ import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -105,9 +106,9 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupdId) {
         List<GroupTimeslot> timeslotIds = groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupdId));
-        List<TimeslotTable> timeslots = Collections.EMPTY_LIST;
+        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
         for (GroupTimeslot i : timeslotIds) {
-            timeslots.add(find(i.getTsId()));
+            timeslots.add(i.getTsId());
         }
         System.out.println(timeslots);
         return timeslots;
@@ -117,10 +118,10 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @Path("timeslotsForUser/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findTimeslotsForUser(@PathParam("userId") String userId) {
-        List<TimeslotUser> timeslotIds = groupTimeslotFacade.findTimeslotsForUser(Integer.parseInt(userId));
-        List<TimeslotTable> timeslots = Collections.EMPTY_LIST;
+        List<TimeslotUser> timeslotIds = timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
+        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
         for (TimeslotUser i : timeslotIds) {
-            timeslots.add(find(i.getTsId()));
+            timeslots.add(i.getTsId());
         }
         System.out.println(timeslots);
         return timeslots;

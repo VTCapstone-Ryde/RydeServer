@@ -9,6 +9,7 @@ import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -125,7 +126,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserTable> findUsersInGroup(@PathParam("groupId") String groupId) {
         List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
-        List<UserTable> users = Collections.EMPTY_LIST;
+        ArrayList<UserTable> users = new ArrayList<UserTable>();
         for (GroupUser g : userIds) {
             users.add(find(g.getUserId()));
         }
@@ -138,7 +139,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserTable> findUsersInTimeslot(@PathParam("timeslotId") String timeslotId) {
         List<TimeslotUser> userIds = timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
-        List<UserTable> users = Collections.EMPTY_LIST;
+        ArrayList<UserTable> users = new ArrayList<UserTable>();
         for (TimeslotUser t : userIds) {
             users.add(find(t.getUserId()));
         }
