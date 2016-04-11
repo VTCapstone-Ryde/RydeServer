@@ -76,7 +76,7 @@ CREATE TABLE Ride
 (
     id INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (id),
-    driver_user_id INT NOT NULL,
+    driver_user_id INT,
     rider_user_id INT NOT NULL,
     ts_id INT NOT NULL,
     start_lat DOUBLE NOT NULL,
