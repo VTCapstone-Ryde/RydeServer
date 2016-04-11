@@ -7,7 +7,6 @@ package com.mycompany.session;
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
-import com.mycompany.entity.TimeslotUser;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -40,25 +39,6 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         //TODO add empty result handling
         return q.getResultList();
     }
-    
-    public List<TimeslotUser> findTimeslotsForUser(Integer userId) {
-        try {
-            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
-                    .setParameter("id", userId)
-                    .getResultList().isEmpty()) {
-                System.out.println("No user found with token: " + userId);
-                return null;
-            }
-            else {
-                 return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
-                    .setParameter("id", userId).getResultList();
-                            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
-    }
-    
     
     public GroupTable findGroupForTimeslot(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);

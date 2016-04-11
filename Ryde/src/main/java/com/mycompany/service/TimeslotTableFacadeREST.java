@@ -4,13 +4,11 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
-import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
-import java.util.Collections;
+import com.mycompany.session.UserTableFacade;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -39,6 +37,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     
     private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
     private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
+    private final UserTableFacade userTableFacade = new UserTableFacade();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -106,6 +105,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findTimeslotsForGroupEdit(@PathParam("groupId") String groupId) {
         return groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupId));
+
     }
     
     @GET
@@ -113,8 +113,15 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findTimeslotsForUserEdit(@PathParam("userId") String userId) {
         return timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
-
     }
 
-    
+    @GET
+    @Path("timeslotsForToken/{token}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findTimeslotsForToken(@PathParam("token") String token) {
+        UserTable ut = userTableFacade.findByToken(token);
+        int userId = ut.getId();
+        List<TimeslotTable> timeslots = timeslotUserFacade.findTimeslotsForUser(userId);
+        return timeslots;
+    }
 }

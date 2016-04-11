@@ -4,12 +4,10 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupUser;
-import com.mycompany.entity.TimeslotUser;
+
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -135,6 +133,13 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
     }
     
+    @GET
+    @Path("findByToken/{fbTok}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserTable findUserByToken(@PathParam("fbTok") String fbTok) {
+        return this.findByToken(fbTok);
+    }
+    
     public UserTable findByToken(String token) {
         try {
             if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
@@ -145,7 +150,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
             }
             else {
                  return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token).getSingleResult();
+                    .setParameter("fbTok", token).getResultList().get(0);
                             }
         } catch (Exception e) {
              e.printStackTrace();

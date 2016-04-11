@@ -11,25 +11,26 @@
         <div align="center">
             <h:form class="form-signin">
                 <div align="center">
-                
-                <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
 
-                    <h:outputLabel styleClass="outputLabel" for="firstName" value="First Name: " />
-                    <h:inputText class="form-control" id="firstName" value="#{loginManager.firstName}"/>
-                    
-                    <h:outputLabel styleClass="outputLabel" for="lastName" value="Last Name " />
-                    <h:inputSecret class="form-control"  id="lastName" value="#{loginManager.lastName}"/>
-                
-                </h:panelGrid>
-                <br/>
-                <fieldset style="width:40%; margin:0 auto;">
-                    <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
-                </fieldset>  
+                    <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+
+                        <h:outputLabel styleClass="outputLabel" for="firstName" value="First Name: " />
+                        <h:inputText class="form-control" id="firstName" value="#{loginManager.firstName}"/>
+
+                        <h:outputLabel styleClass="outputLabel" for="lastName" value="Last Name " />
+                        <h:inputSecret class="form-control"  id="lastName" value="#{loginManager.lastName}"/>
+
+                    </h:panelGrid>
+                    <br/>
+                    <fieldset style="width:40%; margin:0 auto;">
+                        <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
+                    </fieldset>  
                 </div>
                 <br/>
                 <h:outputLabel value ="#{loginManager.errorMessage}" />  
             </h:form>
         </div>
     </h:body>
+
 
 </html>
