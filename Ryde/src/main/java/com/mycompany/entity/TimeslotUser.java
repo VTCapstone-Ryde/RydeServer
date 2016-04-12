@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TimeslotUser.findById", query = "SELECT t FROM TimeslotUser t WHERE t.id = :id"),
     @NamedQuery(name = "TimeslotUser.findByTimeSlotId", query = "SELECT t.userId FROM TimeslotUser t Where t.tsId.id = :tsId"),
     @NamedQuery(name = "TimeslotUser.findByUserId", query = "SELECT t.tsId FROM TimeslotUser t Where t.userId.id = :userId"),
+    @NamedQuery(name = "TimeslotUser.findDriversByTimeslotId", query = "SELECT t FROM TimeslotUser t WHERE t.id = :tsId AND t.driver = :driver"),
     @NamedQuery(name = "TimeslotUser.findByDriver", query = "SELECT t FROM TimeslotUser t WHERE t.driver = :driver")})
 public class TimeslotUser implements Serializable {
 
@@ -53,6 +54,12 @@ public class TimeslotUser implements Serializable {
 
     public TimeslotUser(Integer id) {
         this.id = id;
+    }
+    
+    public TimeslotUser(boolean driver, UserTable userId, TimeslotTable tsId) {
+        this.driver = driver;
+        this.userId = userId;
+        this.tsId = tsId;
     }
 
     public Integer getId() {

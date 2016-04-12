@@ -5,7 +5,9 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.Event;
+import com.mycompany.entity.Response;
 import com.mycompany.entity.Ride;
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.EventFacade;
 import java.util.ArrayList;
@@ -44,29 +46,36 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(Ride entity) {
         super.create(entity);
     }
     
-//    @POST
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    public void create(Request request) {
-//        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-//            .setParameter("fbTok", request.getFbTok()).getSingleResult();
-//        
-//        TimeslotTable ts = new TimeslotTable(1);
-//        
-//        Ride entity = new Ride(request.getStartLat(), request.getStartLon(),
-//            request.getEndLat(), request.getEndLon(),
-//            user, ts);
-//        
-//        super.create(entity);
-//    }
+    @POST
+    @Path("request/{fbTok}/{tsId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response create(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId, Ride entity) {
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+            .setParameter("fbTok", fbTok).getSingleResult();
+        
+        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+            .setParameter("tsId", tsId).getSingleResult();
+        
+        entity.setDriverUserId(null);
+        entity.setRiderUserId(user);
+        entity.setTsId(ts);
+        
+        super.create(entity);
+        
+        Response response = new Response(getPosition(user.getId(), 1));
+        
+        return response;
+    }
 
     @PUT
     @Path("{id}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void edit(@PathParam("id") Integer id, Ride entity) {
         super.edit(entity);
     }
@@ -79,21 +88,21 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @GET
     @Path("{id}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public Ride find(@PathParam("id") Integer id) {
         return super.find(id);
     }
 
     @GET
     @Override
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Ride> findAll() {
         return super.findAll();
     }
 
     @GET
     @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
     public List<Ride> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
         return super.findRange(new int[]{from, to});
     }
@@ -103,6 +112,19 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Produces(MediaType.TEXT_PLAIN)
     public String countREST() {
         return String.valueOf(super.count());
+    }
+    
+    @GET
+    @Path("getposition/{fbTok}/{tsId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+            .setParameter("fbTok", fbTok).getSingleResult();
+        
+        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+            .setParameter("tsId", tsId).getSingleResult();
+        
+        return new Response(getPosition(user.getId(), ts.getId()));
     }
 
     @Override
@@ -174,5 +196,26 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
              e.printStackTrace();
         }
         return null;
+    }
+    
+    public List<Ride> findAllRidesForTimeslot(Integer tsId) {
+        List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.tsId.id = :tsId",
+                Ride.class).setParameter("tsId", tsId).getResultList();
+        
+        return rides;
+    }
+    
+    public Integer getPosition(Integer userId, Integer tsId) {
+        List<Ride> rides = findAllRidesForTimeslot(tsId);
+        
+        int position = 0;
+        
+        for(int i = 0; i < rides.size(); i++) {
+            if (rides.get(i).getRiderUserId().getId().equals(userId)) {
+                position = i + 1;
+            }
+        }
+        
+        return position;
     }
 }

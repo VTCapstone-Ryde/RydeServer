@@ -46,4 +46,31 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
         //TODO add empty result handling
         return q.getResultList();
     }
+    
+    public List<TimeslotTable> findDriversForTimeslot(Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").
+                setParameter("tsId", tsId).setParameter("driver", true);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
+    
+    public boolean joinTad(String fbTok, String passCode) {
+        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
+                setParameter("passcode", passCode).getSingleResult();
+        
+        if (ts != null){
+            UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                .setParameter("fbTok", fbTok).getSingleResult();
+            
+            TimeslotUser tu = new TimeslotUser(false, user, ts);
+            
+            create(tu);
+            
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 }
