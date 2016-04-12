@@ -30,6 +30,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserTable.findByDriverStatus", query = "SELECT u FROM UserTable u WHERE u.driverStatus = :driverStatus"),
     @NamedQuery(name = "UserTable.findByLastName", query = "SELECT u FROM UserTable u WHERE u.lastName = :lastName"),
     @NamedQuery(name = "UserTable.findByFirstName", query = "SELECT u FROM UserTable u WHERE u.firstName = :firstName"),
+    @NamedQuery(name = "UserTable.findByEntireName", query = "SELECT u FROM UserTable u WHERE CONCAT(u.firstName, ' ', u.lastName) LIKE :name"),
     @NamedQuery(name = "UserTable.findByFbTok", query = "SELECT u FROM UserTable u WHERE u.fbTok = :fbTok"),
     @NamedQuery(name = "UserTable.findByFbId", query = "SELECT u FROM UserTable u WHERE u.fbId = :fbId"),
     @NamedQuery(name = "UserTable.findByPhoneNumber", query = "SELECT u FROM UserTable u WHERE u.phoneNumber = :phoneNumber"),

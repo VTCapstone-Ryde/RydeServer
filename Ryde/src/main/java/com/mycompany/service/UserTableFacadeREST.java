@@ -4,18 +4,17 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -124,14 +123,15 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("inGroup/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInGroup(@PathParam("groupId") String groupId) {
-        List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
-        ArrayList<UserTable> users = new ArrayList<UserTable>();
-        for (GroupUser g : userIds) {
-            users.add(find(g.getUserId()));
-        }
-        System.out.println(users);
-        return users;
+    public List<UserTable> findUsersInGroup(@PathParam("groupId") int groupId) {
+//        List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
+//        ArrayList<UserTable> users = new ArrayList<UserTable>();
+//        for (GroupUser g : userIds) {
+//            users.add(find(g.getUserId()));
+//        }
+//        System.out.println(users);
+//        return users;
+        return getGroupUserFacade().findUsersForGroup(groupId);
     }
     
     @GET
@@ -164,5 +164,18 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         }
         return null;
     }
+    
+    @GET
+    @Path("/name/{name}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findUsersByName(@PathParam("name") String name) {
+        String addSpacesToName = name.replaceAll("\\+", "%");
+        addSpacesToName = addSpacesToName.concat("%");
+        addSpacesToName = "%".concat(addSpacesToName);
+        Query q = getEntityManager().createNamedQuery("UserTable.findByEntireName").setParameter("name", addSpacesToName);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    } 
     
 }

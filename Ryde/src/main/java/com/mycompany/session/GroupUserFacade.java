@@ -48,22 +48,26 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
         return q.getResultList();
     }
     
-    public List<GroupUser> findUsersForGroup(Integer groupId) {
-        try {
-            if (em.createQuery("SELECT g FROM GroupUser g WHERE g.groupId = :groupId", GroupUser.class)
-                    .setParameter("groupId", groupId)
-                    .getResultList().isEmpty()) {
-                System.out.println("No users in group with id: " + groupId);
-                return null;
-            }
-            else {
-                return em.createQuery("SELECT g FROM GroupUser g WHERE g.groupId = :groupId", GroupUser.class)
-                    .setParameter("groupId", groupId)
-                    .getResultList();
-            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
+    public List<UserTable> findUsersForGroup(Integer groupId) {
+//        try {
+//            if (em.createQuery("SELECT g FROM GroupUser g WHERE g.groupId = :groupId", GroupUser.class)
+//                    .setParameter("groupId", groupId)
+//                    .getResultList().isEmpty()) {
+//                System.out.println("No users in group with id: " + groupId);
+//                return null;
+//            }
+//            else {
+//                return em.createQuery("SELECT g FROM GroupUser g WHERE g.groupId = :groupId", GroupUser.class)
+//                    .setParameter("groupId", groupId)
+//                    .getResultList();
+//            }
+//        } catch (Exception e) {
+//             e.printStackTrace();
+//        }
+//        return null;
+        Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupId").setParameter("id", groupId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 }
