@@ -118,14 +118,13 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("getposition/{fbTok}/{tsId}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
-        
         UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
             .setParameter("fbTok", fbTok).getSingleResult();
         
         TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
             .setParameter("tsId", tsId).getSingleResult();
         
-        return new Response(null, null, null, getPosition(user.getId(), ts.getId()), null);
+        return new Response(getPosition(user.getId(), ts.getId()));
     }
 
     @Override

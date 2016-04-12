@@ -4,7 +4,15 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
+import com.mycompany.entity.Response;
+import com.mycompany.entity.Ride;
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
+import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.TimeslotUserFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -30,7 +38,11 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-
+    
+    private GroupTimeslotFacade gtFacade = new GroupTimeslotFacade();
+    private TimeslotUserFacade tuFacade = new TimeslotUserFacade();
+    private RideFacadeREST rideFacade = new RideFacadeREST();
+    
     public TimeslotUserFacadeREST() {
         super(TimeslotUser.class);
     }
@@ -88,4 +100,27 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
         return em;
     }
     
+    @GET
+    @Path("gettads/{fbTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Response> getTads(@PathParam("fbTok") String fbTok) {
+        List<Response> responses = new ArrayList<Response>();
+        
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+            .setParameter("fbTok", fbTok).getSingleResult();
+        
+        List<TimeslotTable> timeslots = tuFacade.findTimeslotsForUser(user.getId());
+        
+        for (int i = 0; i < timeslots.size(); i++) {
+            Integer tsId = timeslots.get(i).getId();
+            
+            GroupTable group = gtFacade.findGroupForTimeslot(tsId);
+            List<TimeslotTable> drivers = tuFacade.findDriversForTimeslot(tsId);
+            List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
+            
+            responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+        }
+        
+        return responses;
+    }
 }
