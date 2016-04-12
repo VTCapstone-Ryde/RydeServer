@@ -21,8 +21,8 @@ INSERT INTO GroupTimeslot (ts_id, group_id) VALUES
 ('1', '2'),
 ('2', '1');
 INSERT INTO Ride (driver_user_id, rider_user_id, ts_id, start_lat, start_lon, active) VALUE
-('NULL', '4', '1', '37.2297109', '-80.4185688', '0'),
-('NULL', '4', '2', '36.2297109', '-79.4185688', '0');
+(NULL, '4', '1', '37.2297109', '-80.4185688', '0'),
+(NULL, '4', '2', '36.2297109', '-79.4185688', '0');
 INSERT INTO TimeslotUser (user_id, ts_id, driver) VALUES 
 ('1', '1', '1'),
 ('4', '1', '0'),
