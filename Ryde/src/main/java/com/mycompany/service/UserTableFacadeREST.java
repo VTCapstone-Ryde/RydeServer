@@ -13,6 +13,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -157,5 +158,18 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         }
         return null;
     }
+    
+    @GET
+    @Path("/name/{name}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findUsersByName(@PathParam("name") String name) {
+        String addSpacesToName = name.replaceAll("\\+", "%");
+        addSpacesToName = addSpacesToName.concat("%");
+        addSpacesToName = "%".concat(addSpacesToName);
+        Query q = getEntityManager().createNamedQuery("UserTable.findByEntireName").setParameter("name", addSpacesToName);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    } 
     
 }
