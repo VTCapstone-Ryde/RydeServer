@@ -46,4 +46,12 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
         //TODO add empty result handling
         return q.getResultList();
     }
+    
+    public List<TimeslotTable> findDriversForTimeslot(Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").
+                setParameter("tsId", tsId).setParameter("driver", true);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
 }
