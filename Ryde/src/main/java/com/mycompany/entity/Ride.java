@@ -36,6 +36,11 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ride.findByEndLon", query = "SELECT r FROM Ride r WHERE r.endLon = :endLon")})
 public class Ride implements Serializable {
 
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "active")
+    private boolean active;
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -56,7 +61,7 @@ public class Ride implements Serializable {
     @Column(name = "end_lon")
     private Double endLon;
     @JoinColumn(name = "driver_user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserTable driverUserId;
     @JoinColumn(name = "rider_user_id", referencedColumnName = "id")
     @ManyToOne(optional = false, cascade = CascadeType.ALL)
@@ -175,6 +180,14 @@ public class Ride implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.entity.Ride[ id=" + id + " ]";
+    }
+
+    public boolean getActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     
 }

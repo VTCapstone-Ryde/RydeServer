@@ -4,12 +4,15 @@
  */
 package com.mycompany.session;
 
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
+import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,42 +32,18 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
     public TimeslotUserFacade() {
         super(TimeslotUser.class);
     }
-    
-    public List<TimeslotUser> findUsersForTimeslot(Integer tsId) {
-        try {
-            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.tsId = :tsId", TimeslotUser.class)
-                    .setParameter("tsId", tsId)
-                    .getResultList().isEmpty()) {
-                System.out.println("No users in timeslot with id: " + tsId);
-                return null;
-            } 
-            else {
-                return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.tsId = :tsId", TimeslotUser.class)
-                    .setParameter("tsId", tsId)
-                    .getResultList();
-            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
+
+    public List<UserTable> findUsersForTimeslot(Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByTimeSlotId").setParameter("tsId", tsId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 
-    public List<TimeslotUser> findTimeslotsForUser(Integer userId) {
-        try {
-            if (em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
-                    .setParameter("id", userId)
-                    .getResultList().isEmpty()) {
-                System.out.println("No user found with token: " + userId);
-                return null;
-            }
-            else {
-                 return em.createQuery("SELECT t FROM TimeslotUser t WHERE t.id = :id", TimeslotUser.class)
-                    .setParameter("id", userId).getResultList();
-                            }
-        } catch (Exception e) {
-             e.printStackTrace();
-        }
-        return null;
+    public List<TimeslotTable> findTimeslotsForUser(Integer userId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByUserId").setParameter("userId", userId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
-    
 }

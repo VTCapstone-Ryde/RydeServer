@@ -29,8 +29,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "GroupUser.findAll", query = "SELECT g FROM GroupUser g"),
     @NamedQuery(name = "GroupUser.findById", query = "SELECT g FROM GroupUser g WHERE g.id = :id"),
     @NamedQuery(name = "GroupUser.findByUserId", query = "SELECT g.groupId FROM GroupUser g WHERE g.userId.id = :id"),
-    @NamedQuery(name = "GroupUser.findByGroupId", query = "SELECT g.userId FROM GroupUser g WHERE g.groupId.id = :id"),
-    @NamedQuery(name = "GroupUser.findAdminsByGroupId", query = "SELECT g.userId FROM GroupUser g WHERE g.admin = 1 AND g.userId.id = :id"),
+    @NamedQuery(name = "GroupUser.findByUsersByGroupId", query = "SELECT g.userId FROM GroupUser g WHERE g.groupId.id = :id"),
+    @NamedQuery(name = "GroupUser.findAdminsByGroupId", query = "SELECT g.userId FROM GroupUser g WHERE g.admin = 1 AND g.groupId.id = :id"),
     @NamedQuery(name = "GroupUser.findByAdmin", query = "SELECT g FROM GroupUser g WHERE g.admin = :admin")})
 public class GroupUser implements Serializable {
 

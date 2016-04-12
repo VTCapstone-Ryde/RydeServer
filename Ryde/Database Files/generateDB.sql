@@ -76,13 +76,14 @@ CREATE TABLE Ride
 (
     id INT NOT NULL AUTO_INCREMENT,
     PRIMARY KEY (id),
-    driver_user_id INT NOT NULL,
+    driver_user_id INT,
     rider_user_id INT NOT NULL,
     ts_id INT NOT NULL,
     start_lat DOUBLE NOT NULL,
     start_lon DOUBLE NOT NULL,
     end_lat DOUBLE,
     end_lon DOUBLE,
+    active boolean NOT NULL,
     FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
     FOREIGN KEY (rider_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
     FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE

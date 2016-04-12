@@ -4,11 +4,10 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.TimeslotUser;
+
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -123,28 +122,23 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("inGroup/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInGroup(@PathParam("groupId") int groupId) {
-//        List<GroupUser> userIds = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
-//        ArrayList<UserTable> users = new ArrayList<UserTable>();
-//        for (GroupUser g : userIds) {
-//            users.add(find(g.getUserId()));
-//        }
-//        System.out.println(users);
-//        return users;
-        return getGroupUserFacade().findUsersForGroup(groupId);
+    public List<UserTable> findUsersInGroupEdit(@PathParam("groupId") String groupId) {
+        List<UserTable> users = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
+        return users;
     }
     
     @GET
     @Path("inTimeslot/{timeslotId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInTimeslot(@PathParam("timeslotId") String timeslotId) {
-        List<TimeslotUser> userIds = timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
-        ArrayList<UserTable> users = new ArrayList<UserTable>();
-        for (TimeslotUser t : userIds) {
-            users.add(find(t.getUserId()));
-        }
-        System.out.println(users);
-        return users;
+    public List<UserTable> findUsersInTimeslotEdit(@PathParam("timeslotId") String timeslotId) {
+        return timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
+    }
+    
+    @GET
+    @Path("findByToken/{fbTok}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserTable findUserByToken(@PathParam("fbTok") String fbTok) {
+        return this.findByToken(fbTok);
     }
     
     public UserTable findByToken(String token) {

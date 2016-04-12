@@ -27,7 +27,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "GroupTimeslot.findAll", query = "SELECT g FROM GroupTimeslot g"),
-    @NamedQuery(name = "GroupTimeslot.findByTimeslotId", query = "SELECT g FROM GroupTimeslot g WHERE g.groupId.id = :id"),
+    @NamedQuery(name = "GroupTimeslot.findByTimeslotId", query = "SELECT g FROM GroupTimeslot g WHERE g.tsId.id = :id"),
+    @NamedQuery(name = "GroupTimeslot.findTimeslotsByGroupId", query = "SELECT g.tsId FROM GroupTimeslot g WHERE g.groupId.id = :id"),
     @NamedQuery(name = "GroupTimeslot.findById", query = "SELECT g FROM GroupTimeslot g WHERE g.id = :id")})
 public class GroupTimeslot implements Serializable {
 

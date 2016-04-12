@@ -4,15 +4,11 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
-import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -107,27 +103,16 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupdId) {
-        List<GroupTimeslot> timeslotIds = groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupdId));
-        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
-        for (GroupTimeslot i : timeslotIds) {
-            timeslots.add(i.getTsId());
-        }
-        System.out.println(timeslots);
-        return timeslots;
+    public List<TimeslotTable> findTimeslotsForGroupEdit(@PathParam("groupId") String groupId) {
+        return groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupId));
+
     }
     
     @GET
     @Path("timeslotsForUser/{userId}")
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForUser(@PathParam("userId") String userId) {
-        List<TimeslotUser> timeslotIds = timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
-        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
-        for (TimeslotUser i : timeslotIds) {
-            timeslots.add(i.getTsId());
-        }
-        System.out.println(timeslots);
-        return timeslots;
+    public List<TimeslotTable> findTimeslotsForUserEdit(@PathParam("userId") String userId) {
+        return timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
     }
 
     @GET
@@ -136,12 +121,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     public List<TimeslotTable> findTimeslotsForToken(@PathParam("token") String token) {
         UserTable ut = userTableFacade.findByToken(token);
         int userId = ut.getId();
-        List<TimeslotUser> timeslotIds = timeslotUserFacade.findTimeslotsForUser(userId);
-        ArrayList<TimeslotTable> timeslots = new ArrayList<TimeslotTable>();
-        for (TimeslotUser i : timeslotIds) {
-            timeslots.add(i.getTsId());
-        }
-        System.out.println(timeslots);
+        List<TimeslotTable> timeslots = timeslotUserFacade.findTimeslotsForUser(userId);
         return timeslots;
     }
 }
