@@ -6,6 +6,7 @@ package com.mycompany.service;
 
 import com.mycompany.entity.Event;
 import com.mycompany.entity.Ride;
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.EventFacade;
 import java.util.ArrayList;
@@ -49,20 +50,22 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         super.create(entity);
     }
     
-//    @POST
-//    @Consumes({MediaType.APPLICATION_JSON})
-//    public void create(Request request) {
-//        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-//            .setParameter("fbTok", request.getFbTok()).getSingleResult();
-//        
-//        TimeslotTable ts = new TimeslotTable(1);
-//        
-//        Ride entity = new Ride(request.getStartLat(), request.getStartLon(),
-//            request.getEndLat(), request.getEndLon(),
-//            user, ts);
-//        
-//        super.create(entity);
-//    }
+    @POST
+    @Path("request/{fbTok}/{tsId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void create(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId, Ride entity) {
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+            .setParameter("fbTok", fbTok).getSingleResult();
+        
+        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+            .setParameter("tsId", tsId).getSingleResult();
+        
+        entity.setDriverUserId(null);
+        entity.setRiderUserId(user);
+        entity.setTsId(ts);
+        
+        super.create(entity);
+    }
 
     @PUT
     @Path("{id}")
