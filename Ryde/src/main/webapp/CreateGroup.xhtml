@@ -44,7 +44,7 @@
                     
                     <p:separator />
  
-                    <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" />
+                    <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" action="#{groupManager.createGroup()}"/>
                     
                     <p:dialog header="Group Information" modal="true" showEffect="fade" widgetVar="dlg" resizable="false">
                         <p:panelGrid columns="2" id="display">

@@ -6,13 +6,16 @@ package com.mycompany.managers;
 
 import com.mycompany.entity.Friend;
 import com.mycompany.entity.GroupTable;
+import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
@@ -38,8 +41,10 @@ public class GroupManager implements Serializable {
     private String description;
     private GroupTable selectedGroup = new GroupTable();
 
+    private GroupTableFacade groupFacade = new GroupTableFacade();
     private GroupUserFacade groupUserFacade = new GroupUserFacade();
     private GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
+    private String statusMessage;
 
     public List<Friend> getFriends() {
         friends.clear();
@@ -94,8 +99,8 @@ public class GroupManager implements Serializable {
     public List<UserTable> getGroupAdmins() {
         return groupUserFacade.findAdminsForGroup(getSelectedGroup().getId());
     }
-    
-    public List<TimeslotTable> getGroupTimeslots(){
+
+    public List<TimeslotTable> getGroupTimeslots() {
         return groupTimeslotFacade.findTimeslotsForGroup(getSelectedGroup().getId());
     }
 
@@ -106,6 +111,25 @@ public class GroupManager implements Serializable {
                 getCurrentInstance().getApplication().getNavigationHandler();
 
         configurableNavigationHandler.performNavigation("ViewGroup?faces-redirect=true");
+
+    }
+
+    public String createGroup() {
+
+        try {
+            GroupTable group = new GroupTable();
+            group.setTitle(name);
+            group.setDescription(description);
+            group.setDirectoryPath("none");
+            groupFacade.create(group);
+            System.out.println("Created Group");
+
+        } catch (EJBException e) {
+            statusMessage = "Something went wrong while creating your account!";
+            return "";
+        }
+        return "";
+
     }
 
 }
