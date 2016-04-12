@@ -163,6 +163,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Path("/name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findUsersByName(@PathParam("name") String name) {
+        //Format name as %first%last% (or %last%first% depending on input)
         String addSpacesToName = name.replaceAll("\\+", "%");
         addSpacesToName = addSpacesToName.concat("%");
         addSpacesToName = "%".concat(addSpacesToName);
