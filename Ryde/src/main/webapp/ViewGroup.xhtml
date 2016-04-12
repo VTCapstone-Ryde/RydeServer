@@ -22,41 +22,33 @@
 
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
-                <h:form>
-                    <div id="main-wrap">
-                        <div id="first-column" class="ViewGroup">
-                            <h3>Group Name: #{groupManager.selectedGroup.title}</h3>
-                            <p:panel id="info" style="background:none;border: 0;"> 
+                <div id="first-column" class="ViewGroup">
+                    <h1>#{groupManager.selectedGroup.title}</h1>
+                    <h:form>
+                        <h2>Description</h2>
+                        <p:scrollPanel >
+                            #{groupManager.selectedGroup.description}
+                        </p:scrollPanel>
 
-                                <p:fieldset legend="Description" style="margin-bottom:20px;background:none;border:0;width: 100%;text-align: left">
-                                    <p:scrollPanel style="height: 100px; text-align: center">
-                                        #{groupManager.selectedGroup.description}
-                                    </p:scrollPanel>
-                                </p:fieldset>
+                        <p:dataTable id="adminsDT" class="ViewGroupElements" var="admin" value="#{groupManager.groupAdmins}">
+                            <p:column headerText="Admins">
+                                <h:outputText value="#{admin.firstName} #{admin.lastName}" />
+                            </p:column>
+                        </p:dataTable>
 
-                                <p:fieldset style="margin-bottom:20px;background:none;border:0;width: 100%">
-                                    <p:dataTable id="adminsDT" var="admin" value="#{groupManager.groupAdmins}">
-                                        <p:column headerText="Admins">
-                                            <h:outputText value="#{admin.firstName} #{admin.lastName}" />
-                                        </p:column>
-                                    </p:dataTable>
-                                </p:fieldset>
+                        <p:dataTable id="membersDT" class="ViewGroupElements" var="member" value="#{groupManager.groupUsers}">
+                            <p:column headerText="Members">
+                                <h:outputText value="#{member.firstName} #{member.lastName}" />
+                            </p:column>
+                        </p:dataTable>
+                    </h:form>
 
-                                <p:fieldset style="margin-bottom:20px;background:none;border:0;width: 100%;">
-                                    <p:dataTable id="membersDT" var="member" value="#{groupManager.groupUsers}">
-                                        <p:column headerText="Members">
-                                            <h:outputText value="#{member.firstName} #{member.lastName}" />
-                                        </p:column>
-                                    </p:dataTable>
-                                </p:fieldset>
-                            </p:panel>
-                        </div>
+                </div>
 
-                        <div id="second-column" class="ViewGroup" >
-                            <h:button value="Timeslots" outcome="ViewTimeSlotForGroup" /> 
-                        </div>
-                    </div>
-                </h:form>
+
+                <div id="second-column" class="ViewGroup" >
+                    <h:button value="Timeslots" outcome="ViewTimeSlotForGroup" /> 
+                </div>
             </ui:define>
 
         </ui:composition>

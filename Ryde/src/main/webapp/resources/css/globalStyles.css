@@ -1,0 +1,51 @@
+/**
+ * custom layout
+ */
+
+
+/* sizes */
+#main-wrap > div { min-height: 450px; }
+
+
+/* layout */
+#main-wrap {
+    /* overflow to handle inner floating block */
+    overflow: hidden;
+}
+
+#first-column.Home{
+    float: left;
+    width: 50%;
+    text-align: center;
+}
+
+#second-column.Home{
+    float: right;
+    width: 50%;
+    text-align: center;
+}  
+
+#page-content.Profile{
+    margin-left:30%;
+    margin-right:30%;
+    text-align: center;
+}
+
+#first-column.ViewGroup{
+    float: left;
+    width: 50%;
+    padding-left: 25%;
+    padding-bottom: 30px;
+    text-align: center;
+    
+}
+
+.ViewGroupElements {
+    padding-top: 20px;
+}
+
+#second-column.ViewGroup{
+    float: right;
+    width: 20%;
+    text-align: center;
+}  

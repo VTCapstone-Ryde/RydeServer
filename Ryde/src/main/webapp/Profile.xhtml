@@ -23,51 +23,34 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form>
-                    <div id="first-column" class="Profile" >
-                        <p:panel id="info" style="background:none;border: 0;" header="#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}"> 
-                            <f:facet name="options">
-                                <p:menu>
-                                    <p:submenu label="Settings">
-                                        <p:menuitem value="Edit" url="EditProfile.xhtml" icon="ui-icon-newwin" />
-                                    </p:submenu>
-                                </p:menu>
-                            </f:facet>
+                    <div id="page-content" class="Profile" >
+                        <h1>#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}</h1> 
 
-                            <p:graphicImage value="/images/defaultUserPhoto.png"/>
 
-                            <h2>Contact Information</h2>
+                        <p:graphicImage value="/images/defaultUserPhoto.png"/>
 
-                            <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
-                                <h:outputText value="Phone Number: " />
-                                <h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" />
-                            </h:panelGrid>
+                        <h2>Contact Information</h2>
 
-                            <h2>Car Information</h2>
+                        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
+                            <h:outputText value="Phone Number: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" />
+                        </h:panelGrid>
 
-                            <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
-                                <h:outputText value="Car Make: " />
-                                <h:outputText value="#{profileViewManager.loggedInUser.carMake}" />                      
+                        <h2>Car Information</h2>
 
-                                <h:outputText value="Car Model: " />
-                                <h:outputText value="#{profileViewManager.loggedInUser.carModel}" />
+                        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
+                            <h:outputText value="Car Make: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.carMake}" />                      
 
-                                <h:outputText value="Car Year: " />
-                                <h:outputText value="#{profileViewManager.loggedInUser.carColor}" />
+                            <h:outputText value="Car Model: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.carModel}" />
 
-                                <h:outputText value="Seats: " />
-                                <h:outputText value="4" />
-                            </h:panelGrid>
-                        </p:panel>
-                    </div>
+                            <h:outputText value="Car Year: " />
+                            <h:outputText value="#{profileViewManager.loggedInUser.carColor}" />
 
-                    <div id="second-column" class="Profile" >
-                        <p:fieldset legend="Events" style="margin-bottom:20px;background:none;border: 0;">
-                            <div style="text-align: center;">
-                                <p:dataList value="#{accountManager.events}" var="event" type="definition" >
-                                    #{event.toString()}
-                                </p:dataList>
-                            </div>
-                        </p:fieldset>
+                            <h:outputText value="Seats: " />
+                            <h:outputText value="4" />
+                        </h:panelGrid>
                     </div>
                 </h:form>
             </ui:define>
