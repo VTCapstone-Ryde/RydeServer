@@ -26,7 +26,7 @@
                     <div id="main-wrap">
                         <div id="first-column" class="Home">
                             <p:dataTable id="groupsDT" var="group" value="#{profileViewManager.userGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}">
-                                <p:ajax event="rowSelect" 
+                                <p:ajax event="rowSelect" update="groupsDT"
                                         listener="#{groupManager.onGroupRowSelect()}"/>   
                                 <p:column headerText="Your Groups">
                                     <h:outputText value="#{group.title}" />

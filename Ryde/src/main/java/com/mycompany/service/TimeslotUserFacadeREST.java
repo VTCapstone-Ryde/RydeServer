@@ -53,6 +53,18 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     public void create(TimeslotUser entity) {
         super.create(entity);
     }
+    
+    @POST
+    @Path("jointad/{fbTok}/{code}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public String joinTad(@PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
+        if(tuFacade.joinTad(fbTok, passCode)) {
+            return "true";
+        }
+        else {
+            return "false";
+        }
+    }
 
     @PUT
     @Path("{id}")

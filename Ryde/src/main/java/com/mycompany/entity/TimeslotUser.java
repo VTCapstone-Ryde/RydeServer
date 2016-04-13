@@ -55,6 +55,12 @@ public class TimeslotUser implements Serializable {
     public TimeslotUser(Integer id) {
         this.id = id;
     }
+    
+    public TimeslotUser(boolean driver, UserTable userId, TimeslotTable tsId) {
+        this.driver = driver;
+        this.userId = userId;
+        this.tsId = tsId;
+    }
 
     public Integer getId() {
         return id;
