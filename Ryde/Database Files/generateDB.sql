@@ -47,8 +47,8 @@ CREATE TABLE GroupUser
     user_id INT NOT NULL,
     group_id INT NOT NULL,
     admin boolean,
-    FOREIGN KEY (user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE TimeslotUser
@@ -58,8 +58,8 @@ CREATE TABLE TimeslotUser
     user_id INT NOT NULL,
     ts_id INT NOT NULL,
     driver boolean,
-    FOREIGN KEY (user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+    FOREIGN KEY (user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE GroupTimeslot
@@ -68,8 +68,8 @@ CREATE TABLE GroupTimeslot
     PRIMARY KEY (id),
     group_id INT NOT NULL,
     ts_id INT NOT NULL,
-    FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+    FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Ride
@@ -84,9 +84,9 @@ CREATE TABLE Ride
     end_lat DOUBLE,
     end_lon DOUBLE,
     active boolean NOT NULL,
-    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (rider_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (rider_user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 CREATE TABLE Event
@@ -97,6 +97,6 @@ CREATE TABLE Event
     ts_id INT NOT NULL,
     datetime DATETIME NOT NULL,
     event_type ENUM('online', 'offline', 'rideCompleteled', 'rideCancelled'),
-    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE,
-    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE
+    FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
