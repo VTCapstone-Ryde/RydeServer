@@ -6,12 +6,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    
+
     <h:head>
         <title>Timeslots</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    
+
     <h:body>
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -19,11 +19,15 @@
         <ui:composition template="/template/siteTemplate.xhtml">
 
             <title><ui:define name="title">Group Timeslots</ui:define></title>
-            
+
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
-                <h:form>
-                    <p:dataTable var="timeslot" value="#{groupManager.groupTimeslots}">
+                <h:form style="width:90%">
+                    <p:commandButton icon="ui-icon-circle-plus" update="timeslots" action="CreateTimeslot">
+                        <f:setPropertyActionListener value="#{groupManager.selectedGroup}" target="#{timeSlotManager.selectedGroup}" />
+                    </p:commandButton>
+
+                    <p:dataTable id="timeslots" var="timeslot" value="#{groupManager.groupTimeslots}">
                         <p:column headerText="Id">
                             <h:outputText value="#{timeslot.id}" />
                         </p:column>
@@ -36,8 +40,18 @@
                             <h:outputText value="#{timeslot.endTime}" />
                         </p:column>
 
+                        <p:column headerText="Drivers">
+                            <h:outputText value="#{timeSlotManager.getDriversForTimeslot(timeslot.id)}" />
+                        </p:column>
+
                         <p:column headerText="Password">
                             <h:outputText value="#{timeslot.passcode}" />
+                        </p:column>
+
+                        <p:column style="width:32px;align:center;">
+                            <p:commandButton icon="ui-icon-cancel" update="timeslots" action="#{timeSlotManager.deleteTimeslot()}">
+                                <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
+                            </p:commandButton>
                         </p:column>
                     </p:dataTable>
                 </h:form>

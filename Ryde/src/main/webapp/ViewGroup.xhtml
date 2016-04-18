@@ -22,9 +22,10 @@
 
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
-                <div id="first-column" class="ViewGroup">
-                    <p class="font-style">#{groupManager.selectedGroup.title}</p>
-                    <h:form>
+                <h:form>
+
+                    <div id="page-content" class="ViewGroup">
+                        <p class="font-style">#{groupManager.selectedGroup.title}</p>
                         <p:scrollPanel style="height:100px;text-align: left;">
                             #{groupManager.selectedGroup.description}
                         </p:scrollPanel>
@@ -40,18 +41,22 @@
                                 <h:outputText value="#{member.firstName} #{member.lastName}" />
                             </p:column>
                         </p:dataTable>
-                    </h:form>
+                    </div>
 
-                </div>
+                    <div id="buttons" class="wrapper">
+                        <div id="buttons" class="ViewGroup" >
+                            <h:button value="Timeslots" class="bigGrey" outcome="ViewTimeSlotForGroup" /> 
+                            <h:button value="Assign Drivers" class="bigGrey" outcome="AssignDrivers" />
+                            <h:button value="Invite Members" class="bigGrey" outcome="InviteMembers" />
+                            <h:button value="View Reports" class="bigGrey" outcome="ViewReports" />
+                            <h:button value="Leave Group" class="bigGrey" outcome="LeaveGroup" />
+                        </div>
+                    </div>
 
 
-                <div id="second-column" class="ViewGroup" >
-                    <h:button value="Timeslots" class="bigGrey" outcome="ViewTimeSlotForGroup" /> 
-                    <h:button value="Assign Drivers" class="bigGrey" outcome="AssignDrivers" />
-                    <h:button value="Invite Members" class="bigGrey" outcome="InviteMembers" />
-                    <h:button value="View Reports" class="bigGrey" outcome="ViewReports" />
-                    <h:button value="Leave Group" class="bigGrey" outcome="LeaveGroup" />
-                </div>
+
+                </h:form>
+
             </ui:define>
 
         </ui:composition>

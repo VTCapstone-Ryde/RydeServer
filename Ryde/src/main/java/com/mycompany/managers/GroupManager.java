@@ -4,17 +4,20 @@
  */
 package com.mycompany.managers;
 
-import com.mycompany.entity.Friend;
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
+import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
+import com.mycompany.session.TimeslotUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -35,29 +38,33 @@ import javax.inject.Named;
  */
 public class GroupManager implements Serializable {
 
-    private List<Friend> selectedFriends = new ArrayList<Friend>();
-    private List<Friend> friends = new ArrayList<Friend>();
     private String name;
     private String description;
+    private String statusMessage;
+    private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
 
-    private GroupTableFacade groupFacade = new GroupTableFacade();
-    private GroupUserFacade groupUserFacade = new GroupUserFacade();
-    private GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
-    private String statusMessage;
+    @EJB
+    private GroupTableFacade groupFacade;
+    @EJB
+    private GroupUserFacade groupUserFacade;
+    @EJB
+    private GroupTimeslotFacade groupTimeslotFacade;
+    @EJB
+    private UserTableFacade userFacade;
+    @EJB
+    private TimeslotUserFacade timeslotUserFacade;
 
-    public List<Friend> getFriends() {
-        friends.clear();
-        selectedFriends.clear();
-        Friend friend1 = new Friend(2, "Jim", "Jim Jackson");
-        Friend friend2 = new Friend(3, "Jake", "Jake Jundson");
-        friends.add(friend1);
-        friends.add(friend2);
-        return friends;
+    public List<UserTable> getUsers() {
+        return userFacade.findAll();
     }
 
-    public List<Friend> getSelectedFriends() {
-        return selectedFriends;
+    public List<String> getSelectedMembers() {
+        return selectedMembers;
+    }
+
+    public void setSelectedMembers(List<String> selectedMembers) {
+        this.selectedMembers = selectedMembers;
     }
 
     public String getName() {
@@ -66,14 +73,6 @@ public class GroupManager implements Serializable {
 
     public String getDescription() {
         return description;
-    }
-
-    public void setSelectedFriends(List<Friend> selectedFriends) {
-        this.selectedFriends = selectedFriends;
-    }
-
-    public void setFriends(List<Friend> friends) {
-        this.friends = friends;
     }
 
     public void setName(String name) {
@@ -104,6 +103,10 @@ public class GroupManager implements Serializable {
         return groupTimeslotFacade.findTimeslotsForGroup(getSelectedGroup().getId());
     }
 
+    public UserTable getLoggedInUser() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+    }
+
     public void onGroupRowSelect() {
         //System.out.println(selectedGroup);
         ConfigurableNavigationHandler configurableNavigationHandler
@@ -115,21 +118,97 @@ public class GroupManager implements Serializable {
     }
 
     public String createGroup() {
-
         try {
+            // create the group
             GroupTable group = new GroupTable();
             group.setTitle(name);
             group.setDescription(description);
             group.setDirectoryPath("none");
             groupFacade.create(group);
-            System.out.println("Created Group");
+
+            // make creator of group an admin
+            GroupUser relationTable = new GroupUser();
+            relationTable.setGroupId(group);
+            relationTable.setUserId(getLoggedInUser());
+            relationTable.setAdmin(Boolean.TRUE);
+
+            // create the groupUser relation
+            groupUserFacade.create(relationTable);
+
+            // add all members that were checked off
+            for (String user_id : selectedMembers) {
+                UserTable member = userFacade.findById(Integer.parseInt(user_id));
+                relationTable = new GroupUser();
+                relationTable.setGroupId(group);
+                relationTable.setUserId(member);
+                relationTable.setAdmin(Boolean.FALSE);
+
+                // create the groupUser relation
+                groupUserFacade.create(relationTable);
+            }
+            return "";
 
         } catch (EJBException e) {
-            statusMessage = "Something went wrong while creating your account!";
+            statusMessage = "Something went wrong while creating group!";
             return "";
         }
-        return "";
+    }
 
+    public String leaveGroup() {
+        try {
+            // get the selected group to leave
+            UserTable leaving = getLoggedInUser();
+
+            // delete user from groupUser table
+            GroupUser deleteGroupUserRow = groupUserFacade.findByGroupAndUser(selectedGroup, leaving);
+            groupUserFacade.remove(deleteGroupUserRow);
+
+            // delete all user timeslot relations that have to do with the group
+            List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
+            for (TimeslotTable timeslot : timeslots) {
+                TimeslotUser deleteTimeslotUserRow = timeslotUserFacade.findByTimeslotAndUser(timeslot, leaving);
+                if (deleteTimeslotUserRow != null) {
+                    timeslotUserFacade.remove(deleteTimeslotUserRow);
+                }
+            }
+
+            return "Home?faces-redirect=true";
+        } catch (EJBException e) {
+            statusMessage = "Something went wrong leaving group";
+            return "";
+        }
+    }
+
+    public String addToGroup() {
+        try {
+            // get the selected group to be added
+            UserTable added = getLoggedInUser();
+
+            // add user from groupUser table
+            GroupUser addGroupUserRow = new GroupUser();
+            addGroupUserRow.setGroupId(selectedGroup);
+            addGroupUserRow.setUserId(added);
+            groupUserFacade.create(addGroupUserRow);
+
+            // add all user timeslot relations that have to do with the group
+            List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
+            for (TimeslotTable timeslot : timeslots) {
+                TimeslotUser addTimeslotUserRow = new TimeslotUser();
+                addTimeslotUserRow.setTsId(timeslot);
+                addTimeslotUserRow.setUserId(added);
+                timeslotUserFacade.create(addTimeslotUserRow);
+            }
+
+            return "ViewGroup?faces-redirect=true";
+        } catch (EJBException e) {
+            statusMessage = "Something went trying to add to group";
+            return "";
+        }
+    }
+
+    public String getNameById(int user_id) {
+        UserTable user = userFacade.findById(user_id);
+        return user.getFirstName() + " " + user.getLastName();
     }
 
 }

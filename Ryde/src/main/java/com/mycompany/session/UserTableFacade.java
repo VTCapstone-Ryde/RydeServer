@@ -5,10 +5,13 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.UserTable;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.ws.rs.PathParam;
 
 /**
  *
@@ -27,6 +30,13 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
 
     public UserTableFacade() {
         super(UserTable.class);
+    }
+    
+    public UserTable findById(Integer id) {
+        Query q = getEntityManager().createNamedQuery("UserTable.findById").setParameter("id", id);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return (UserTable)q.getSingleResult();
     }
     
     public UserTable findByName(String firstName, String lastName) {
@@ -62,4 +72,13 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
         return null;
     }
     
+     public List<UserTable> findUsersByName(@PathParam("name") String name) {
+        String addSpacesToName = name.replaceAll(" ", "%");
+        addSpacesToName = addSpacesToName.concat("%");
+        addSpacesToName = "%".concat(addSpacesToName);
+        Query q = getEntityManager().createNamedQuery("UserTable.findByEntireName").setParameter("name", addSpacesToName);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    } 
 }

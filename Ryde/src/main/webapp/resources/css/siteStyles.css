@@ -250,9 +250,9 @@ The following styles are used in the headerTemplate.xhtml file as:
 	cursor:pointer;
 	color:#ffffff;
 	font-family:Arial;
-	font-size:24px;
+	font-size:18px;
 	font-weight:bold;
-	padding:15px 20px;
+	padding:10px 10px;
 	text-decoration:none;
 	text-shadow:0px -1px 0px #2b665e;
 }
