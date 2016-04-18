@@ -13,8 +13,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.eclipse.persistence.config.HintValues;
-import org.eclipse.persistence.config.QueryHints;
 
 /**
  *
@@ -63,5 +61,9 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
         q.setFirstResult(0);
         //TODO add empty result handling
         return (GroupUser) q.getSingleResult();
+    }
+    
+    public void clearEM() {
+        getEntityManager().clear();
     }
 }

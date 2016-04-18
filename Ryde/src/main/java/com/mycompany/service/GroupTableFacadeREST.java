@@ -109,6 +109,7 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @Path("user/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findGroupsForUser(@PathParam("id") Integer id) {
+        getGroupUserFacade().clearEM();
         return getGroupUserFacade().findGroupsForUser(id);
 //        Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
 //        q.setFirstResult(0);
