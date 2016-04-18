@@ -7,13 +7,14 @@ package com.mycompany.session;
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.UserTable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.eclipse.persistence.config.HintValues;
+import org.eclipse.persistence.config.QueryHints;
 
 /**
  *
@@ -35,6 +36,7 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
     }
     
     public List<GroupTable> findGroupsForUser(Integer id) {
+//        getEntityManager().clear();
         Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
         q.setFirstResult(0);
         //TODO add empty result handling

@@ -43,10 +43,12 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     }
 
     @POST
-    @Override
     @Consumes({MediaType.APPLICATION_JSON})
-    public void create(GroupTable entity) {
-        super.create(entity);
+    @Produces({MediaType.APPLICATION_JSON})
+    public GroupTable createWithReturn(GroupTable entity) {
+        getEntityManager().persist(entity);
+        getEntityManager().flush();
+        return entity;
     }
 
     @PUT
@@ -108,6 +110,10 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findGroupsForUser(@PathParam("id") Integer id) {
         return getGroupUserFacade().findGroupsForUser(id);
+//        Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        return q.getResultList();
     }
     
     @GET

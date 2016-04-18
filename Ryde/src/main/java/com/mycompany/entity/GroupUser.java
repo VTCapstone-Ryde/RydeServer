@@ -6,6 +6,7 @@ package com.mycompany.entity;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -43,10 +44,10 @@ public class GroupUser implements Serializable {
     @Column(name = "admin")
     private Boolean admin;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade= CascadeType.ALL)
     private UserTable userId;
     @JoinColumn(name = "group_id", referencedColumnName = "id")
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade= CascadeType.ALL)
     private GroupTable groupId;
 
     public GroupUser() {
