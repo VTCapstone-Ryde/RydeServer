@@ -34,26 +34,43 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
     }
 
     public List<UserTable> findUsersForTimeslot(Integer tsId) {
-        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByTimeSlotId").setParameter("tsId", tsId);
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findUserById").setParameter("usId", tsId);
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
     }
 
     public List<TimeslotTable> findTimeslotsForUser(Integer userId) {
-        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByUserId").setParameter("userId", userId);
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findTimeslotById").setParameter("userId", userId);
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
     }
     
-    public List<TimeslotTable> findDriversForTimeslot(Integer tsId) {
+    public List<UserTable> findDriversForTimeslot(Integer tsId) {
         Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").
                 setParameter("tsId", tsId).setParameter("driver", true);
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
     }
+    
+    public List<TimeslotUser> findRowsForTimeslot(Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByTimeslotId").
+                setParameter("tsId", tsId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
+    
+    public TimeslotUser findByTimeslotAndUser(TimeslotTable tsId, UserTable userId){
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByUserAndTimeSlot").
+                setParameter("tsId", tsId).setParameter("userId", userId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return (TimeslotUser) q.getSingleResult();
+    }
+    
     
     public boolean joinTad(String fbTok, String passCode) {
         TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).

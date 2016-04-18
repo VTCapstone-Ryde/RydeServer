@@ -47,4 +47,10 @@ public class GroupTimeslotFacade extends AbstractFacade<GroupTimeslot> {
         //TODO add empty result handling
         return result.get(0).getGroupId();
     } 
+    
+    public GroupTimeslot findByTimeslot(Integer id) {
+        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
+        q.setFirstResult(0);
+        return (GroupTimeslot) q.getSingleResult();
+    }
 }

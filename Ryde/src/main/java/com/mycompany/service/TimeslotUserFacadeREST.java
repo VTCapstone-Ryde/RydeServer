@@ -127,7 +127,7 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
             Integer tsId = timeslots.get(i).getId();
             
             GroupTable group = gtFacade.findGroupForTimeslot(tsId);
-            List<TimeslotTable> drivers = tuFacade.findDriversForTimeslot(tsId);
+            List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
             List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
             
             responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));

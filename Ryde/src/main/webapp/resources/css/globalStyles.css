@@ -38,21 +38,20 @@
     text-align: center;
 }
 
-#first-column.ViewGroup{
-    float: left;
-    width: 50%;
-    padding-left: 25%;
-    padding-bottom: 30px;
+#page-content.ViewGroup{
+    margin-left:30%;
+    margin-right:30%;
     text-align: center;
-    
 }
 
-#second-column.ViewGroup{
-    float: right;
-    width: 20%;
-    padding-top: 8%;
-    padding-right: 2%;
-    text-align: left;
+#buttons.wrapper {
+    padding-top: 20px;
+    text-align: center;
+}
+
+#buttons.ViewGroup{
+    display:inline-block;
+    position: relative;
 }  
 
 .ViewGroupElements {

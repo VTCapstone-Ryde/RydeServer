@@ -31,18 +31,18 @@
                         <p:inputTextarea rows="1" cols="33" value="#{groupManager.description}" />
                         
                         <p:outputLabel for="advanced" value="Advanced:" />
-                        <p:selectManyMenu id="advanced" value="#{groupManager.selectedFriends}"
-                                          var="f" filter="true" filterMatchMode="contains" showCheckbox="true">
-                            <f:selectItems value="#{groupManager.friends}" var="friend" itemLabel="#{friend.displayName}" itemValue="#{friend}" />
+                        <p:selectManyMenu id="advanced" value="#{groupManager.selectedMembers}"
+                                          var="m" filter="true" filterMatchMode="contains" showCheckbox="true">
+                            <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}" />
 
                             <p:column>
-                                <h:outputText value="#{f.displayName}" />
+                                <h:outputText value="#{groupManager.getNameById(m)}" />
                             </p:column>
                         </p:selectManyMenu>
                            
                     </h:panelGrid>
                     
-                    <p:separator />
+                    <p:separator /> 
  
                     <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" action="#{groupManager.createGroup()}"/>
                     
@@ -54,9 +54,9 @@
                             <h:outputText value="Description" />
                             <h:outputText value="#{groupManager.description}" />
 
-                            <h:outputText value="Friends:" />
-                            <p:dataList value="#{groupManager.selectedFriends}" var="t">
-                                <h:outputText value="#{t}" />
+                            <h:outputText value="Members" />
+                            <p:dataList value="#{groupManager.selectedMembers}" var="m">
+                                <h:outputText value="#{groupManager.getNameById(m)}" />
                             </p:dataList>
                         </p:panelGrid>
                     </p:dialog>

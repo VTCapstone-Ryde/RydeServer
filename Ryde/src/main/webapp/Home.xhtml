@@ -27,7 +27,12 @@
                         <div id="first-column" class="Home">
                             <p:dataTable id="groupsDT" var="group" value="#{profileViewManager.userGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}">
                                 <p:ajax event="rowSelect" update="groupsDT"
-                                        listener="#{groupManager.onGroupRowSelect()}"/>   
+                                        listener="#{groupManager.onGroupRowSelect()}"/>  
+                                <p:column style="width:32px;align:center;">
+                                    <p:commandButton icon="ui-icon-cancel" update="groupsDT" action="#{groupManager.leaveGroup()}">
+                                        <f:setPropertyActionListener value="#{group}" target="#{groupManager.selectedGroup}" />
+                                    </p:commandButton>
+                                </p:column>
                                 <p:column headerText="Your Groups">
                                     <h:outputText value="#{group.title}" />
                                 </p:column>
