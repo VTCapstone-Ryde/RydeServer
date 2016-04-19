@@ -268,8 +268,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         
         List<Ride> rides = findAllRidesForUser(user.getId());
         
-        for (int i = 0; i < rides.size(); i++) {
-            super.remove(super.find(rides.get(0).getId()));
+        for (Ride ride : rides) {
+            em.remove(ride);
         }
     }
 }
