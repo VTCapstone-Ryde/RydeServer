@@ -1,7 +1,7 @@
 /* Cascading Style Sheets (CSS) Version 3 Style Definitions by Osman Balci */
 
 html, body {
-    background-image: url(./images/background.jpg); 
+    background-color: #7ec99d; 
 
     /* Stretch the background image to cover the entire screen */
     -webkit-background-size: cover; /* For WebKit */
@@ -21,6 +21,7 @@ body {
     font-weight: normal;
     text-decoration: none;
     color: black;
+    margin: 0px;
 }
 
 /* Style the text used under the standard HTML tag "p" for paragraph */
@@ -134,9 +135,9 @@ style the editableContent component of the siteTemplate */
 #editableContent {
     width: 100%;
     height: calc(100% - 170px); 
-    margin-left: 10px;
-    margin-right: 10px;
-    margin-bottom: 16px;
+    margin-left: 0px;
+    margin-right: 0px;
+    margin-bottom: 0px;
 }
 
 /* The footer id is used in siteTemplate.xhtml as <div id="footer"> to 
@@ -145,6 +146,12 @@ style the footer component of the siteTemplate */
     width: 100%;
     height: 100px;
     bottom: 16px;
+    position: absolute;
+}
+
+.footerLink {
+    color: white;
+    text-decoration: underline;
 }
 
 /* Set panel grid width to %80 percent of the screen width */
