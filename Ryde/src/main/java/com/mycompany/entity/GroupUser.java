@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @NamedQueries({
     @NamedQuery(name = "GroupUser.findAll", query = "SELECT g FROM GroupUser g"),
     @NamedQuery(name = "GroupUser.findByGroupAndUser", query = "SELECT g FROM GroupUser g WHERE g.userId = :userId AND g.groupId = :groupId"),
+    @NamedQuery(name = "GroupUser.findByGroupAndUserIDs", query = "SELECT g FROM GroupUser g WHERE g.userId.id = :userId AND g.groupId.id = :groupId"),
     @NamedQuery(name = "GroupUser.findById", query = "SELECT g FROM GroupUser g WHERE g.id = :id"),
     @NamedQuery(name = "GroupUser.findByUserId", query = "SELECT g.groupId FROM GroupUser g WHERE g.userId.id = :id"),
     @NamedQuery(name = "GroupUser.findByUsersByGroupId", query = "SELECT g.userId FROM GroupUser g WHERE g.groupId.id = :id"),

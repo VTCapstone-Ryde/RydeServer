@@ -10,6 +10,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -68,14 +69,7 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     public List<GroupUser> findAll() {
         return super.findAll();
     }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<GroupUser> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
-    }
-
+    
     @GET
     @Path("count")
     @Produces(MediaType.TEXT_PLAIN)
@@ -86,6 +80,28 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     @Override
     protected EntityManager getEntityManager() {
         return em;
+    }
+    
+    @GET
+    @Path("/{userId}/{groupId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public GroupUser findByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUserIDs").
+                setParameter("userId", userId).setParameter("groupId", groupId);
+        if (!q.getResultList().isEmpty()) {
+            return (GroupUser) q.getSingleResult();
+        }
+        return null;
+    }
+    
+    @PUT
+    @Path("/admin/{userId}/{groupId}/{admin}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    public void setUserAsAdmin(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId,
+            @PathParam("admin") Boolean admin) {
+        GroupUser gu = findByUserAndGroup(userId, groupId);
+        gu.setAdmin(admin);
+        edit(gu);
     }
     
 }
