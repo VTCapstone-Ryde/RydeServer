@@ -39,9 +39,9 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
     
-    private GroupTimeslotFacade gtFacade = new GroupTimeslotFacade();
-    private TimeslotUserFacade tuFacade = new TimeslotUserFacade();
-    private RideFacadeREST rideFacade = new RideFacadeREST();
+    private final GroupTimeslotFacade gtFacade = new GroupTimeslotFacade();
+    private final TimeslotUserFacade tuFacade = new TimeslotUserFacade();
+    private final RideFacadeREST rideFacade = new RideFacadeREST();
     
     public TimeslotUserFacadeREST() {
         super(TimeslotUser.class);
@@ -56,24 +56,29 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     
     @POST
     @Path("jointad/{fbTok}/{code}")
-    @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
-    public Response joinTad(TimeslotUser entity, @PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
+    public Response joinTad(@PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
         Response response = new Response();
         
         List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
                 setParameter("passcode", passCode).getResultList();
         
-        if (ts.size() > 0){
+        if (!ts.isEmpty()){
             UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                 .setParameter("fbTok", fbTok).getSingleResult();
             
-            TimeslotUser tu = new TimeslotUser(false, user, ts.get(0));
-            
-            super.create(tu);
-            
-            response.setJoinTADSuccess(true);
-            return response;
+            if (tuFacade.userInTAD(user, ts.get(0))) {
+                response.setJoinTADSuccess(false);
+                return response;
+            }
+            else {
+                TimeslotUser tu = new TimeslotUser(false, user, ts.get(0));
+
+                super.create(tu);
+
+                response.setJoinTADSuccess(true);
+                return response;
+            }
         }
         else {
             response.setJoinTADSuccess(false);

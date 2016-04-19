@@ -98,4 +98,11 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
             return false;
         }
     }
+    
+    public boolean userInTAD(UserTable user, TimeslotTable ts) {
+        List<TimeslotUser> tu = getEntityManager().createNamedQuery("TimeslotUser.findByUserAndTimeSlot").
+                setParameter("tsId", ts).setParameter("userId", user).getResultList();
+        
+        return !tu.isEmpty();
+    }
 }
