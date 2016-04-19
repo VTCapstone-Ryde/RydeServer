@@ -7,7 +7,6 @@ package com.mycompany.session;
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.UserTable;
-import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,6 +34,7 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
     }
     
     public List<GroupTable> findGroupsForUser(Integer id) {
+//        getEntityManager().clear();
         Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
         q.setFirstResult(0);
         //TODO add empty result handling
@@ -61,5 +61,9 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
         q.setFirstResult(0);
         //TODO add empty result handling
         return (GroupUser) q.getSingleResult();
+    }
+    
+    public void clearEM() {
+        getEntityManager().clear();
     }
 }

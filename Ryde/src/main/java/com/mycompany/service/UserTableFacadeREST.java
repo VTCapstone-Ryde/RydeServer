@@ -5,6 +5,7 @@
 package com.mycompany.service;
 
 
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
@@ -163,6 +164,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Path("/name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findUsersByName(@PathParam("name") String name) {
+        //Format name as %first%last% (or %last%first% depending on input)
         String addSpacesToName = name.replaceAll("\\+", "%");
         addSpacesToName = addSpacesToName.concat("%");
         addSpacesToName = "%".concat(addSpacesToName);
@@ -172,4 +174,15 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return q.getResultList();
     } 
     
+        
+    /**
+     * Returns list of timeslots that a user is a driver for
+     */
+    @GET
+    @Path("driver/{fbTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findDriverTimeslots(@PathParam("fbTok") String fbTok) {
+        int idToUse = findByToken(fbTok).getId();
+        return getTimeslotUserFacade().findUserDriverTimeslots(idToUse);
+    }
 }
