@@ -21,7 +21,6 @@
             <h:form>  
                 <p:menubar>
                     <p:submenu label="Ryde">
-                        <p:menuitem value="Logout" url="index.xhtml"/>
                     </p:submenu>
 
                     <p:submenu label="Home">
@@ -29,18 +28,15 @@
                         <p:menuitem value="Create Group" url="CreateGroup.xhtml"/>
                     </p:submenu>
 
-                    <p:submenu label="Profile"> 
-                        <p:menuitem value="View Profile" url="Profile.xhtml"/>
-                    </p:submenu>
+                    <p:menuitem value="Profile" url="Profile.xhtml"/>
                     
                     
-                    <p:submenu label="Timeslots">
-                        <p:menuitem value="Your Timeslots" url="TimeSlot.xhtml"/>
-                    </p:submenu>
+                    <p:menuitem value="Timeslots" url="TimeSlot.xhtml"/>
 
                     <f:facet name="options">
                         <p:inputText style="margin-right:10px" placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
-                        <p:commandButton type="button" value="Search" icon="ui-icon-extlink" action="#{groupManager.searchGroups()}"/>
+                        <p:commandButton  value="Search" action="SearchGroups.xhtml"/>
+                        <p:commandButton  value="Logout" action="index.xhtml"/>
                     </f:facet>
                 </p:menubar>
             </h:form>

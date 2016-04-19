@@ -273,8 +273,7 @@ public class GroupManager implements Serializable {
     }
     
     public String searchGroups() {
-        System.out.println("HERE");
-        return "/SearchGroups.xhtml?faces-redirect=true";
+        return "SearchGroups";
     }
 
 }
