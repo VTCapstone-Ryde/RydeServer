@@ -73,16 +73,16 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
     
     
     public boolean joinTad(String fbTok, String passCode) {
-        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
-                setParameter("passcode", passCode).getSingleResult();
+        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
+                setParameter("passcode", passCode).getResultList();
         
-        if (ts != null){
+        if (!ts.isEmpty()){
             UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                 .setParameter("fbTok", fbTok).getSingleResult();
             
-            TimeslotUser tu = new TimeslotUser(false, user, ts);
+            TimeslotUser tu = new TimeslotUser(false, user, ts.get(0));
             
-            create(tu);
+            super.create(tu);
             
             return true;
         }

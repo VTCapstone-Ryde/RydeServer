@@ -56,13 +56,28 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     
     @POST
     @Path("jointad/{fbTok}/{code}")
-    @Produces({MediaType.TEXT_PLAIN})
-    public String joinTad(@PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
-        if(tuFacade.joinTad(fbTok, passCode)) {
-            return "true";
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public Response joinTad(TimeslotUser entity, @PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
+        Response response = new Response();
+        
+        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
+                setParameter("passcode", passCode).getResultList();
+        
+        if (ts.size() > 0){
+            UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                .setParameter("fbTok", fbTok).getSingleResult();
+            
+            TimeslotUser tu = new TimeslotUser(false, user, ts.get(0));
+            
+            super.create(tu);
+            
+            response.setJoinTADSuccess(true);
+            return response;
         }
         else {
-            return "false";
+            response.setJoinTADSuccess(false);
+            return response;
         }
     }
 

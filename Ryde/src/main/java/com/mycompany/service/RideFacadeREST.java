@@ -56,15 +56,14 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response create(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId, Ride entity) {
-        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-            .setParameter("fbTok", fbTok).getSingleResult();
+        UserTable user = findByToken(fbTok);
         
-        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-            .setParameter("tsId", tsId).getSingleResult();
+        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+            .setParameter("tsId", tsId).getResultList();
         
         entity.setDriverUserId(null);
         entity.setRiderUserId(user);
-        entity.setTsId(ts);
+        entity.setTsId(ts.get(0));
         
         super.create(entity);
         
@@ -118,13 +117,17 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("getposition/{fbTok}/{tsId}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
-        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-            .setParameter("fbTok", fbTok).getSingleResult();
+        UserTable user = findByToken(fbTok);
         
-        TimeslotTable ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-            .setParameter("tsId", tsId).getSingleResult();
+        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+            .setParameter("tsId", tsId).getResultList();
         
-        return new Response(getPosition(user.getId(), ts.getId()));
+        if (user != null && !ts.isEmpty()) {
+            return new Response(getPosition(user.getId(), ts.get(0).getId()));
+        }
+        else {
+            return new Response();
+        }
     }
 
     @Override
@@ -181,26 +184,34 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
     
     public UserTable findByToken(String token) {
+        List<UserTable> user = new ArrayList();
+        
         try {
-            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+            user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                     .setParameter("fbTok", token)
-                    .getResultList().isEmpty()) {
-                System.out.println("No user found with token: " + token);
-                return null;
-            }
-            else {
-                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token).getResultList().get(0);
-                            }
+                    .getResultList();
         } catch (Exception e) {
              e.printStackTrace();
         }
-        return null;
+        if (user.isEmpty()) {
+            System.out.println("No user found with token: " + token);
+            return null;
+            }
+        else {
+            return user.get(0);
+        }
     }
     
     public List<Ride> findAllRidesForTimeslot(Integer tsId) {
         List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.tsId.id = :tsId",
                 Ride.class).setParameter("tsId", tsId).getResultList();
+        
+        return rides;
+    }
+    
+    public List<Ride> findAllRidesForUser(Integer uId) {
+        List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.riderUserId.id = :uId",
+                Ride.class).setParameter("uId", uId).getResultList();
         
         return rides;
     }
@@ -217,5 +228,17 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         }
         
         return position;
+    }
+    
+    @DELETE
+    @Path("cancel/{fbTok}")
+    public void cancelRide(@PathParam("fbTok") String fbTok) {
+        UserTable user = findByToken(fbTok);
+        
+        List<Ride> rides = findAllRidesForUser(user.getId());
+        
+        for (int i = 0; i < rides.size(); i++) {
+            super.remove(super.find(rides.get(0).getId()));
+        }
     }
 }

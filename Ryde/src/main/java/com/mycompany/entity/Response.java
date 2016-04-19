@@ -24,6 +24,10 @@ public class Response implements Serializable{
     private Integer position;
     @XmlElement
     private String groupName;
+    @XmlElement
+    private boolean inQueue;
+    @XmlElement
+    private boolean joinTADSuccess;
     
     public Response() {
         
@@ -80,5 +84,21 @@ public class Response implements Serializable{
 
     public void setGroupName(String groupName) {
         this.groupName = groupName;
+    }
+
+    public boolean isInQueue() {
+        return inQueue;
+    }
+
+    public void setInQueue(boolean inQueue) {
+        this.inQueue = inQueue;
+    }
+
+    public boolean isJoinTADSuccess() {
+        return joinTADSuccess;
+    }
+
+    public void setJoinTADSuccess(boolean joinTADSuccess) {
+        this.joinTADSuccess = joinTADSuccess;
     }
 }
