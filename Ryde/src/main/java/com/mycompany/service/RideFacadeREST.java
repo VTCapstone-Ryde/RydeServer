@@ -10,6 +10,7 @@ import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.EventFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,7 +39,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
-    private EventFacade eventFacade = new EventFacade();
+    private final EventFacade eventFacade = new EventFacade();
+    private final UserTableFacade userFacade = new UserTableFacade();
     
     public RideFacadeREST() {
         super(Ride.class);
@@ -141,7 +143,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId, @PathParam("driverToken") Integer driverToken) {
         UserTable driver = findByToken(Integer.toString(driverToken));
         List<Ride> allRides = findAll();
-        ArrayList<Ride> ridesForTimeslot = new ArrayList<Ride>();
+        ArrayList<Ride> ridesForTimeslot = new ArrayList<>();
         for (Ride i : allRides) {
             if (timeslotId.equals(i.getTsId().getId())) {
                 ridesForTimeslot.add(i);
@@ -230,6 +232,35 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         return position;
     }
     
+    @GET
+    @Path("rideStatusForUser/{fbToken}")
+    @Produces({MediaType.TEXT_PLAIN})
+    public String getRideStatusForUser(@PathParam("fbToken") Integer fbToken) {
+        UserTable user = this.findByToken(fbToken.toString());
+        Ride ride;
+        try { 
+            if (em.createNamedQuery("findByRider", Ride.class)
+                .setParameter("riderUserId", user.getId())
+                .getResultList().isEmpty()) {
+                return "notInQueue";
+            }
+            else {
+                ride = em.createNamedQuery("findByRider", Ride.class)
+                .setParameter("riderUserId", user.getId())
+                .getResultList().get(0);
+                
+                if(ride.getActive() == true) {
+                    return "active";
+                } else {
+                    return "pending";
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+          return null;
+    }
+
     @DELETE
     @Path("cancel/{fbTok}")
     public void cancelRide(@PathParam("fbTok") String fbTok) {

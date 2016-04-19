@@ -125,5 +125,5 @@ public class GroupTable implements Serializable {
     public String toString() {
         return "com.mycompany.entity.GroupTable[ id=" + id + " ]";
     }
-    
+       
 }

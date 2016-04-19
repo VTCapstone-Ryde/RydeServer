@@ -17,7 +17,6 @@
 
         <!-- This page is constructed based on the siteTemplate -->
         <ui:composition template="/template/siteTemplate.xhtml">
-
             <title><ui:define name="title">Profile</ui:define></title>
 
             <!-- Create the content for this page below -->
@@ -27,18 +26,24 @@
                         <h1>#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}</h1> 
 
 
-                        <p:graphicImage value="/images/defaultUserPhoto.png"/>
-
-                        <h2>Contact Information</h2>
+                        <p:graphicImage width="200" height="200" alt="defaultUserPhoto" value="/images/defaultUserPhoto.jpg"/>
 
                         <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
+                            <f:facet name="header">
+                                <p:row>
+                                    Contact Information
+                                </p:row>
+                            </f:facet>
                             <h:outputText value="Phone Number: " />
                             <h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" />
                         </h:panelGrid>
 
-                        <h2>Car Information</h2>
-
                         <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
+                            <f:facet name="header">
+                                <p:row>
+                                    Car Information
+                                </p:row>
+                            </f:facet>
                             <h:outputText value="Car Make: " />
                             <h:outputText value="#{profileViewManager.loggedInUser.carMake}" />                      
 
