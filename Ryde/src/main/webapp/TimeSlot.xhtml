@@ -22,12 +22,8 @@
             
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
-                <h:form>
+                <h:form style="width:90%">
                     <p:dataTable var="timeslot" value="#{profileViewManager.userTimeSlots}">
-                        <p:column headerText="Timeslot">
-                            <h:outputText value="#{timeslot.id}" />
-                        </p:column>
-
                         <p:column headerText="Group">
                             <h:outputText value="nothing" />
                         </p:column>

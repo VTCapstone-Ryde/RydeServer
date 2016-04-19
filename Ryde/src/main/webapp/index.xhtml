@@ -1,36 +1,44 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"   
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
     <h:head>
-        <title>Ryde</title>
+        <title>Login</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <h:outputStylesheet name="css/jsfcrud.css"/>
     </h:head>
+
     <h:body>
-        <div align="center">
-            <h:form class="form-signin">
-                <div align="center">
+        <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
-                    <h:panelGrid columns="2" columnClasses="rightAlign, leftAlign">
+        <ui:composition template="/template/splashPageTemplate.xhtml">
 
-                        <h:outputLabel styleClass="outputLabel" for="firstName" value="First Name: " />
-                        <h:inputText class="form-control" id="firstName" value="#{loginManager.firstName}"/>
+            <title><ui:define name="title">Login</ui:define></title>
 
-                        <h:outputLabel styleClass="outputLabel" for="lastName" value="Last Name " />
-                        <h:inputSecret class="form-control"  id="lastName" value="#{loginManager.lastName}"/>
+            <!-- Create the content for this page below -->
+            <ui:define name="editableContent">
+                <div id="page-content" class="Splash" >
 
-                    </h:panelGrid>
-                    <br/>
-                    <fieldset style="width:40%; margin:0 auto;">
-                        <h:commandButton id="login"  action="#{loginManager.loginUser()}" value="Login" styleClass="buttonText"/>
-                    </fieldset>  
+                    <p:graphicImage value="/images/r-logo.png" style="width: 60%;height: 60%;"/>
+
+                    <h2>Giving Rides and Saving Lives</h2>
+                    
+                    <h:button value="Learn More" class="learnMore" outcome="aboutUs"/> 
+
+                    
+                    <h3>Download Ryde!</h3>
+                    
+                    <p:graphicImage value="/images/App-Store-Icon.png" style="width: 30%;height: 30%;"/>
+                    
                 </div>
-                <br/>
-                <h:outputLabel value ="#{loginManager.errorMessage}" />  
-            </h:form>
-        </div>
-    </h:body>
+            </ui:define>
 
+        </ui:composition>
+        <!-- Do not enter tags after the composition line since they are ignored by JSF -->
+    </h:body>
 
 </html>

@@ -53,8 +53,8 @@ public class TimeSlotManager implements Serializable {
     private GroupUserFacade groupUserFacade;
 
     // for assigning drivers
-    private List<String> availableDrivers = new ArrayList();
-    private List<String> selectedDrivers = new ArrayList();
+    private List<String> availableDrivers;
+    private List<String> selectedDrivers;
     private DualListModel<String> drivers;
 
     public GroupTable getTimeSlotGroup(Integer tsId) {
@@ -150,9 +150,21 @@ public class TimeSlotManager implements Serializable {
     }
 
     public DualListModel<String> getDrivers() {
-        for(UserTable user : groupUserFacade.findUsersForGroup(selectedGroup.getId())) {
-            availableDrivers.add(user.getId().toString());
+        availableDrivers = new ArrayList();
+        selectedDrivers = new ArrayList();
+
+        if (selectedTimeSlot != null) {
+            for (UserTable user : timeSlotUserFacade.findDriversForTimeslot(selectedTimeSlot.getId())) {
+                selectedDrivers.add(user.getId().toString());
+            }
         }
+
+        for (UserTable user : groupUserFacade.findUsersForGroup(selectedGroup.getId())) {
+            if (!selectedDrivers.contains(user.getId().toString())) {
+                availableDrivers.add(user.getId().toString());
+            }
+        }
+
         drivers = new DualListModel<String>(availableDrivers, selectedDrivers);
         return drivers;
     }
@@ -170,18 +182,37 @@ public class TimeSlotManager implements Serializable {
         }
         return false;
     }
-    
+
     public String getDriversForTimeslot(Integer id) {
         String driverString = "";
         List<UserTable> currentDrivers = timeSlotUserFacade.findDriversForTimeslot(id);
         for (UserTable driver : currentDrivers) {
-            driverString += driver.getFirstName() + driver.getLastName() + ", ";
+            driverString += driver.getFirstName() + " " + driver.getLastName() + ", ";
         }
-        
-        if (driverString.isEmpty()) return "";
-        else return driverString.substring(0, driverString.length()-2);
+
+        if (driverString.isEmpty()) {
+            return "";
+        } else {
+            return driverString.substring(0, driverString.length() - 2);
+        }
     }
-    
+
+    public String assignDrivers() {
+        List<UserTable> users = groupUserFacade.findUsersForGroup(getSelectedGroup().getId());
+        for (UserTable user : users) {
+            TimeslotUser newTimeslotUserRow = timeSlotUserFacade.findByTimeslotAndUser(selectedTimeSlot, user);
+
+            if (searchDriverById(user.getId())) {
+                newTimeslotUserRow.setDriver(Boolean.TRUE);
+            } else {
+                newTimeslotUserRow.setDriver(Boolean.FALSE);
+            }
+
+            timeSlotUserFacade.edit(newTimeslotUserRow);
+        }
+        return "ViewTimeSlotForGroup?faces-redirect=true";
+    }
+
     public String createTimeslot() {
         try {
             // create the time slot
@@ -216,6 +247,10 @@ public class TimeSlotManager implements Serializable {
                 timeSlotUserFacade.create(newTimeslotUserRow);
             }
 
+            selectedTimeSlot = null;
+            passcode = "";
+            startTime = null;
+            endTime = null;
             return "ViewTimeSlotForGroup?faces-redirect=true";
 
         } catch (EJBException e) {
@@ -241,8 +276,8 @@ public class TimeSlotManager implements Serializable {
 
                 // remove the timeslot from the timeslot table
                 timeSlotFacade.remove(deletedTimeslot);
-
-                return "ViewTimeSlotForGroup";
+                selectedTimeSlot = null;
+                return "ViewTimeSlotForGroup?faces-redirect=true";
 
             } catch (EJBException e) {
                 statusMessage = "Something went wrong while creating your account!";
@@ -250,6 +285,14 @@ public class TimeSlotManager implements Serializable {
             }
         }
         return "";
+    }
+
+    public String createTimeslotPage() {
+        return "CreateTimeslot?faces-redirect=true";
+    }
+
+    public String assignDriversPage() {
+        return "AssignDrivers?faces-redirect=true";
     }
 
 }

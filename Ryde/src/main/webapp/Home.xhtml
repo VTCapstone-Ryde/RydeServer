@@ -28,21 +28,13 @@
                             <p:dataTable id="groupsDT" var="group" value="#{profileViewManager.userGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}">
                                 <p:ajax event="rowSelect" update="groupsDT"
                                         listener="#{groupManager.onGroupRowSelect()}"/>  
-                                <p:column style="width:32px;align:center;">
+                                <p:column style="width:40px;align:center;">
                                     <p:commandButton icon="ui-icon-cancel" update="groupsDT" action="#{groupManager.leaveGroup()}">
                                         <f:setPropertyActionListener value="#{group}" target="#{groupManager.selectedGroup}" />
                                     </p:commandButton>
                                 </p:column>
                                 <p:column headerText="Your Groups">
                                     <h:outputText value="#{group.title}" />
-                                </p:column>
-                            </p:dataTable>
-                        </div>
-
-                        <div id="second-column" class="Home" >
-                            <p:dataTable id="timeSlotsDT" var="timeslot" value="#{profileViewManager.userTimeSlots}" selectionMode="single" selection="#{timeSlotManager.selectedTimeSlot}" rowKey="#{timeslot.id}">
-                                <p:column headerText="Time Slots">
-                                    <h:outputText value="#{timeslot.id}" />
                                 </p:column>
                             </p:dataTable>
                         </div>

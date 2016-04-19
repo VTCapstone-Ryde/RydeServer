@@ -77,4 +77,8 @@ public class ProfileViewManager implements Serializable {
     public void setSelectedTimeSlot(TimeslotTable selectedTimeSlot) {
         this.selectedTimeSlot = selectedTimeSlot;
     }
+    
+    public String logout() {
+        return "Login?faces-redirect=true";
+    }
 }

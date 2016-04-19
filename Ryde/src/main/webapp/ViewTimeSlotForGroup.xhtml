@@ -23,15 +23,9 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form style="width:90%">
-                    <p:commandButton icon="ui-icon-circle-plus" update="timeslots" action="CreateTimeslot">
-                        <f:setPropertyActionListener value="#{groupManager.selectedGroup}" target="#{timeSlotManager.selectedGroup}" />
-                    </p:commandButton>
+                    <p:commandButton icon="ui-icon-circle-plus" update="timeslots" action="#{timeSlotManager.createTimeslotPage()}"/>
 
                     <p:dataTable id="timeslots" var="timeslot" value="#{groupManager.groupTimeslots}">
-                        <p:column headerText="Id">
-                            <h:outputText value="#{timeslot.id}" />
-                        </p:column>
-
                         <p:column headerText="Start Time">
                             <h:outputText value="#{timeslot.startTime}" />
                         </p:column>
@@ -48,8 +42,14 @@
                             <h:outputText value="#{timeslot.passcode}" />
                         </p:column>
 
-                        <p:column style="width:32px;align:center;">
+                        <p:column headerText="Delete" style="width:50px;text-align: center">
                             <p:commandButton icon="ui-icon-cancel" update="timeslots" action="#{timeSlotManager.deleteTimeslot()}">
+                                <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
+                            </p:commandButton>
+                        </p:column>
+                        
+                        <p:column headerText="Assign Drivers" style="width:70px;text-align: center">
+                            <p:commandButton icon="ui-icon-person" update="timeslots" action="#{timeSlotManager.assignDriversPage()}">
                                 <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
                             </p:commandButton>
                         </p:column>

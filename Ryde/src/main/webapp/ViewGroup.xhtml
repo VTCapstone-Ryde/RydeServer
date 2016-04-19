@@ -23,7 +23,6 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form>
-
                     <div id="page-content" class="ViewGroup">
                         <p class="font-style">#{groupManager.selectedGroup.title}</p>
                         <p:scrollPanel style="height:100px;text-align: left;">
@@ -40,20 +39,30 @@
                             <p:column headerText="Members">
                                 <h:outputText value="#{member.firstName} #{member.lastName}" />
                             </p:column>
+                            <p:column style="width:40px"> 
+                                <p:commandButton icon="ui-icon-star" action="#{groupManager.promoteToAdmin()}">
+                                    <f:setPropertyActionListener value="#{member}" target="#{groupManager.selectedMember}" />
+                                </p:commandButton>
+                            </p:column>            
+
+                            <p:column style="width:40px">
+                                <p:commandButton icon="ui-icon-trash" action="#{groupManager.kickFromGroup()}">
+                                    <f:setPropertyActionListener value="#{member}" target="#{groupManager.selectedMember}" />
+                                </p:commandButton>
+                            </p:column>
                         </p:dataTable>
                     </div>
 
                     <div id="buttons" class="wrapper">
                         <div id="buttons" class="ViewGroup" >
-                            <h:button value="Timeslots" class="bigGrey" outcome="ViewTimeSlotForGroup" /> 
-                            <h:button value="Assign Drivers" class="bigGrey" outcome="AssignDrivers" />
-                            <h:button value="Invite Members" class="bigGrey" outcome="InviteMembers" />
-                            <h:button value="View Reports" class="bigGrey" outcome="ViewReports" />
-                            <h:button value="Leave Group" class="bigGrey" outcome="LeaveGroup" />
+                            <p:commandButton value="Timeslots" class="bigGrey" action="ViewTimeSlotForGroup">
+                                <f:setPropertyActionListener value="#{groupManager.selectedGroup}" target="#{timeSlotManager.selectedGroup}" />
+                            </p:commandButton>
+                            <p:commandButton value="Invite Members" class="bigGrey" action="InviteMembers" />
+                            <p:commandButton value="View Reports" class="bigGrey" action="ViewReports" />
+                            <p:commandButton value="Leave Group" class="bigGrey" action="#{groupManager.leaveGroup()}" />
                         </div>
                     </div>
-
-
 
                 </h:form>
 

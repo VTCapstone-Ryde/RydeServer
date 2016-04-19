@@ -41,6 +41,8 @@ public class GroupManager implements Serializable {
     private String name;
     private String description;
     private String statusMessage;
+    private UserTable selectedMember;
+    private String searchedGroupName;
     private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
 
@@ -107,6 +109,33 @@ public class GroupManager implements Serializable {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
     }
 
+    public UserTable getSelectedMember() {
+        return selectedMember;
+    }
+
+    public void setSelectedMember(UserTable selectedMember) {
+        this.selectedMember = selectedMember;
+    }
+
+    public String getSearchedGroupName() {
+        return searchedGroupName;
+    }
+
+    public void setSearchedGroupName(String searchedGroupName) {
+        this.searchedGroupName = searchedGroupName;
+    }
+
+    public String promoteToAdmin() {
+        if (selectedMember != null) {
+            GroupUser editRow = groupUserFacade.findByGroupAndUser(selectedGroup, selectedMember);
+            editRow.setAdmin(Boolean.TRUE);
+            groupUserFacade.edit(editRow);
+        }
+
+        selectedMember = null;
+        return "ViewGroup?faces-redirect=true";
+    }
+
     public void onGroupRowSelect() {
         //System.out.println(selectedGroup);
         ConfigurableNavigationHandler configurableNavigationHandler
@@ -146,7 +175,11 @@ public class GroupManager implements Serializable {
                 // create the groupUser relation
                 groupUserFacade.create(relationTable);
             }
-            return "";
+
+            name = "";
+            description = "";
+            selectedMembers.clear();
+            return "Home?faces-redirect=true";
 
         } catch (EJBException e) {
             statusMessage = "Something went wrong while creating group!";
@@ -181,24 +214,26 @@ public class GroupManager implements Serializable {
 
     public String addToGroup() {
         try {
-            // get the selected group to be added
-            UserTable added = getLoggedInUser();
 
             // add user from groupUser table
-            GroupUser addGroupUserRow = new GroupUser();
-            addGroupUserRow.setGroupId(selectedGroup);
-            addGroupUserRow.setUserId(added);
-            groupUserFacade.create(addGroupUserRow);
-
-            // add all user timeslot relations that have to do with the group
-            List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
-            for (TimeslotTable timeslot : timeslots) {
-                TimeslotUser addTimeslotUserRow = new TimeslotUser();
-                addTimeslotUserRow.setTsId(timeslot);
-                addTimeslotUserRow.setUserId(added);
-                timeslotUserFacade.create(addTimeslotUserRow);
+            for (String userId : selectedMembers) {
+                GroupUser addGroupUserRow = new GroupUser();
+                UserTable addedUser = userFacade.findById(Integer.parseInt(userId));
+                addGroupUserRow.setGroupId(selectedGroup);
+                addGroupUserRow.setUserId(addedUser);
+                groupUserFacade.create(addGroupUserRow);
+                
+                // add all user timeslot relations that have to do with the group
+                List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
+                for (TimeslotTable timeslot : timeslots) {
+                    TimeslotUser addTimeslotUserRow = new TimeslotUser();
+                    addTimeslotUserRow.setTsId(timeslot);
+                    addTimeslotUserRow.setUserId(addedUser);
+                    timeslotUserFacade.create(addTimeslotUserRow);
+                }
             }
-
+            
+            selectedMembers.clear();
             return "ViewGroup?faces-redirect=true";
         } catch (EJBException e) {
             statusMessage = "Something went trying to add to group";
@@ -206,9 +241,40 @@ public class GroupManager implements Serializable {
         }
     }
 
+    public String kickFromGroup() {
+        if (selectedMember != null) {
+            try {
+                // delete user from groupUser table
+                GroupUser deleteGroupUserRow = groupUserFacade.findByGroupAndUser(selectedGroup, selectedMember);
+                groupUserFacade.remove(deleteGroupUserRow);
+
+                // delete all user timeslot relations that have to do with the group
+                List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
+                for (TimeslotTable timeslot : timeslots) {
+                    TimeslotUser deleteTimeslotUserRow = timeslotUserFacade.findByTimeslotAndUser(timeslot, selectedMember);
+                    if (deleteTimeslotUserRow != null) {
+                        timeslotUserFacade.remove(deleteTimeslotUserRow);
+                    }
+                }
+
+                selectedMember = null;
+                return "ViewGroup?faces-redirect=true";
+            } catch (EJBException e) {
+                statusMessage = "Something went wrong leaving group";
+                return "";
+            }
+        }
+        return "";
+    }
+
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
+    }
+    
+    public String searchGroups() {
+        System.out.println("HERE");
+        return "/SearchGroups.xhtml?faces-redirect=true";
     }
 
 }
