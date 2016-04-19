@@ -45,10 +45,10 @@ public class GroupUser implements Serializable {
     @Column(name = "admin")
     private Boolean admin;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, cascade= CascadeType.ALL)
+    @ManyToOne(optional = false)
     private UserTable userId;
     @JoinColumn(name = "group_id", referencedColumnName = "id")
-    @ManyToOne(optional = false, cascade= CascadeType.ALL)
+    @ManyToOne(optional = false)
     private GroupTable groupId;
 
     public GroupUser() {
