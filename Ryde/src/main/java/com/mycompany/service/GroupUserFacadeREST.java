@@ -55,6 +55,12 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
+    @DELETE
+    @Path("/{userId}/{groupId}")
+    public void removeByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
+        GroupUser gu = findByUserAndGroup(userId, groupId);
+        super.remove(gu);
+    }
 
     @GET
     @Path("{id}")
@@ -96,10 +102,12 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     
     @PUT
     @Path("/admin/{userId}/{groupId}/{admin}")
-    @Consumes({MediaType.APPLICATION_JSON})
-    public void setUserAsAdmin(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId,
-            @PathParam("admin") Boolean admin) {
+    public void setUserAsAdmin(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId, @PathParam("admin") Integer adminParam) {
         GroupUser gu = findByUserAndGroup(userId, groupId);
+        Boolean admin = false;
+        if (adminParam == 1) {
+            admin = true;
+        }
         gu.setAdmin(admin);
         edit(gu);
     }
