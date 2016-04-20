@@ -135,7 +135,7 @@ style the header component of the siteTemplate */
 }
 
 .subMenu .ui-menu-child {
-    background: #79bbff;
+    background: #a8ced7;
 }
 
 /* The editableContent id is used in siteTemplate.xhtml as <div id="editableContent"> to 
