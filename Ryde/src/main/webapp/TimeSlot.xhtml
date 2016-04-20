@@ -6,12 +6,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    
+
     <h:head>
         <title>Timeslots</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    
+
     <h:body>
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -19,23 +19,25 @@
         <ui:composition template="/template/siteTemplate.xhtml">
 
             <title><ui:define name="title">Your Timeslots</ui:define></title>
-            
+
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form style="width:90%">
-                    <p:dataTable var="timeslot" value="#{profileViewManager.userTimeSlots}">
-                        <p:column headerText="Group">
-                            <h:outputText value="nothing" />
-                        </p:column>
+                    <div id="page" class="Timeslot">
+                        <p:dataTable var="timeslot" value="#{profileViewManager.userTimeSlots}">
+                            <p:column headerText="Group">
+                                <h:outputText value="nothing" />
+                            </p:column>
 
-                        <p:column headerText="Start Time">
-                            <h:outputText value="#{timeslot.startTime}" />
-                        </p:column>
+                            <p:column headerText="Start Time">
+                                <h:outputText value="#{timeslot.startTime}" />
+                            </p:column>
 
-                        <p:column headerText="End Time">
-                            <h:outputText value="#{timeslot.endTime}" />
-                        </p:column>
-                    </p:dataTable>
+                            <p:column headerText="End Time">
+                                <h:outputText value="#{timeslot.endTime}" />
+                            </p:column>
+                        </p:dataTable>
+                    </div>
                 </h:form>
             </ui:define>
 

@@ -44,23 +44,7 @@
                     
                     <p:separator /> 
  
-                    <p:commandButton value="Submit" update="display" oncomplete="PF('dlg').show()" icon="ui-icon-check" action="#{groupManager.createGroup()}"/>
-                    
-                    <p:dialog header="Group Information" modal="true" showEffect="fade" widgetVar="dlg" resizable="false">
-                        <p:panelGrid columns="2" id="display">
-                            <h:outputText value="Name:" />
-                            <h:outputText value="#{groupManager.name}" />
-                            
-                            <h:outputText value="Description" />
-                            <h:outputText value="#{groupManager.description}" />
-
-                            <h:outputText value="Members" />
-                            <p:dataList value="#{groupManager.selectedMembers}" var="m">
-                                <h:outputText value="#{groupManager.getNameById(m)}" />
-                            </p:dataList>
-                        </p:panelGrid>
-                    </p:dialog>
-                
+                    <p:commandButton value="Submit" action="#{groupManager.createGroup()}"/>
                 </h:form>
             </ui:define>
 

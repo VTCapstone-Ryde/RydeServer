@@ -5,7 +5,9 @@
 package com.mycompany.entity;
 
 import java.io.Serializable;
+import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,9 +15,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  *
@@ -38,6 +42,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "UserTable.findByCarModel", query = "SELECT u FROM UserTable u WHERE u.carModel = :carModel"),
     @NamedQuery(name = "UserTable.findByCarColor", query = "SELECT u FROM UserTable u WHERE u.carColor = :carColor")})
 public class UserTable implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Collection<RequestUser> requestUserCollection;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -182,6 +189,15 @@ public class UserTable implements Serializable {
     @Override
     public String toString() {
         return "com.mycompany.entity.UserTable[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Collection<RequestUser> getRequestUserCollection() {
+        return requestUserCollection;
+    }
+
+    public void setRequestUserCollection(Collection<RequestUser> requestUserCollection) {
+        this.requestUserCollection = requestUserCollection;
     }
     
 }
