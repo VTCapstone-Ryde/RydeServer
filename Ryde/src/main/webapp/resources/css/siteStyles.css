@@ -1,8 +1,8 @@
 /* Cascading Style Sheets (CSS) Version 3 Style Definitions by Osman Balci */
 
 html, body {
-    background-color: #7ec99d; 
-
+    /*background-color: #7ec99d; */
+    background-image: url(./images/splashBG.png);
     /* Stretch the background image to cover the entire screen */
     -webkit-background-size: cover; /* For WebKit */
     -moz-background-size: cover;    /* For Mozilla */
@@ -128,6 +128,14 @@ style the header component of the siteTemplate */
     width: 100%;
     height: 50px;
     margin-bottom: 16px;
+}
+
+.subMenu .ui-menuitem-text {
+    color: #ffffff;
+}
+
+.subMenu .ui-menu-child {
+    background: #79bbff;
 }
 
 /* The editableContent id is used in siteTemplate.xhtml as <div id="editableContent"> to 
