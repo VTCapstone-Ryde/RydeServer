@@ -6,7 +6,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-
+    
     <!--
     *********************************************
     * Header Component of Template siteTemplate *
@@ -19,19 +19,19 @@
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
         <ui:composition>
             <h:form>  
-                <p:menubar>
-                    <p:submenu label="Ryde">
+                <p:menubar style="background: #378de5">
+                    <p:submenu label="Ryde" styleClass="subMenu" style="color: #ffffff;">
                     </p:submenu>
 
-                    <p:submenu label="Home">
+                    <p:submenu label="Home" styleClass="subMenu" style="color: #ffffff;">
                         <p:menuitem value="View Groups" url="Home.xhtml"/>
                         <p:menuitem value="Create Group" url="CreateGroup.xhtml"/>
                     </p:submenu>
 
-                    <p:menuitem value="Profile" url="Profile.xhtml"/>
+                    <p:menuitem value="Profile" url="Profile.xhtml" style="color: #ffffff;"/>
                     
                     
-                    <p:menuitem value="Timeslots" url="TimeSlot.xhtml"/>
+                    <p:menuitem value="Timeslots" url="TimeSlot.xhtml" style="color: #ffffff;"/>
 
                     <f:facet name="options">
                         <p:inputText style="margin-right:10px" placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
