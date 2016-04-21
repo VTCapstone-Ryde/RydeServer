@@ -35,10 +35,9 @@
 
                     <p:menuitem value="Requests" url="Requests.xhtml" style="color: #ffffff;"/>
                     
-                    <p:menuitem value="Hi #{profileViewManager.loggedInUser.firstName}"/>
-                    
                     <f:facet name="options">
-                        <p:inputText style="margin-right:10px" placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
+                        <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!"/>
+                        <p:inputText style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
                         <p:commandButton  value="Search" action="SearchGroups.xhtml"/>
                         <p:commandButton  value="Logout" action="index.xhtml"/>
                     </f:facet>

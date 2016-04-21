@@ -8,7 +8,6 @@
       xmlns:f="http://java.sun.com/jsf/core">
 
     <h:head>
-        <title>Home</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
 
@@ -22,6 +21,7 @@
 
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
+                <div id="page-content" class="ViewGroup">
                 <h:form>
                     <div id="main-wrap">
                         <div id="first-column" class="Home">
@@ -40,6 +40,7 @@
                         </div>
                     </div>
                 </h:form>
+                </div>
             </ui:define>
 
         </ui:composition>
