@@ -109,7 +109,7 @@ CREATE TABLE Event
     driver_user_id INT NOT NULL,
     ts_id INT NOT NULL,
     datetime DATETIME NOT NULL,
-    event_type ENUM('online', 'offline', 'rideCompleteled', 'rideCancelled'),
+    event_type ENUM('online', 'offline', 'rideCompleted', 'rideCancelled'),
     FOREIGN KEY (driver_user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (ts_id) REFERENCES Timeslot_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
