@@ -28,9 +28,9 @@
                         <p:inputText value="#{timeSlotManager.passcode}"/>
 
                         <h:outputText value="Start Time: " />
-                        <p:inputText value="#{timeSlotManager.startTime}" placeholder="dd-mm-yyyy hh:mm:ss">
+                        <p:inputMask value="#{timeSlotManager.startTime}" mask="99-99-9999 99:99:99">
                             <f:convertDateTime pattern="dd-mm-yyyy HH:mm:ss" />
-                        </p:inputText>
+                        </p:inputMask>
 
                         <h:outputText value="End Time: " />
                         <p:inputText value="#{timeSlotManager.endTime}" placeholder="dd-mm-yyyy hh:mm:ss">

@@ -27,8 +27,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "RequestUser.findAll", query = "SELECT r FROM RequestUser r"),
-    @NamedQuery(name = "RequestUser.findById", query = "SELECT r FROM RequestUser r WHERE r.id = :id"),
-    @NamedQuery(name = "RequestUser.findByAdmin", query = "SELECT r FROM RequestUser r WHERE r.admin = :admin")})
+    @NamedQuery(name = "RequestUser.findById", query = "SELECT r FROM RequestUser r WHERE r.id = :id")})
 public class RequestUser implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -37,8 +36,6 @@ public class RequestUser implements Serializable {
     @Basic(optional = false)
     @Column(name = "id")
     private Integer id;
-    @Column(name = "admin")
-    private Boolean admin;
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private UserTable userId;
@@ -60,15 +57,7 @@ public class RequestUser implements Serializable {
     public void setId(Integer id) {
         this.id = id;
     }
-
-    public Boolean getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Boolean admin) {
-        this.admin = admin;
-    }
-
+    
     public UserTable getUserId() {
         return userId;
     }
