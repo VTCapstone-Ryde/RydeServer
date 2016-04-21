@@ -120,6 +120,8 @@ style the text within the div content of the siteTemplate. */
     font-weight: normal;
     text-decoration: none;
     color: black;
+    width: 100%;
+    height: 100%;
 }
 
 /* The header id is used in siteTemplate.xhtml as <div id="header"> to 
@@ -152,7 +154,6 @@ style the editableContent component of the siteTemplate */
 style the footer component of the siteTemplate */
 #footer {
    position:absolute;
-   bottom:-10%;
    width:100%;
    height:60px;   /* Height of the footer */
 }
