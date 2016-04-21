@@ -20,8 +20,9 @@
         <ui:composition>
             <h:form>  
                 <p:menubar style="background: #378de5">
-                    <p:submenu label="Ryde" styleClass="subMenu" style="color: #ffffff;">
-                    </p:submenu>
+                    <p:menuitem url="index.xhtml">
+                        <h:graphicImage url="/images/r-icon.png" style="width: 100%;height: 100%;"/>
+                    </p:menuitem>
 
                     <p:submenu label="Home" styleClass="subMenu" style="color: #ffffff;">
                         <p:menuitem value="View Groups" url="Home.xhtml"/>
@@ -30,11 +31,10 @@
 
                     <p:menuitem value="Profile" url="Profile.xhtml" style="color: #ffffff;"/>
                     
-                    
                     <p:menuitem value="Timeslots" url="TimeSlot.xhtml" style="color: #ffffff;"/>
 
                     <p:menuitem value="Requests" url="Requests.xhtml" style="color: #ffffff;"/>
-
+                    
                     <f:facet name="options">
                         <p:inputText style="margin-right:10px" placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
                         <p:commandButton  value="Search" action="SearchGroups.xhtml"/>
