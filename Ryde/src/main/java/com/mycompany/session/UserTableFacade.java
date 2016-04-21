@@ -8,6 +8,7 @@ import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
@@ -35,6 +36,16 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
     public UserTable findById(Integer id) {
         Query q = getEntityManager().createNamedQuery("UserTable.findById").setParameter("id", id);
         q.setFirstResult(0);
+        //TODO add empty result handling
+        return (UserTable)q.getSingleResult();
+    }
+    
+    public UserTable findByFbId(String fbId) {
+        Query q = getEntityManager().createNamedQuery("UserTable.findByFbId").setParameter("fbId", fbId);
+        q.setFirstResult(0);
+        if (q.getResultList().isEmpty()) {
+            return null;
+        }
         //TODO add empty result handling
         return (UserTable)q.getSingleResult();
     }
