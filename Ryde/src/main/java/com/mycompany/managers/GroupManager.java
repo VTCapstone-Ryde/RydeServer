@@ -61,7 +61,9 @@ public class GroupManager implements Serializable {
     private TimeslotUserFacade timeslotUserFacade;
 
     public List<UserTable> getUsers() {
-        return userFacade.findAll();
+        List<UserTable> list =  userFacade.findAll();
+        list.remove(getLoggedInUser());
+        return list;
     }
 
     public List<String> getSelectedMembers() {
