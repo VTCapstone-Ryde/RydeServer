@@ -23,37 +23,39 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form style="width:90%">
-                    <p:commandButton icon="ui-icon-circle-plus" update="timeslots" action="#{timeSlotManager.createTimeslotPage()}"/>
+                    <div id="page" class="Timeslot">
+                        <p:commandButton icon="ui-icon-circle-plus" update="timeslots" action="#{timeSlotManager.createTimeslotPage()}"/>
 
-                    <p:dataTable id="timeslots" var="timeslot" value="#{groupManager.groupTimeslots}">
-                        <p:column headerText="Start Time">
-                            <h:outputText value="#{timeslot.startTime}" />
-                        </p:column>
+                        <p:dataTable id="timeslots" var="timeslot" value="#{groupManager.groupTimeslots}">
+                            <p:column headerText="Start Time">
+                                <h:outputText value="#{timeslot.startTime}" />
+                            </p:column>
 
-                        <p:column headerText="End Time">
-                            <h:outputText value="#{timeslot.endTime}" />
-                        </p:column>
+                            <p:column headerText="End Time">
+                                <h:outputText value="#{timeslot.endTime}" />
+                            </p:column>
 
-                        <p:column headerText="Drivers">
-                            <h:outputText value="#{timeSlotManager.getDriversForTimeslot(timeslot.id)}" />
-                        </p:column>
+                            <p:column headerText="Drivers">
+                                <h:outputText value="#{timeSlotManager.getDriversForTimeslot(timeslot.id)}" />
+                            </p:column>
 
-                        <p:column headerText="Password">
-                            <h:outputText value="#{timeslot.passcode}" />
-                        </p:column>
+                            <p:column headerText="Password">
+                                <h:outputText value="#{timeslot.passcode}" />
+                            </p:column>
 
-                        <p:column headerText="Delete" style="width:50px;text-align: center">
-                            <p:commandButton icon="ui-icon-cancel" update="timeslots" action="#{timeSlotManager.deleteTimeslot()}">
-                                <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
-                            </p:commandButton>
-                        </p:column>
-                        
-                        <p:column headerText="Assign Drivers" style="width:70px;text-align: center">
-                            <p:commandButton icon="ui-icon-person" update="timeslots" action="#{timeSlotManager.assignDriversPage()}">
-                                <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
-                            </p:commandButton>
-                        </p:column>
-                    </p:dataTable>
+                            <p:column headerText="Delete" style="width:50px;text-align: center">
+                                <p:commandButton icon="ui-icon-cancel" update="timeslots" action="#{timeSlotManager.deleteTimeslot()}">
+                                    <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
+                                </p:commandButton>
+                            </p:column>
+
+                            <p:column headerText="Assign Drivers" style="width:70px;text-align: center">
+                                <p:commandButton icon="ui-icon-person" update="timeslots" action="#{timeSlotManager.assignDriversPage()}">
+                                    <f:setPropertyActionListener value="#{timeslot}" target="#{timeSlotManager.selectedTimeSlot}" />
+                                </p:commandButton>
+                            </p:column>
+                        </p:dataTable>
+                    </div>
                 </h:form>
             </ui:define>
 

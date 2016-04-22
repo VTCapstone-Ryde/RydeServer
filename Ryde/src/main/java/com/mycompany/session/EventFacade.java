@@ -34,7 +34,7 @@ public class EventFacade extends AbstractFacade<Event> {
         Event event = new Event();
         event.setDatetime(date);
         event.setDriverUserId(ride.getDriverUserId());
-        event.setEventType("rideCompleteled");
+        event.setEventType("rideCompleted");
         event.setTsId(ride.getTsId());
         
         // create event

@@ -17,7 +17,7 @@
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
         <ui:composition>
             <div align="center" >
-                <h:panelGrid id="footerPanelGrid" columns="2" >
+                <h:panelGrid id="footerPanelGrid" columns="3" >
 
                     <h:panelGroup>
                         <a class="social-roll" href="https://www.facebook.com"><img src="./resources/images/socialMediaIcons/facebook.png" /></a>
@@ -27,9 +27,9 @@
                     </h:panelGroup>
 
                     <h:panelGroup  id="rightAlignPanelGroup">
-                        <h:link outcome="privacyPolicy" value="Privacy Policy"/> |                        
-                        <h:link outcome="aboutUs" value="About Us"/> |                        
-                        <h:link outcome="contactUs" value="Contact Us"/>
+                        <h:link outcome="privacyPolicy" value="Privacy Policy" class="footerLink"/> |                        
+                        <h:link outcome="aboutUs" value="About Us" class="footerLink"/> |                        
+                        <h:link outcome="contactUs" value="Contact Us" class="footerLink"/>
                     </h:panelGroup>
 
                 </h:panelGrid>

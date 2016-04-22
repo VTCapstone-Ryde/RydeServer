@@ -25,37 +25,92 @@
                     <div id="page-content" class="Profile" >
                         <h1>#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}</h1> 
 
-
                         <p:graphicImage width="200" height="200" alt="defaultUserPhoto" value="/images/defaultUserPhoto.jpg"/>
-
-                        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
-                            <f:facet name="header">
-                                <p:row>
-                                    Contact Information
-                                </p:row>
-                            </f:facet>
-                            <h:outputText value="Phone Number: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" />
-                        </h:panelGrid>
-
-                        <h:panelGrid columns="2" border="1" cellpadding="10" cellspacing="1" width="100%">
-                            <f:facet name="header">
-                                <p:row>
-                                    Car Information
-                                </p:row>
-                            </f:facet>
-                            <h:outputText value="Car Make: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.carMake}" />                      
-
-                            <h:outputText value="Car Model: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.carModel}" />
-
-                            <h:outputText value="Car Year: " />
-                            <h:outputText value="#{profileViewManager.loggedInUser.carColor}" />
-
-                            <h:outputText value="Seats: " />
-                            <h:outputText value="4" />
-                        </h:panelGrid>
+                        <p:tabView>
+                            <p:tab title="Basic Info">
+                                <p:panelGrid id="basic_info" style="width: 100%">
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Contact Information</p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Phone Number: " /></p:column>
+                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" /></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2" style="font-weight: bold">Car Information</p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Car Make: " /></p:column>
+                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carMake}" /></p:column>
+                                    </p:row>            
+                                    <p:row>
+                                        <p:column><h:outputText value="Car Model: " /></p:column>
+                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carModel}" /></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Car Color: " /></p:column>
+                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carColor}" /></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Seats: " /></p:column>
+                                        <p:column><h:outputText value="4" /></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Notifications">
+                                <p:panelGrid id="notifications" style="width: 100%">
+                                    <p:row>
+                                        <p:column colspan="6" style="font-weight: bold">Driving Schedule</p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Group: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Cool Group " /></p:column>
+                                        <p:column><h:outputText value="Date: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Tue 4/19/2016 " /></p:column>
+                                        <p:column><h:outputText value="Time: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="8:00PM-10:00PM " /></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Group: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Cool Group " /></p:column>
+                                        <p:column><h:outputText value="Date: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Wed 4/20/2016 " /></p:column>
+                                        <p:column><h:outputText value="Time: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="7:00PM-9:00PM " /></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column><h:outputText value="Group: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Cool Group " /></p:column>
+                                        <p:column><h:outputText value="Date: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="Thurs 4/21/2016 " /></p:column>
+                                        <p:column><h:outputText value="Time: " style="font-weight: bold"/></p:column>
+                                        <p:column><h:outputText value="9:00PM-11:00PM " /></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                            <p:tab title="Requests">
+                                <p:panelGrid id="requests" style="width: 100%">
+                                    <p:row>
+                                        <p:column colspan="4">Pending Requests</p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">Jimbo Jam requests to join Cool Group</p:column>
+                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
+                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">Jack Jacky requests to join Cool Group</p:column>
+                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
+                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column colspan="2">Josiah Jos requests to join Cool Group</p:column>
+                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
+                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
+                                    </p:row>
+                                </p:panelGrid>
+                            </p:tab>
+                        </p:tabView>                       
                     </div>
                 </h:form>
             </ui:define>

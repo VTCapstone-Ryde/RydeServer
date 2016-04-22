@@ -1,8 +1,8 @@
 /* Cascading Style Sheets (CSS) Version 3 Style Definitions by Osman Balci */
 
 html, body {
-    background-color: #7ec99d; 
-
+    /*background-color: #7ec99d; */
+    background-image: url(./images/splashBG.png);
     /* Stretch the background image to cover the entire screen */
     -webkit-background-size: cover; /* For WebKit */
     -moz-background-size: cover;    /* For Mozilla */
@@ -120,6 +120,8 @@ style the text within the div content of the siteTemplate. */
     font-weight: normal;
     text-decoration: none;
     color: black;
+    width: 100%;
+    height: 100%;
 }
 
 /* The header id is used in siteTemplate.xhtml as <div id="header"> to 
@@ -128,6 +130,14 @@ style the header component of the siteTemplate */
     width: 100%;
     height: 50px;
     margin-bottom: 16px;
+}
+
+.subMenu .ui-menuitem-text {
+    color: #ffffff;
+}
+
+.subMenu .ui-menu-child {
+    background: #a8ced7;
 }
 
 /* The editableContent id is used in siteTemplate.xhtml as <div id="editableContent"> to 
@@ -143,10 +153,9 @@ style the editableContent component of the siteTemplate */
 /* The footer id is used in siteTemplate.xhtml as <div id="footer"> to 
 style the footer component of the siteTemplate */
 #footer {
-    width: 100%;
-    height: 100px;
-    bottom: 16px;
-    position: absolute;
+   position:absolute;
+   width:100%;
+   height:60px;   /* Height of the footer */
 }
 
 .footerLink {

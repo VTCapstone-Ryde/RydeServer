@@ -5,10 +5,13 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.GroupTable;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQuery;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -29,4 +32,10 @@ public class GroupTableFacade extends AbstractFacade<GroupTable> {
         super(GroupTable.class);
     }
     
+    public List<GroupTable> searchGroupByTitle(String title) {
+        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", title);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
 }

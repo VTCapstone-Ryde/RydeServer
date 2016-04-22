@@ -6,6 +6,7 @@ package com.mycompany.managers;
 
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupUser;
+import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
@@ -41,11 +42,13 @@ public class GroupManager implements Serializable {
     private String name;
     private String description;
     private String statusMessage;
-    private UserTable selectedMember;
     private String searchedGroupName;
+    private UserTable selectedMember;
+    private List<GroupTable> searchedGroups = new ArrayList();
     private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
-
+    private GroupTable searchedGroup = new GroupTable();
+    
     @EJB
     private GroupTableFacade groupFacade;
     @EJB
@@ -58,7 +61,9 @@ public class GroupManager implements Serializable {
     private TimeslotUserFacade timeslotUserFacade;
 
     public List<UserTable> getUsers() {
-        return userFacade.findAll();
+        List<UserTable> list =  userFacade.findAll();
+        list.remove(getLoggedInUser());
+        return list;
     }
 
     public List<String> getSelectedMembers() {
@@ -117,12 +122,28 @@ public class GroupManager implements Serializable {
         this.selectedMember = selectedMember;
     }
 
+    public List<GroupTable> getSearchedGroup() {
+        return searchedGroups;
+    }
+
+    public void setSearchedGroups(List<GroupTable> searchedGroup) {
+        this.searchedGroups = searchedGroups;
+    }
+    
+    public List<GroupTable> getSearchedGroups() {
+        return searchedGroups;
+    }
+
+    public void setSearchedGroup(GroupTable searchedGroup) {
+        this.searchedGroup = searchedGroup;
+    }
+
     public String getSearchedGroupName() {
         return searchedGroupName;
     }
 
-    public void setSearchedGroupName(String searchedGroupName) {
-        this.searchedGroupName = searchedGroupName;
+    public void setSearchedGroupName(String searchGroupName) {
+        this.searchedGroupName = searchGroupName;
     }
 
     public String promoteToAdmin() {
@@ -266,6 +287,21 @@ public class GroupManager implements Serializable {
         }
         return "";
     }
+    
+    public String RequestGroup() {
+        UserTable user = getLoggedInUser();
+        try {
+                // add to request user table
+                RequestUser request = new RequestUser();
+                request.setUserId(user);
+                request.setGroupId(searchedGroup);
+                
+                return "Requests?faces-redirect=true";
+            } catch (EJBException e) {
+                statusMessage = "Something went wrong when requesting to join group";
+                return "";
+            }   
+    }
 
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
@@ -273,7 +309,7 @@ public class GroupManager implements Serializable {
     }
     
     public String searchGroups() {
+        searchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
         return "SearchGroups";
     }
-
 }
