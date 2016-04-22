@@ -69,7 +69,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         
         super.create(entity);
         
-        Response response = new Response(getPosition(user.getId(), 1));
+        Response response = new Response(getPosition(user.getId(), ts.get(0).getId()));
         
         return response;
     }
@@ -254,6 +254,31 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
                 } else {
                     return "pending";
                 }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+          return null;
+    }
+    
+    @GET
+    @Path("driverInfo/{fbToken}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public UserTable getDriverInfoForRider(@PathParam("fbToken") Integer fbToken) {
+        UserTable user = this.findByToken(fbToken.toString());
+        Ride ride;
+        try { 
+            if (em.createNamedQuery("findByRider", Ride.class)
+                .setParameter("riderUserId", user.getId())
+                .getResultList().isEmpty()) {
+                return null;
+            }
+            else {
+                ride = em.createNamedQuery("findByRider", Ride.class)
+                .setParameter("riderUserId", user.getId())
+                .getResultList().get(0);
+                
+                return userFacade.findById(ride.getDriverUserId().getId());
             }
         } catch (Exception e) {
             e.printStackTrace();
