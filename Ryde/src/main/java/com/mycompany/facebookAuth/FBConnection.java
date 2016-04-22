@@ -1,5 +1,6 @@
 package com.mycompany.facebookAuth;
 
+import com.mycompany.entity.UserTable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -10,7 +11,9 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -26,19 +29,20 @@ public class FBConnection implements Serializable {
 
     static String accessToken = "";
     private String code = "";
-    
-    
+
     public String getFBAuthUrl() {
         String fbLoginUrl = "";
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        String sessionId = session.getId();
         try {
             fbLoginUrl = "http://www.facebook.com/dialog/oauth?" + "client_id="
                     + FBConnection.FB_APP_ID + "&redirect_uri="
                     + URLEncoder.encode(FBConnection.REDIRECT_URI, "UTF-8")
-                    + "&scope=email";
+                    + "&scope=email" + "&state=" + sessionId;
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        
+
         return fbLoginUrl;
     }
 

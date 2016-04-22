@@ -14,7 +14,6 @@ import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 
@@ -53,7 +52,7 @@ public class ProfileViewManager implements Serializable {
     public UserTable getLoggedInUser() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
     }
-
+    
     public List<GroupTable> getUserGroups() {
         return groupUserFacade.findGroupsForUser(getLoggedInUser().getId());
     }

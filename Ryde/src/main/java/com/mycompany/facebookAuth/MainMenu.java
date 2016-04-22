@@ -1,6 +1,7 @@
 package com.mycompany.facebookAuth;
 
 import com.mycompany.entity.UserTable;
+import com.mycompany.managers.LoginManager;
 import java.io.IOException;
 import java.util.Map;
 import javax.ejb.EJB;
@@ -11,6 +12,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class MainMenu extends HttpServlet {
 
@@ -22,39 +24,46 @@ public class MainMenu extends HttpServlet {
 
     public void service(HttpServletRequest req, HttpServletResponse res)
             throws ServletException, IOException {
-        code = req.getParameter("code");
-        if (code == null || code.equals("")) {
-            throw new RuntimeException(
-                    "ERROR: Didn't get code parameter in callback.");
-        }
-        FBConnection fbConnection = new FBConnection();
-        String accessToken = fbConnection.getAccessToken(code);
 
+        FBConnection fbConnection = new FBConnection();
+        HttpSession httpSession = req.getSession();
+        code = req.getParameter("code");
+        String state = req.getParameter("state");
+        String accessToken = fbConnection.getAccessToken(code);
+        
         FBGraph fbGraph = new FBGraph(accessToken);
         String graph = fbGraph.getFBGraph();
         Map<String, String> fbProfileData = fbGraph.getGraphData(graph);
-        ServletOutputStream out = res.getOutputStream();
 
         /* check if the user already has an account */
-        
         String[] name = fbProfileData.get("name").split(" ");
         String first_name = name[0];
-        String last_name = name[0];
+        String last_name = name[1];
         String fb_id = fbProfileData.get("id");
-
-        UserTable user = userFacade.findByFbId(fb_id);
-
-        if (user != null) {
-           initializeSessionMap(user);
-           res.sendRedirect("http://localhost:8080/Ryde/faces/Home.xhtml");
+        
+        String sessionID = httpSession.getId();
+        if (state.equals(sessionID)) {
+            try {
+                //do some specific user data operation like saving to DB or login user
+                 UserTable user = userFacade.findByFbId(fb_id);
+                if (user != null) {
+                    user.setFbTok(accessToken);
+                    httpSession.putValue("user_id", user.getId());
+                    httpSession.putValue("first_name", user.getFirstName());
+                    httpSession.putValue("last_name", user.getLastName());
+                    httpSession.putValue("access_token", user.getFbTok());
+                }
+                else {
+                    res.sendRedirect(req.getContextPath() + "/faces/CreateAccount.xhtml");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                return;
+            }
+            res.sendRedirect(req.getContextPath() + "/faces/Home.xhtml");
+        } else {
+            System.err.println("CSRF protection validation");
         }
-        else {
-            res.sendRedirect("http://localhost:8080/Ryde/faces/CreateAccount.xhtml");
-        }
-
-//        out.println("<h1>Facebook Login using Java</h1>");
-//        out.println("<h2>Application Main Menu</h2>");
-//        out.println("<div>Welcome " + fbProfileData.get("name"));
     }
 
     public String getCode() {
@@ -64,14 +73,4 @@ public class MainMenu extends HttpServlet {
     public void setCode(String code) {
         this.code = code;
     }
-
-    public void initializeSessionMap(UserTable user) {
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("first_name", user.getFirstName());
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("last_name", user.getLastName());
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("user_id", user.getId());
-    }
-
 }
