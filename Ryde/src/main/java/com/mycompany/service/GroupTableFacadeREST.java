@@ -5,6 +5,7 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
+import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
@@ -34,9 +35,6 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-    //Our facades for relational information
-    private final GroupUserFacade groupUserFacade = new GroupUserFacade();
-    private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
     
     public GroupTableFacadeREST() {
         super(GroupTable.class);
@@ -98,34 +96,36 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
         return em;
     }
     //The following has been added to the auto-generated code
-    public GroupUserFacade getGroupUserFacade() {
-        return groupUserFacade;
-    }
-
-    public GroupTimeslotFacade getGroupTimeslotFacade() {
-        return groupTimeslotFacade;
-    }
     
     @GET
     @Path("user/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findGroupsForUser(@PathParam("id") Integer id) {
-        getGroupUserFacade().clearEM();
-        return getGroupUserFacade().findGroupsForUser(id);
+        Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
     
     @GET
     @Path("timeslot/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public GroupTable findGroupForTimeslot(@PathParam("id") Integer id) {
-        return getGroupTimeslotFacade().findGroupForTimeslot(id);
+        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
+        q.setFirstResult(0);
+        List<GroupTimeslot> result = q.getResultList();
+        //TODO add empty result handling
+        return result.get(0).getGroupId();
     }
     
     @GET
     @Path("admin/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findAdminsForGroup(@PathParam("id") Integer id) {
-        return getGroupUserFacade().findAdminsForGroup(id);
+        Query q = getEntityManager().createNamedQuery("GroupUser.findAdminsByGroupId").setParameter("id", id);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 
     @GET
@@ -137,5 +137,15 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
-    }      
+    }
+    
+    @GET
+    @Path("/findRequestUserForGroup/{groupId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findRequestUserForGroup (@PathParam("groupId") Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("RequestUser.findRequestUsersByGroupId").setParameter("groupId", groupId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
 }

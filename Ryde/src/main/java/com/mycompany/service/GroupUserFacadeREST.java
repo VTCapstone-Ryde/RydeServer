@@ -55,6 +55,7 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     public void remove(@PathParam("id") Integer id) {
         super.remove(super.find(id));
     }
+    
     @DELETE
     @Path("/{userId}/{groupId}")
     public void removeByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
