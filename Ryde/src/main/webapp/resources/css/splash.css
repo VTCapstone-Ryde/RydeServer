@@ -144,8 +144,7 @@ style the editableContent component of the siteTemplate */
 style the footer component of the siteTemplate */
 #footer {
     width: 100%;
-    height: 100px;
-    bottom: 16px;
+    height: 60px;
     position: absolute;
 }
 

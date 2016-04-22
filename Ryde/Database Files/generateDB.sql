@@ -70,6 +70,7 @@ CREATE TABLE RequestUser
     PRIMARY KEY (id),
     user_id INT NOT NULL,
     group_id INT NOT NULL,
+    invite boolean NOT NULL,
     FOREIGN KEY (user_id) REFERENCES User_Table(id) ON DELETE CASCADE ON UPDATE CASCADE,
     FOREIGN KEY (group_id) REFERENCES Group_Table(id) ON DELETE CASCADE ON UPDATE CASCADE
 );
