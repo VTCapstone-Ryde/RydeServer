@@ -29,10 +29,12 @@
 
                     <h:button value="Learn More" class="learnMore" outcome="aboutUs"/> 
                     
-                    <a href="#{fbConnection.getFBAuthUrl()}"> <img
-                            style="margin-top: 138px;" src="./images/facebookLoginButton.png" />
-                    </a>
-                                       
+                    <h:form>
+                        <a href="#{fbConnection.getFBAuthUrl()}"> 
+                            <img style="margin-top: 10px;" src="./images/facebookLoginButton.png" />
+                        </a>
+                    </h:form>
+                
                     <h3>Download Ryde!</h3>
 
                     <p:graphicImage value="/images/App-Store-Icon.png" style="width: 30%;height: 30%;"/>
