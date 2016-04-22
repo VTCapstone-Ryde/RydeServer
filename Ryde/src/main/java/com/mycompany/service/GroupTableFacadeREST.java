@@ -43,6 +43,14 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     }
 
     @POST
+    @Override
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(GroupTable entity) {
+        super.create(entity);
+    }
+    
+    @POST
+    @Path("createWithReturn")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public GroupTable createWithReturn(GroupTable entity) {
@@ -76,13 +84,6 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findAll() {
         return super.findAll();
-    }
-
-    @GET
-    @Path("{from}/{to}")
-    @Produces({MediaType.APPLICATION_JSON})
-    public List<GroupTable> findRange(@PathParam("from") Integer from, @PathParam("to") Integer to) {
-        return super.findRange(new int[]{from, to});
     }
 
     @GET
