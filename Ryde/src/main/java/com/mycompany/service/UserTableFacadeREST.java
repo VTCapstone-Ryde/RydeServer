@@ -185,4 +185,21 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         int idToUse = findByToken(fbTok).getId();
         return getTimeslotUserFacade().findUserDriverTimeslots(idToUse);
     }
+    
+    /**
+     * Sets the driver status for a user
+     * @param fbTok the FB token of the user
+     * @param driverStatus The driver status as an int. (0 for false, 1 for true)
+     */
+    @PUT
+    @Path("setDriverStatus/{fbTok}/{driverStatus}")
+    public void setDriverStatus(@PathParam("fbTok") String fbTok, @PathParam("driverStatus") Integer driverStatus) {
+        UserTable user = findByToken(fbTok);
+        Boolean driver = false;
+        if (driverStatus == 1) {
+            driver = true;
+        }
+        user.setDriverStatus(driver);
+        this.edit(user);
+    }
 }

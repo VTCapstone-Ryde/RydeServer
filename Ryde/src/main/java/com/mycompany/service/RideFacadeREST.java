@@ -140,8 +140,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @GET
     @Path("getQueue/{timeslotId}/{driverToken}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId, @PathParam("driverToken") Integer driverToken) {
-        UserTable driver = findByToken(Integer.toString(driverToken));
+    public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId, @PathParam("driverToken") String driverToken) {
+        UserTable driver = findByToken(driverToken);
         List<Ride> allRides = findAll();
         ArrayList<Ride> ridesForTimeslot = new ArrayList<>();
         for (Ride i : allRides) {

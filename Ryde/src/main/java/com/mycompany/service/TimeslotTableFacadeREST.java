@@ -14,6 +14,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -123,5 +124,15 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         int userId = ut.getId();
         List<TimeslotTable> timeslots = timeslotUserFacade.findTimeslotsForUser(userId);
         return timeslots;
+    }
+    
+    @GET
+    @Path("/findDriversForTimeslot/{tsId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findDriversForTimeslot(@PathParam("tsId") Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").setParameter("tsId", tsId).setParameter("driver", true);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 }
