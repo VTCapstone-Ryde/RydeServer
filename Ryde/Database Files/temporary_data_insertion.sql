@@ -26,7 +26,9 @@ INSERT INTO Timeslot_Table (passcode, start_time, end_time) VALUES
 ('ccccc', CAST(N'2016-05-15 19:30:00' AS DATETIME), CAST(N'2016-05-15 19:00:00' AS DATETIME)),
 ('ddddd', CAST(N'2016-05-17 19:00:00' AS DATETIME), CAST(N'2016-05-18 02:00:00' AS DATETIME)),
 ('eeeee', CAST(N'2016-05-06 20:00:00' AS DATETIME), CAST(N'2016-05-06 23:59:59' AS DATETIME)),
-('fffff', CAST(N'2016-04-06 20:00:00' AS DATETIME), CAST(N'2016-04-07 03:00:00' AS DATETIME));
+('fffff', CAST(N'2016-04-06 20:00:00' AS DATETIME), CAST(N'2016-04-07 03:00:00' AS DATETIME)),
+('ggggg', CAST(N'2016-05-12 20:00:00' AS DATETIME), CAST(N'2016-05-12 22:00:00' AS DATETIME)),
+('hhhhh', CAST(N'2016-05-12 18:00:00' AS DATETIME), CAST(N'2016-05-12 19:00:00' AS DATETIME));
 INSERT INTO GroupUser (user_id, group_id, admin) VALUES 
 ('1', '1', '0'),
 ('4', '1', '1'),
@@ -49,7 +51,9 @@ INSERT INTO GroupTimeslot (group_id, ts_id) VALUES
 ('3', '2'),
 ('4', '3'),
 ('4', '4'),
-('6', '5');
+('6', '5'),
+('4', '7'),
+('4', '8');
 INSERT INTO TimeslotUser (user_id, ts_id, driver) VALUES 
 ('1', '1', '0'),
 ('4', '1', '1'),

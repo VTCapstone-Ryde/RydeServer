@@ -4,11 +4,16 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,7 +40,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-    
+
     private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
     private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
     private final UserTableFacade userTableFacade = new UserTableFacade();
@@ -96,11 +101,10 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     /*
         The following methods are added to the generated code
-    */
-    
+     */
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -108,7 +112,62 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         return groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupId));
 
     }
-    
+
+    /**
+     * TALK W/ PAT
+     *
+     * @param groupId
+     * @return
+     */
+    @GET
+    @Path("timeslotsForGroupSorted/{groupId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TimeslotDateResponse> findTimeslotsForGroupSorted(@PathParam("groupId") Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findTimeslotsByGroupId").setParameter("id", groupId);
+        q.setFirstResult(0);
+        List<TimeslotTable> list = q.getResultList();
+        if (list.isEmpty()) {
+            return null;
+        }
+
+        Collections.sort(list, new Comparator<TimeslotTable>() {
+            public int compare(TimeslotTable o1, TimeslotTable o2) {
+                return o1.getStartTime().compareTo(o2.getStartTime());
+            }
+        });
+        
+        ArrayList<TimeslotDateResponse> responseList = new ArrayList();
+        TimeslotTable first = list.get(0);
+        Date currentDate = new Date(first.getStartTime().getYear(), first.getStartTime().getMonth(), first.getStartTime().getDate());
+        TimeslotDateResponse currentResponse = new TimeslotDateResponse();
+        currentResponse.setDate(currentDate);
+        currentResponse.setTimeslots(new ArrayList<TimeslotTable>());
+        currentResponse.getTimeslots().add(first);
+        
+        for (TimeslotTable timeslot: list) {
+            if (timeslot == first) {
+                
+            }
+            else if (timeslot.getStartTime().getYear() == currentDate.getYear() && 
+            timeslot.getStartTime().getMonth() == currentDate.getMonth() && 
+            timeslot.getStartTime().getDate() == currentDate.getDate()) {
+                currentResponse.getTimeslots().add(timeslot);
+            }
+            else {
+                responseList.add(currentResponse);
+                currentDate = new Date(timeslot.getStartTime().getYear(), timeslot.getStartTime().getMonth(), timeslot.getStartTime().getDate());
+                currentResponse = new TimeslotDateResponse();
+                currentResponse.setDate(currentDate);
+                currentResponse.setTimeslots(new ArrayList<TimeslotTable>());
+                currentResponse.getTimeslots().add(timeslot);
+            }
+        }
+        responseList.add(currentResponse);
+
+        return responseList;
+
+    }
+
     @GET
     @Path("timeslotsForUser/{userId}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -125,7 +184,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         List<TimeslotTable> timeslots = timeslotUserFacade.findTimeslotsForUser(userId);
         return timeslots;
     }
-    
+
     @GET
     @Path("/findDriversForTimeslot/{tsId}")
     @Produces({MediaType.APPLICATION_JSON})
