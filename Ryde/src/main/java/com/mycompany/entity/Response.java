@@ -28,6 +28,10 @@ public class Response implements Serializable{
     private boolean inQueue;
     @XmlElement
     private boolean joinTADSuccess;
+    @XmlElement
+    private String queueStatus;
+    @XmlElement
+    private UserTable driver;
     
     public Response() {
         
@@ -35,6 +39,11 @@ public class Response implements Serializable{
     
     public Response(Integer position) {
         this.position = position;
+    }
+    
+    public Response (String queueStatus, UserTable driver) {
+        this.driver = driver;
+        this.queueStatus = queueStatus;
     }
     
     public Response(Integer tsId, Integer numDrivers, Integer queueSize,
@@ -88,6 +97,22 @@ public class Response implements Serializable{
 
     public boolean isInQueue() {
         return inQueue;
+    }
+
+    public String getQueueStatus() {
+        return queueStatus;
+    }
+
+    public void setQueueStatus(String queueStatus) {
+        this.queueStatus = queueStatus;
+    }
+
+    public UserTable getDriver() {
+        return driver;
+    }
+
+    public void setDriver(UserTable driver) {
+        this.driver = driver;
     }
 
     public void setInQueue(boolean inQueue) {
