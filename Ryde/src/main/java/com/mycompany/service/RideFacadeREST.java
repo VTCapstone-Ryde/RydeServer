@@ -42,7 +42,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
     private final EventFacade eventFacade = new EventFacade();
     private final UserTableFacade userFacade = new UserTableFacade();
-    
+
     public RideFacadeREST() {
         super(Ride.class);
     }
@@ -53,25 +53,25 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     public void create(Ride entity) {
         super.create(entity);
     }
-    
+
     @POST
     @Path("request/{fbTok}/{tsId}")
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response create(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId, Ride entity) {
         UserTable user = findByToken(fbTok);
-        
+
         List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-            .setParameter("tsId", tsId).getResultList();
-        
+                .setParameter("tsId", tsId).getResultList();
+
         entity.setDriverUserId(null);
         entity.setRiderUserId(user);
         entity.setTsId(ts.get(0));
-        
+
         super.create(entity);
-        
+
         Response response = new Response(getPosition(user.getId(), ts.get(0).getId()));
-        
+
         return response;
     }
 
@@ -115,20 +115,19 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     @GET
     @Path("getposition/{fbTok}/{tsId}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
         UserTable user = findByToken(fbTok);
-        
+
         List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-            .setParameter("tsId", tsId).getResultList();
-        
+                .setParameter("tsId", tsId).getResultList();
+
         if (user != null && !ts.isEmpty()) {
             return new Response(getPosition(user.getId(), ts.get(0).getId()));
-        }
-        else {
+        } else {
             return new Response();
         }
     }
@@ -137,7 +136,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     @GET
     @Path("getQueue/{timeslotId}/{driverToken}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -159,7 +158,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         System.out.println(ridesForTimeslot);
         return ridesForTimeslot;
     }
-    
+
     //TALK W/ PAT
     //Creating event stuff needs to be in this class, or fails.
     @POST
@@ -167,12 +166,12 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Produces({MediaType.APPLICATION_JSON})
     public Ride endRide(@PathParam("rideId") Integer rideId) {
         // timestamp
-        Date date = new Date();        
-        
+        Date date = new Date();
+
         // find ride to delete
         Ride rideToDelete;
         rideToDelete = find(rideId);
-        
+
         // if problems creating event, we do not want to delete ride
         Event createdEvent = null;
         try {
@@ -187,74 +186,72 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             getEntityManager().remove(rideToDelete);
             return rideToDelete;
         }
-        return null; 
+        return null;
     }
-    
+
     public UserTable findByToken(String token) {
         List<UserTable> user = new ArrayList();
-        
+
         try {
             user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                     .setParameter("fbTok", token)
                     .getResultList();
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
         if (user.isEmpty()) {
             System.out.println("No user found with token: " + token);
             return null;
-            }
-        else {
+        } else {
             return user.get(0);
         }
     }
-    
+
     public List<Ride> findAllRidesForTimeslot(Integer tsId) {
         List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.tsId.id = :tsId",
                 Ride.class).setParameter("tsId", tsId).getResultList();
-        
+
         return rides;
     }
-    
+
     public List<Ride> findAllRidesForUser(Integer uId) {
         List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.riderUserId.id = :uId",
                 Ride.class).setParameter("uId", uId).getResultList();
-        
+
         return rides;
     }
-    
+
     public Integer getPosition(Integer userId, Integer tsId) {
         List<Ride> rides = findAllRidesForTimeslot(tsId);
-        
+
         int position = 0;
-        
-        for(int i = 0; i < rides.size(); i++) {
+
+        for (int i = 0; i < rides.size(); i++) {
             if (rides.get(i).getRiderUserId().getId().equals(userId)) {
                 position = i + 1;
             }
         }
-        
+
         return position;
     }
-    
+
     @GET
     @Path("rideStatusForUser/{fbToken}")
     @Produces({MediaType.TEXT_PLAIN})
     public String getRideStatusForUser(@PathParam("fbToken") Integer fbToken) {
         UserTable user = this.findByToken(fbToken.toString());
         Ride ride;
-        try { 
+        try {
             if (em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().isEmpty()) {
+                    .setParameter("riderUserId", user.getId())
+                    .getResultList().isEmpty()) {
                 return "notInQueue";
-            }
-            else {
+            } else {
                 ride = em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().get(0);
-                
-                if(ride.getActive() == true) {
+                        .setParameter("riderUserId", user.getId())
+                        .getResultList().get(0);
+
+                if (ride.getActive() == true) {
                     return "active";
                 } else {
                     return "pending";
@@ -263,51 +260,70 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         } catch (Exception e) {
             e.printStackTrace();
         }
-          return null;
+        return null;
     }
-    
+
+    /**
+     * TALK W/ PAT
+     *
+     * @param fbToken
+     * @return
+     */
     @GET
     @Path("driverInfo/{fbToken}")
     @Produces({MediaType.APPLICATION_JSON})
-    public UserTable getDriverInfoForRider(@PathParam("fbToken") Integer fbToken) {
-        UserTable user = this.findByToken(fbToken.toString());
+    public Response getDriverInfoForRider(@PathParam("fbToken") String fbToken) {
+        UserTable user = this.findByToken(fbToken);
         Ride ride;
-        try { 
-            if (em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().isEmpty()) {
-                return null;
+        Query q = getEntityManager().createNamedQuery("Ride.findByRider").setParameter("riderUserId", user.getId());
+        List<Ride> list = q.getResultList();
+        if (list.isEmpty()) {
+            return new Response("notInQueue", null);
+        } else {
+            ride = list.get(0);
+            if (!ride.getActive()) {
+                return new Response("nonActive", null);
             }
-            else {
-                ride = em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().get(0);
-                //TALK W/ PAT
-                //Why doing a search? getDriverUserId returns a usertable already
-                return userFacade.findById(ride.getDriverUserId().getId());
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+            return new Response("active", ride.getDriverUserId());
         }
-          return null;
+//        try { 
+//            if (em.createNamedQuery("findByRider", Ride.class)
+//                .setParameter("riderUserId", user.getId())
+//                .getResultList().isEmpty()) {
+//                return null;
+//            }
+//            else {
+//                ride = em.createNamedQuery("findByRider", Ride.class)
+//                .setParameter("riderUserId", user.getId())
+//                .getResultList().get(0);
+//                //TALK W/ PAT
+//                //Why doing a search? getDriverUserId returns a usertable already
+////                return userFacade.findById(ride.getDriverUserId().getId());
+//                return ride.getDriverUserId();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//          return null;
     }
 
     @DELETE
     @Path("cancel/{fbTok}")
     public void cancelRide(@PathParam("fbTok") String fbTok) {
         UserTable user = findByToken(fbTok);
-        
+
         List<Ride> rides = findAllRidesForUser(user.getId());
-        
+
         for (Ride ride : rides) {
             em.remove(ride);
         }
     }
-    
-     /**
+
+    /**
      * TALK W/ PAT
+     *
      * @param timeslotId
-     * @return 
+     * @return
      */
     @GET
     @Path("getNonActiveQueue/{tsId}")
@@ -318,12 +334,12 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         //TODO add empty result handling
         return q.getResultList();
     }
-    
+
     /**
-     * TALK W/ PAT
-     * Should be a put?
+     * TALK W/ PAT Should be a put?
+     *
      * @param timeslotId
-     * @return 
+     * @return
      */
     @GET
     @Path("startNextRideForTimeslot/{tsId}/{driverTok}")
@@ -334,7 +350,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             //If there are rides in queue:
             //Set first ride in queue to active
             //Assign specified driver to driver of the ride
-            
+
             //Need to be sure this gets lowest id (first position in queue)
             Ride ride = currentNonActiveQueue.get(0);
             ride.setActive(true);
@@ -348,12 +364,12 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         }
         return null;
     }
-    
+
     /**
-     * TALK W/ PAT 
-     * Finds ride that a driver is assigned to
+     * TALK W/ PAT Finds ride that a driver is assigned to
+     *
      * @param driverTok
-     * @return 
+     * @return
      */
     @GET
     @Path("findRideByDriverTok/{driverTok}")
@@ -366,13 +382,12 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         }
         return (Ride) q.getResultList().get(0);
     }
-    
+
     /**
-     * TALK W/ PAT
-     * Cancels the ride a driver is assigned to
-     * Keeps ride in queue
+     * TALK W/ PAT Cancels the ride a driver is assigned to Keeps ride in queue
+     *
      * @param tsId
-     * @param driverTok 
+     * @param driverTok
      */
     @PUT
     @Path("driverCancel/{driverTok}")

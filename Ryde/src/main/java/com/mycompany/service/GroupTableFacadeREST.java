@@ -42,7 +42,7 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @POST
     @Override
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Consumes({MediaType.APPLICATION_JSON})
     public void create(GroupTable entity) {
         super.create(entity);
     }

@@ -199,5 +199,17 @@ public class UserTable implements Serializable {
     public void setRequestUserCollection(Collection<RequestUser> requestUserCollection) {
         this.requestUserCollection = requestUserCollection;
     }
-    
+
+    public void setToNull() {
+        this.setFbId(null);
+        this.setFbTok(null);
+        this.setFirstName(null);
+        this.setId(null);
+        this.setLastName(null);
+        this.setPhoneNumber(null);
+        this.setCarColor(null);
+        this.setCarMake(null);
+        this.setCarModel(null);
+    }
+
 }
