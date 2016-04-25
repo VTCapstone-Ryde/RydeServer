@@ -4,6 +4,7 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.UserTable;
@@ -63,6 +64,21 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
     public RequestUser find(@PathParam("id") Integer id) {
         return super.find(id);
     }
+    
+    private UserTable findUserById(Integer id) {
+        List<UserTable> list = getEntityManager().createNamedQuery("UserTable.findById").setParameter("id", id).getResultList();
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
+    private GroupTable findGroupById(Integer id) {
+        List<GroupTable> list = getEntityManager().createNamedQuery("GroupTable.findById").setParameter("id", id).getResultList();
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list.get(0);
+    }
 
     @GET
     @Override
@@ -99,8 +115,12 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
     @POST
     @Path("/createByUserAndGroup/{userId}/{groupId}")
     public void createByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
-        RequestUser ru = findByUserAndGroup(userId, groupId);
-        super.create(ru);
+        UserTable user = this.findUserById(userId);
+        GroupTable group = this.findGroupById(groupId);
+        RequestUser ru = new RequestUser();
+        ru.setGroupId(group);
+        ru.setUserId(user);
+        create(ru);
     }   
     
     @DELETE
