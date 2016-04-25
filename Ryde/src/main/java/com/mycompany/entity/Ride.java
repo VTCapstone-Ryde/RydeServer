@@ -35,7 +35,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Ride.findByEndLat", query = "SELECT r FROM Ride r WHERE r.endLat = :endLat"),
     @NamedQuery(name = "Ride.findByEndLon", query = "SELECT r FROM Ride r WHERE r.endLon = :endLon"),
     @NamedQuery(name = "Ride.getNonActiveQueueForTimeslot", query = "SELECT r FROM Ride r WHERE r.active = 0 AND r.tsId.id = :tsId"),
-    @NamedQuery(name = "Ride.findByRider", query = "SELECT r FROM Ride r WHERE r.riderUserId = :riderUserId"),
+    @NamedQuery(name = "Ride.findByDriverTok", query = "SELECT r FROM Ride r WHERE r.driverUserId.fbTok = :driverFbtok"),
+    @NamedQuery(name = "Ride.findByRider", query = "SELECT r FROM Ride r WHERE r.riderUserId = :riderUserId")
 
 })
 public class Ride implements Serializable {

@@ -330,6 +330,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             //If there are rides in queue:
             //Set first ride in queue to active
             //Assign specified driver to driver of the ride
+            
+            //Need to be sure this gets lowest id (first position in queue)
             Ride ride = currentNonActiveQueue.get(0);
             ride.setActive(true);
             UserTable driver = findByToken(driverTok);
@@ -341,5 +343,39 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             return ride;
         }
         return null;
+    }
+    
+    /**
+     * TALK W/ PAT 
+     * Finds ride that a driver is assigned to
+     * @param driverTok
+     * @return 
+     */
+    @GET
+    @Path("findRideByDriverTok/{driverTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Ride findRideByDriverTok(@PathParam("driverTok") String driverTok) {
+        Query q = getEntityManager().createNamedQuery("Ride.findByDriverTok").setParameter("driverFbtok", driverTok);
+        //Maybe should only do getResultList once for efficiency...
+        if (q.getResultList().isEmpty()) {
+            return null;
+        }
+        return (Ride) q.getResultList().get(0);
+    }
+    
+    /**
+     * TALK W/ PAT
+     * Cancels the ride a driver is assigned to
+     * Keeps ride in queue
+     * @param tsId
+     * @param driverTok 
+     */
+    @PUT
+    @Path("driverCancel/{driverTok}")
+    public void driverCancel(@PathParam("driverTok") String driverTok) {
+        Ride ride = findRideByDriverTok(driverTok);
+        ride.setActive(false);
+        ride.setDriverUserId(null);
+        edit(ride);
     }
 }
