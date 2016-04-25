@@ -265,32 +265,45 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         }
           return null;
     }
-    
+    /**
+     * TALK W/ PAT
+     * @param fbToken
+     * @return 
+     */
     @GET
     @Path("driverInfo/{fbToken}")
     @Produces({MediaType.APPLICATION_JSON})
     public UserTable getDriverInfoForRider(@PathParam("fbToken") String fbToken) {
         UserTable user = this.findByToken(fbToken);
         Ride ride;
-        try { 
-            if (em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().isEmpty()) {
-                return null;
-            }
-            else {
-                ride = em.createNamedQuery("findByRider", Ride.class)
-                .setParameter("riderUserId", user.getId())
-                .getResultList().get(0);
-                //TALK W/ PAT
-                //Why doing a search? getDriverUserId returns a usertable already
-//                return userFacade.findById(ride.getDriverUserId().getId());
-                return ride.getDriverUserId();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        Query q = getEntityManager().createNamedQuery("Ride.findByRider").setParameter("riderUserId", user.getId());
+        List<Ride> list = q.getResultList();
+        if (list.isEmpty()) {
+            return null;
         }
-          return null;
+        else {
+            ride = list.get(0);
+            return ride.getDriverUserId();
+        }
+//        try { 
+//            if (em.createNamedQuery("findByRider", Ride.class)
+//                .setParameter("riderUserId", user.getId())
+//                .getResultList().isEmpty()) {
+//                return null;
+//            }
+//            else {
+//                ride = em.createNamedQuery("findByRider", Ride.class)
+//                .setParameter("riderUserId", user.getId())
+//                .getResultList().get(0);
+//                //TALK W/ PAT
+//                //Why doing a search? getDriverUserId returns a usertable already
+////                return userFacade.findById(ride.getDriverUserId().getId());
+//                return ride.getDriverUserId();
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//          return null;
     }
 
     @DELETE
