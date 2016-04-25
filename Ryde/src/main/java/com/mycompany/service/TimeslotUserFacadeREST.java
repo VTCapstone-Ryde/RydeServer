@@ -18,6 +18,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -38,11 +39,11 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-    
+
     private final GroupTimeslotFacade gtFacade = new GroupTimeslotFacade();
     private final TimeslotUserFacade tuFacade = new TimeslotUserFacade();
     private final RideFacadeREST rideFacade = new RideFacadeREST();
-    
+
     public TimeslotUserFacadeREST() {
         super(TimeslotUser.class);
     }
@@ -53,25 +54,24 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     public void create(TimeslotUser entity) {
         super.create(entity);
     }
-    
+
     @POST
     @Path("jointad/{fbTok}/{code}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response joinTad(@PathParam("fbTok") String fbTok, @PathParam("code") String passCode) {
         Response response = new Response();
-        
+
         List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.passcode = :passcode", TimeslotTable.class).
                 setParameter("passcode", passCode).getResultList();
-        
-        if (!ts.isEmpty()){
+
+        if (!ts.isEmpty()) {
             UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                .setParameter("fbTok", fbTok).getSingleResult();
-            
+                    .setParameter("fbTok", fbTok).getSingleResult();
+
             if (tuFacade.userInTAD(user, ts.get(0))) {
                 response.setJoinTADSuccess(false);
                 return response;
-            }
-            else {
+            } else {
                 TimeslotUser tu = new TimeslotUser(false, user, ts.get(0));
 
                 super.create(tu);
@@ -79,8 +79,7 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
                 response.setJoinTADSuccess(true);
                 return response;
             }
-        }
-        else {
+        } else {
             response.setJoinTADSuccess(false);
             return response;
         }
@@ -131,28 +130,75 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     @GET
     @Path("gettads/{fbTok}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Response> getTads(@PathParam("fbTok") String fbTok) {
         List<Response> responses = new ArrayList<Response>();
-        
+
         UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-            .setParameter("fbTok", fbTok).getSingleResult();
-        
+                .setParameter("fbTok", fbTok).getSingleResult();
+
         List<TimeslotTable> timeslots = tuFacade.findTimeslotsForUser(user.getId());
-        
+
         for (int i = 0; i < timeslots.size(); i++) {
             Integer tsId = timeslots.get(i).getId();
-            
+
             GroupTable group = gtFacade.findGroupForTimeslot(tsId);
             List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
             List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
-            
+
             responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
         }
-        
+
         return responses;
+    }
+
+    /**
+     * TALK W/ PAT
+     *
+     * @param token
+     * @return
+     */
+    public UserTable findUserByToken(String token) {
+        try {
+            if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", token)
+                    .getResultList().isEmpty()) {
+                System.out.println("No user found with token: " + token);
+                return null;
+            } else {
+                return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                        .setParameter("fbTok", token).getResultList().get(0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * TALK W/ PAT
+     *
+     * @param userFbTok
+     * @param tsId
+     * @param isDriver
+     */
+    @POST
+    @Path("createWithParams/{userFbTok}/{tsId}/{isDriver}")
+    public void createWithParams(@PathParam("userFbTok") String userFbTok, @PathParam("tsId") Integer tsId, @PathParam("isDriver") Integer isDriver) {
+        UserTable user = findUserByToken(userFbTok);
+        Query q = getEntityManager().createNamedQuery("TimeslotTable.findById").setParameter("id", tsId);
+        if (q.getResultList().isEmpty()) {
+            return;
+        }
+        TimeslotTable ts = (TimeslotTable) q.getResultList().get(0);
+        Boolean driver = false;
+        if (isDriver == 1) {
+            driver = true;
+        }
+        TimeslotUser tsu = new TimeslotUser(driver, user, ts);
+        create(tsu);
     }
 }

@@ -18,6 +18,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -277,7 +278,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
                 ride = em.createNamedQuery("findByRider", Ride.class)
                 .setParameter("riderUserId", user.getId())
                 .getResultList().get(0);
-                
+                //TALK W/ PAT
+                //Why doing a search? getDriverUserId returns a usertable already
                 return userFacade.findById(ride.getDriverUserId().getId());
             }
         } catch (Exception e) {
@@ -296,5 +298,48 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         for (Ride ride : rides) {
             em.remove(ride);
         }
+    }
+    
+     /**
+     * TALK W/ PAT
+     * @param timeslotId
+     * @return 
+     */
+    @GET
+    @Path("getNonActiveQueue/{tsId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Ride> getNonActiveQueueForTimeslot(@PathParam("tsId") Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("Ride.getNonActiveQueueForTimeslot").setParameter("tsId", tsId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
+    
+    /**
+     * TALK W/ PAT
+     * Should be a put?
+     * @param timeslotId
+     * @return 
+     */
+    @GET
+    @Path("startNextRideForTimeslot/{tsId}/{driverTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public Ride startNextRideForTimeslot(@PathParam("tsId") Integer tsId, @PathParam("driverTok") String driverTok) {
+        List<Ride> currentNonActiveQueue = getNonActiveQueueForTimeslot(tsId);
+        if (!currentNonActiveQueue.isEmpty()) {
+            //If there are rides in queue:
+            //Set first ride in queue to active
+            //Assign specified driver to driver of the ride
+            Ride ride = currentNonActiveQueue.get(0);
+            ride.setActive(true);
+            UserTable driver = findByToken(driverTok);
+            if (driver == null) {
+                return null;
+            }
+            ride.setDriverUserId(driver);
+            edit(ride);
+            return ride;
+        }
+        return null;
     }
 }
