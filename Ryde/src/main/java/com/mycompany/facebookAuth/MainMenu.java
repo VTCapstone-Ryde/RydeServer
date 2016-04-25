@@ -18,6 +18,9 @@ public class MainMenu extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String code = "";
+    
+    @EJB
+    com.mycompany.managers.FacebookManager facebookManager;
 
     @EJB
     com.mycompany.session.UserTableFacade userFacade;
@@ -54,6 +57,9 @@ public class MainMenu extends HttpServlet {
                     httpSession.putValue("access_token", user.getFbTok());
                 }
                 else {
+                    facebookManager.setFbTok(fb_id);
+                    facebookManager.setFirstName(first_name);
+                    facebookManager.setLastName(last_name);
                     res.sendRedirect(req.getContextPath() + "/faces/CreateAccount.xhtml");
                 }
             } catch (Exception e) {
