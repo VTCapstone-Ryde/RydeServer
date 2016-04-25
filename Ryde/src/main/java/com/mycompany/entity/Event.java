@@ -69,6 +69,13 @@ public class Event implements Serializable {
         this.id = id;
         this.datetime = datetime;
     }
+    
+    public Event(Date datetime, UserTable driver, TimeslotTable tsId, String eventType) {
+        this.datetime = datetime;
+        this.driverUserId = driver;
+        this.tsId = tsId;
+        this.eventType = eventType;
+    }
 
     public Integer getId() {
         return id;

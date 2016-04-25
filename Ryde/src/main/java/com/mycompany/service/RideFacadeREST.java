@@ -160,8 +160,11 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         return ridesForTimeslot;
     }
     
+    //TALK W/ PAT
+    //Creating event stuff needs to be in this class, or fails.
     @POST
     @Path("endRide/{rideId}")
+    @Produces({MediaType.APPLICATION_JSON})
     public Ride endRide(@PathParam("rideId") Integer rideId) {
         // timestamp
         Date date = new Date();        
@@ -173,14 +176,15 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         // if problems creating event, we do not want to delete ride
         Event createdEvent = null;
         try {
-            createdEvent = eventFacade.createRideEvent(rideToDelete, date);
+//            createdEvent = eventFacade.createRideEvent(rideToDelete, date);
+            createdEvent = new Event(date, rideToDelete.getDriverUserId(), rideToDelete.getTsId(), "rideCompleted");
+            getEntityManager().persist(createdEvent);
             System.out.println(createdEvent.toString());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
         if (createdEvent != null) {
-            em.remove(rideToDelete);
+            getEntityManager().remove(rideToDelete);
             return rideToDelete;
         }
         return null; 
