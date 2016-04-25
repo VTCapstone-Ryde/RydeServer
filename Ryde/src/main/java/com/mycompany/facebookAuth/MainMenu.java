@@ -1,14 +1,10 @@
 package com.mycompany.facebookAuth;
 
 import com.mycompany.entity.UserTable;
-import com.mycompany.managers.LoginManager;
 import java.io.IOException;
 import java.util.Map;
 import javax.ejb.EJB;
-import javax.faces.context.FacesContext;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,9 +14,6 @@ public class MainMenu extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
     private String code = "";
-    
-    @EJB
-    com.mycompany.managers.FacebookManager facebookManager;
 
     @EJB
     com.mycompany.session.UserTableFacade userFacade;
@@ -57,9 +50,6 @@ public class MainMenu extends HttpServlet {
                     httpSession.putValue("access_token", user.getFbTok());
                 }
                 else {
-                    facebookManager.setFbTok(fb_id);
-                    facebookManager.setFirstName(first_name);
-                    facebookManager.setLastName(last_name);
                     res.sendRedirect(req.getContextPath() + "/faces/CreateAccount.xhtml");
                 }
             } catch (Exception e) {

@@ -45,13 +45,11 @@
 }
 
 #buttons.wrapper {
-    padding-top: 20px;
-    text-align: center;
+
 }
 
 #buttons.ViewGroup{
-    display:inline-block;
-    position: relative;
+    text-align: center;
 }  
 
 .ViewGroupElements {

@@ -13,6 +13,7 @@ import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
+import com.mycompany.session.RequestUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
 import java.io.Serializable;
@@ -44,11 +45,11 @@ public class GroupManager implements Serializable {
     private String statusMessage;
     private String searchedGroupName;
     private UserTable selectedMember;
-    private List<GroupTable> searchedGroups = new ArrayList();
+    private List<GroupTable> matchedGroups = new ArrayList();
     private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
-    private GroupTable searchedGroup = new GroupTable();
-    
+    private GroupTable requestedGroup = new GroupTable();
+
     @EJB
     private GroupTableFacade groupFacade;
     @EJB
@@ -59,9 +60,11 @@ public class GroupManager implements Serializable {
     private UserTableFacade userFacade;
     @EJB
     private TimeslotUserFacade timeslotUserFacade;
+    @EJB 
+    private RequestUserFacade requestUserFacade;
 
     public List<UserTable> getUsers() {
-        List<UserTable> list =  userFacade.findAll();
+        List<UserTable> list = userFacade.findAll();
         list.remove(getLoggedInUser());
         return list;
     }
@@ -122,20 +125,24 @@ public class GroupManager implements Serializable {
         this.selectedMember = selectedMember;
     }
 
-    public List<GroupTable> getSearchedGroup() {
-        return searchedGroups;
+    public List<GroupTable> getMatchedGroup() {
+        return matchedGroups;
     }
 
-    public void setSearchedGroups(List<GroupTable> searchedGroup) {
-        this.searchedGroups = searchedGroups;
-    }
-    
-    public List<GroupTable> getSearchedGroups() {
-        return searchedGroups;
+    public void setMatchedGroups(List<GroupTable> matchedGroups) {
+        this.matchedGroups = matchedGroups;
     }
 
-    public void setSearchedGroup(GroupTable searchedGroup) {
-        this.searchedGroup = searchedGroup;
+    public List<GroupTable> getMatchedGroups() {
+        return matchedGroups;
+    }
+
+    public void setRequestedGroup(GroupTable requestedGroup) {
+        this.requestedGroup = requestedGroup;
+    }
+
+    public GroupTable getRequestedGroup() {
+        return requestedGroup;
     }
 
     public String getSearchedGroupName() {
@@ -243,7 +250,7 @@ public class GroupManager implements Serializable {
                 addGroupUserRow.setGroupId(selectedGroup);
                 addGroupUserRow.setUserId(addedUser);
                 groupUserFacade.create(addGroupUserRow);
-                
+
                 // add all user timeslot relations that have to do with the group
                 List<TimeslotTable> timeslots = groupTimeslotFacade.findTimeslotsForGroup(selectedGroup.getId());
                 for (TimeslotTable timeslot : timeslots) {
@@ -253,7 +260,7 @@ public class GroupManager implements Serializable {
                     timeslotUserFacade.create(addTimeslotUserRow);
                 }
             }
-            
+
             selectedMembers.clear();
             return "ViewGroup?faces-redirect=true";
         } catch (EJBException e) {
@@ -287,29 +294,42 @@ public class GroupManager implements Serializable {
         }
         return "";
     }
-    
-    public String RequestGroup() {
+
+    public String requestGroup() {
         UserTable user = getLoggedInUser();
-        try {
+        
+        if (requestedGroup != null) {
+            try {
                 // add to request user table
                 RequestUser request = new RequestUser();
                 request.setUserId(user);
-                request.setGroupId(searchedGroup);
-                
-                return "Requests?faces-redirect=true";
+                request.setGroupId(requestedGroup);
+                requestUserFacade.create(request);
+
+                requestedGroup = null;
+                return "Profile?faces-redirect=true";
             } catch (EJBException e) {
                 statusMessage = "Something went wrong when requesting to join group";
                 return "";
-            }   
+            }
+        }
+        return "";
     }
 
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
     }
-    
-    public String searchGroups() {
-        searchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
-        return "SearchGroups";
+
+    public List<GroupTable> getSearchedGroups() {
+        matchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
+        List<GroupTable> userGroups = groupUserFacade.findGroupsForUser( getLoggedInUser().getId());
+        
+        for (GroupTable group : userGroups) {
+            if (matchedGroups.contains(group)) {
+                matchedGroups.remove(group);
+            }
+        }
+        return matchedGroups;
     }
 }
