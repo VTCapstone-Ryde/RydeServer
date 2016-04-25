@@ -281,7 +281,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             return new Response("notInQueue", null);
         } else {
             ride = list.get(0);
-            if (ride.getActive() == false) {
+            if (!ride.getActive()) {
                 return new Response("nonActive", null);
             }
             return new Response("active", ride.getDriverUserId());
