@@ -269,8 +269,8 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @GET
     @Path("driverInfo/{fbToken}")
     @Produces({MediaType.APPLICATION_JSON})
-    public UserTable getDriverInfoForRider(@PathParam("fbToken") Integer fbToken) {
-        UserTable user = this.findByToken(fbToken.toString());
+    public UserTable getDriverInfoForRider(@PathParam("fbToken") String fbToken) {
+        UserTable user = this.findByToken(fbToken);
         Ride ride;
         try { 
             if (em.createNamedQuery("findByRider", Ride.class)
