@@ -36,8 +36,8 @@
                     <f:facet name="options">
                         <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!"/>
                         <p:inputText style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{groupManager.searchedGroupName}"/>
-                        <p:commandButton  value="Search" action="SearchGroups.xhtml"/>
-                        <p:commandButton  value="Logout" action="index.xhtml"/>
+                        <p:commandButton  value="Search" action="SearchGroups?faces-redirect=true"/>
+                        <p:commandButton  value="Logout" action="index?faces-redirect=true"/>
                     </f:facet>
                 </p:menubar>
             </h:form>
