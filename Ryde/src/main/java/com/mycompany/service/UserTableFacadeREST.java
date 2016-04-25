@@ -5,10 +5,14 @@
 package com.mycompany.service;
 
 
+import com.mycompany.entity.GroupTimeslot;
+import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
+import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -35,9 +39,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-
-    private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
-    private final GroupUserFacade groupUserFacade = new GroupUserFacade();
     
     public UserTableFacadeREST() {
         super(UserTable.class);
@@ -99,14 +100,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     /*
     The following methods were added after code generation
     */
-
-    public TimeslotUserFacade getTimeslotUserFacade() {
-        return timeslotUserFacade;
-    }
-
-    public GroupUserFacade getGroupUserFacade() {
-        return groupUserFacade;
-    }
     
     @GET
     @Path("validateToken/{token}")
@@ -123,16 +116,27 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @GET
     @Path("inGroup/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInGroupEdit(@PathParam("groupId") String groupId) {
-        List<UserTable> users = groupUserFacade.findUsersForGroup(Integer.parseInt(groupId));
+    public List<UserTable> findUsersInGroup(@PathParam("groupId") Integer groupId) {
+        List<GroupUser> groupUsers = em.createQuery("SELECT gu FROM GroupUser gu WHERE gu.groupId.id = :gId", GroupUser.class)
+                .setParameter("gId", groupId).getResultList();
+        ArrayList<UserTable> users = new ArrayList<>();
+        for (GroupUser gu : groupUsers) {
+            users.add(gu.getUserId());
+        }
         return users;
     }
     
     @GET
     @Path("inTimeslot/{timeslotId}")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserTable> findUsersInTimeslotEdit(@PathParam("timeslotId") String timeslotId) {
-        return timeslotUserFacade.findUsersForTimeslot(Integer.parseInt(timeslotId));
+    public List<UserTable> findUsersInTimeslot(@PathParam("timeslotId") Integer timeslotId) {
+        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT tu FROM TimeslotUser tu WHERE tu.tsId.id = :tId", TimeslotUser.class)
+                .setParameter("tId", timeslotId).getResultList();
+        ArrayList<UserTable> users = new ArrayList<>();
+        for (TimeslotUser tu : timeslotUsers) {
+            users.add(tu.getUserId());
+        }
+        return users;
     }
     
     @GET
@@ -147,7 +151,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
             if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                     .setParameter("fbTok", token)
                     .getResultList().isEmpty()) {
-                System.out.println("No user found with token: " + token);
                 return null;
             }
             else {
@@ -182,8 +185,14 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Path("driver/{fbTok}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findDriverTimeslots(@PathParam("fbTok") String fbTok) {
-        int idToUse = findByToken(fbTok).getId();
-        return getTimeslotUserFacade().findUserDriverTimeslots(idToUse);
+        UserTable driver = findByToken(fbTok);
+        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT tu FROM TimeslotUser tu WHERE tu.userId.id = :tId", TimeslotUser.class)
+                .setParameter("tId", driver.getId()).getResultList();
+        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+        for (TimeslotUser tu : timeslotUsers) {
+            timeslots.add(tu.getTsId());
+        }
+        return timeslots;
     }
     
     /**

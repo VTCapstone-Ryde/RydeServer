@@ -4,12 +4,11 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
+import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
-import com.mycompany.session.GroupTimeslotFacade;
-import com.mycompany.session.TimeslotUserFacade;
-import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,10 +39,6 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-
-    private final TimeslotUserFacade timeslotUserFacade = new TimeslotUserFacade();
-    private final GroupTimeslotFacade groupTimeslotFacade = new GroupTimeslotFacade();
-    private final UserTableFacade userTableFacade = new UserTableFacade();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -108,9 +103,14 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForGroupEdit(@PathParam("groupId") String groupId) {
-        return groupTimeslotFacade.findTimeslotsForGroup(Integer.parseInt(groupId));
-
+    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupId) {
+        List<GroupTimeslot> groupTimeslots = em.createQuery("SELECT gt FROM GroupTimeslot gt WHERE gt.groupId.id = :gId", GroupTimeslot.class)
+                .setParameter("gId", groupId).getResultList();
+        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+        for (GroupTimeslot gt : groupTimeslots) {
+            timeslots.add(gt.getTsId());
+        }
+        return timeslots;
     }
 
     /**
@@ -131,6 +131,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         }
 
         Collections.sort(list, new Comparator<TimeslotTable>() {
+            @Override
             public int compare(TimeslotTable o1, TimeslotTable o2) {
                 return o1.getStartTime().compareTo(o2.getStartTime());
             }
@@ -165,23 +166,33 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         responseList.add(currentResponse);
 
         return responseList;
-
     }
 
     @GET
     @Path("timeslotsForUser/{userId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForUserEdit(@PathParam("userId") String userId) {
-        return timeslotUserFacade.findTimeslotsForUser(Integer.parseInt(userId));
+    public List<TimeslotTable> findTimeslotsForUserEdit(@PathParam("userId") Integer userId) {
+        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT ut FROM TimeslotUser ut WHERE ut.userId = :uId", TimeslotUser.class)
+                .setParameter("uId", userId).getResultList();
+        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+        for (TimeslotUser ut : timeslotUsers) {
+            timeslots.add(ut.getTsId());
+        }
+        return timeslots; 
     }
 
     @GET
     @Path("timeslotsForToken/{token}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findTimeslotsForToken(@PathParam("token") String token) {
-        UserTable ut = userTableFacade.findByToken(token);
-        int userId = ut.getId();
-        List<TimeslotTable> timeslots = timeslotUserFacade.findTimeslotsForUser(userId);
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                .setParameter("fbTok", token).getResultList().get(0);
+        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT ut FROM TimeslotUser ut WHERE ut.userId = :uId", TimeslotUser.class)
+                .setParameter("uId", user.getId()).getResultList();
+        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+        for (TimeslotUser ut : timeslotUsers) {
+            timeslots.add(ut.getTsId());
+        }
         return timeslots;
     }
 
@@ -193,5 +204,20 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
+    }
+    
+    @GET
+    @Path("driver/{fbTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findDriverTimeslots(@PathParam("fbTok") String fbTok) {
+        UserTable driver = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                    .setParameter("fbTok", fbTok).getResultList().get(0);
+        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT tu FROM TimeslotUser tu WHERE tu.userId.id = :tId", TimeslotUser.class)
+                .setParameter("tId", driver.getId()).getResultList();
+        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+        for (TimeslotUser tu : timeslotUsers) {
+            timeslots.add(tu.getTsId());
+        }
+        return timeslots;
     }
 }

@@ -40,9 +40,6 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
-    private final EventFacade eventFacade = new EventFacade();
-    private final UserTableFacade userFacade = new UserTableFacade();
-
     public RideFacadeREST() {
         super(Ride.class);
     }
