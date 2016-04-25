@@ -82,8 +82,8 @@ INSERT INTO Event (driver_user_id, ts_id, datetime, event_type) VALUES
 ('4', '6', CAST(N'2016-04-06 21:00:00' AS DATETIME), 'rideCompleted'),
 ('4', '6', CAST(N'2016-04-06 22:17:00' AS DATETIME), 'rideCompleted');
 INSERT INTO RequestUser (user_id, group_id, invite) VALUES
-('2', '1', '1'),
-('3', '1', '0'),
-('3', '6', '1'),
-('4', '4', '0'),
-('1', '2', '1');
+('2', '1'),
+('3', '1'),
+('3', '6'),
+('4', '4'),
+('1', '2');
