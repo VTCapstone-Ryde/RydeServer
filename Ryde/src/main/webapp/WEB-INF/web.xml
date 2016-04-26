@@ -21,4 +21,13 @@
     <welcome-file-list>
         <welcome-file>faces/index.xhtml</welcome-file>
     </welcome-file-list>
+    
+    <servlet>
+        <servlet-name>MainMenu</servlet-name>
+        <servlet-class>com.mycompany.facebookAuth.MainMenu</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MainMenu</servlet-name>
+        <url-pattern>/faces/Facebook.xhtml</url-pattern>
+    </servlet-mapping>
 </web-app>
