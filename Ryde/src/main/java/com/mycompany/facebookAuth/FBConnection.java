@@ -23,8 +23,8 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 public class FBConnection implements Serializable {
 
-    public static final String FB_APP_ID = "579825462191179";
-    public static final String FB_APP_SECRET = "141f792fb134dc2188d52181c1fddcdc";
+    public static final String FB_APP_ID = "462642387261561";
+    public static final String FB_APP_SECRET = "2c98b08fe5e211d1fcef4c667b1d20a2";
     public static final String REDIRECT_URI = "http://localhost:8080/Ryde/faces/Facebook.xhtml";
 
     static String accessToken = "";

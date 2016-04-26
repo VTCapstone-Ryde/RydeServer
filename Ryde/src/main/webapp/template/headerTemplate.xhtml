@@ -25,13 +25,13 @@
                     </p:menuitem>
 
                     <p:submenu label="Home" styleClass="subMenu" style="color: #ffffff;">
-                        <p:menuitem value="View Groups" url="Home.xhtml"/>
-                        <p:menuitem value="Create Group" url="CreateGroup.xhtml"/>
+                        <p:menuitem value="View Groups" url="Home.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="Create Group" url="CreateGroup.xhtml?faces-redirect=true"/>
                     </p:submenu>
 
-                    <p:menuitem value="Profile" url="Profile.xhtml" style="color: #ffffff;"/>
+                    <p:menuitem value="Profile" url="Profile.xhtml?faces-redirect=true" style="color: #ffffff;"/>
                     
-                    <p:menuitem value="Timeslots" url="TimeSlot.xhtml" style="color: #ffffff;"/>
+                    <p:menuitem value="Timeslots" url="TimeSlot.xhtml?faces-redirect=true" style="color: #ffffff;"/>
                     
                     <f:facet name="options">
                         <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!"/>

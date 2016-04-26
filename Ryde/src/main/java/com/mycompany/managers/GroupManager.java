@@ -44,9 +44,12 @@ public class GroupManager implements Serializable {
     private String description;
     private String statusMessage;
     private UserTable selectedMember;
-    private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
     private GroupTable requestedGroup = new GroupTable();
+    private RequestUser request = new RequestUser();
+    private List<RequestUser> requests = new ArrayList();
+    private List<String> selectedMembers = new ArrayList();
+ 
 
     @EJB
     private GroupTableFacade groupFacade;
@@ -60,7 +63,7 @@ public class GroupManager implements Serializable {
     private TimeslotUserFacade timeslotUserFacade;
     @EJB 
     private RequestUserFacade requestUserFacade;
-
+    
     public List<UserTable> getUsers() {
         List<UserTable> list = userFacade.findAll();
         list.remove(getLoggedInUser());
@@ -131,6 +134,14 @@ public class GroupManager implements Serializable {
         return requestedGroup;
     }
 
+    public RequestUser getRequest() {
+        return request;
+    }
+
+    public void setRequest(RequestUser request) {
+        this.request = request;
+    }
+    
     public String promoteToAdmin() {
         if (selectedMember != null) {
             GroupUser editRow = groupUserFacade.findByGroupAndUser(selectedGroup, selectedMember);
@@ -140,6 +151,10 @@ public class GroupManager implements Serializable {
 
         selectedMember = null;
         return "ViewGroup?faces-redirect=true";
+    }
+    
+    public String lastAdminToLeave(){
+        return "";
     }
 
     public void onGroupRowSelect() {
@@ -225,6 +240,9 @@ public class GroupManager implements Serializable {
             for (String userId : selectedMembers) {
                 GroupUser addGroupUserRow = new GroupUser();
                 UserTable addedUser = userFacade.findById(Integer.parseInt(userId));
+                
+                // check if user already exists in group
+                
                 addGroupUserRow.setGroupId(selectedGroup);
                 addGroupUserRow.setUserId(addedUser);
                 groupUserFacade.create(addGroupUserRow);
@@ -273,6 +291,34 @@ public class GroupManager implements Serializable {
         return "";
     }
 
+    public String acceptRequest() {
+        if (request != null) {
+            try {
+                selectedMembers.add(request.getUserId().getId().toString());
+                requestUserFacade.remove(request);
+                addToGroup();
+                return "ViewGroup?faces-redirect=true";
+            } catch (EJBException e) {
+                statusMessage = "Something went trying to add to group";
+                return "";
+            }
+        }
+        return "";
+    }
+    
+    public String denyRequest() {
+        if (request != null) {
+            try {
+                requestUserFacade.remove(request);
+                return "ViewGroup?faces-redirect=true";
+            } catch (EJBException e) {
+                statusMessage = "Something went trying to add to group";
+                return "";
+            }
+        }
+        return "";
+    }
+    
     public String requestGroup() {
         UserTable user = getLoggedInUser();
         
@@ -280,6 +326,13 @@ public class GroupManager implements Serializable {
             try {
                 // add to request user table
                 RequestUser request = new RequestUser();
+
+                // if already requested
+                if (requestUserFacade.findAll().contains(request)) {
+                    requestedGroup = null;
+                    return "";
+                }
+                
                 request.setUserId(user);
                 request.setGroupId(requestedGroup);
                 requestUserFacade.create(request);
@@ -297,5 +350,16 @@ public class GroupManager implements Serializable {
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
+    }
+    
+    public List<RequestUser> getRequests() {
+        requests = requestUserFacade.findRequestsForGroup(selectedGroup.getId());
+        
+        for (RequestUser req : requests) {
+            System.out.println(req.getUserId().getFirstName() + " " + req.getGroupId().getTitle());
+        }
+        
+        
+        return requests;
     }
 }

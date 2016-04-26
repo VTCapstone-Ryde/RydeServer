@@ -32,6 +32,16 @@ public class Response implements Serializable{
     private String queueStatus;
     @XmlElement
     private UserTable driver;
+    @XmlElement
+    private Ride ride;
+
+    public Ride getRide() {
+        return ride;
+    }
+
+    public void setRide(Ride ride) {
+        this.ride = ride;
+    }
     
     public Response() {
         
@@ -41,9 +51,10 @@ public class Response implements Serializable{
         this.position = position;
     }
     
-    public Response (String queueStatus, UserTable driver) {
-        this.driver = driver;
+    public Response (String queueStatus, Ride ride) {
+//        this.driver = driver;
         this.queueStatus = queueStatus;
+        this.ride = ride;
     }
     
     public Response(Integer tsId, Integer numDrivers, Integer queueSize,

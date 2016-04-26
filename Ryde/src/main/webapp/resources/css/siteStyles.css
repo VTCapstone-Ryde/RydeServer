@@ -22,6 +22,7 @@ body {
     text-decoration: none;
     color: black;
     margin: 0px;
+    
 }
 
 /* Style the text used under the standard HTML tag "p" for paragraph */
@@ -154,9 +155,10 @@ style the editableContent component of the siteTemplate */
 style the footer component of the siteTemplate */
 #footer {
    position:absolute;
+   left:0px;
+   bottom:-80px;
+   height:60px;
    width:100%;
-   padding-top: 100px;
-   height:60px;   /* Height of the footer */
 }
 
 .footerLink {

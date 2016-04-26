@@ -45,12 +45,12 @@ public class AccountManager implements Serializable {
     private int security_question;
     private String security_answer;
     private String statusMessage;
-    
+
     private Map<String, Object> security_questions;
-        
+
     private UserTable selected;
     private GroupTable selectedGroup;
-    
+
     private List<String> events = new ArrayList();
 
     /**
@@ -62,7 +62,6 @@ public class AccountManager implements Serializable {
     @EJB
     private UserTableFacade userFacade;
     private GroupUserFacade groupUserFacade;
-
 
     /**
      * Creates a new instance of AccountManager
@@ -174,7 +173,6 @@ public class AccountManager implements Serializable {
         this.userFacade = userFacade;
     }
 
-
     public Map<String, Object> getSecurity_questions() {
         if (security_questions == null) {
             security_questions = new LinkedHashMap<>();
@@ -210,59 +208,13 @@ public class AccountManager implements Serializable {
     public void setSelected(UserTable selected) {
         this.selected = selected;
     }
-    
+
     public GroupTable getSelectedGroup() {
         return selectedGroup;
     }
- 
+
     public void setSelectedCar(GroupTable selectedGroup) {
         this.selectedGroup = selectedGroup;
-    }
-
-    public String createAccount() {
-
-        // Check to see if a user already exists with the username given.
-        UserTable aUser = userFacade.findByName(firstName, lastName);
-
-        if (aUser != null) {
-            firstName = "";
-            statusMessage = "Username already exists! Please select a different one!";
-            return "";
-        }
-
-        if (statusMessage.isEmpty()) {
-            try {
-                UserTable user = new UserTable();
-                user.setFirstName(firstName);
-                user.setLastName(lastName);
-                userFacade.create(user);
-            } catch (EJBException e) {
-                firstName = "";
-                statusMessage = "Something went wrong while creating your account!";
-                return "";
-            }
-            initializeSessionMap();
-            return "Profile";
-        }
-        return "";
-    }
-
-    public String updateAccount() {
-        if (statusMessage.isEmpty()) {
-            int user_id = (int) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id");
-            UserTable editUser = userFacade.find(user_id);
-            try {
-                editUser.setFirstName(this.selected.getFirstName());
-                editUser.setLastName(this.selected.getLastName());
-                userFacade.edit(editUser);
-            } catch (EJBException e) {
-                firstName = "";
-                statusMessage = "Something went wrong while editing your profile!";
-                return "";
-            }
-            return "Profile";
-        }
-        return "";
     }
 
     public void validateInformation(ComponentSystemEvent event) {
@@ -301,7 +253,7 @@ public class AccountManager implements Serializable {
         FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("user_id", user.getId());
     }
-    
+
     public List<String> getEvents() {
         events.clear();
         events.add("Scheduled to drive for Capstone Sigma -- 4/1/2016  ");
@@ -311,5 +263,19 @@ public class AccountManager implements Serializable {
         events.add("Rode with Capstone Sigma -- 3/27/2016");
         events.add("Joined Ryde! -- 3/26/2016  ");
         return events;
+    }
+
+    public String updateAccount() {
+        if (selected != null) {
+            try {
+                System.out.println(selected.getPhoneNumber());
+                selected.setPhoneNumber(selected.getPhoneNumber());
+                userFacade.edit(selected);
+            } catch (EJBException e) {
+                return "";
+            }
+            return "Profile";
+        }
+        return "";
     }
 }
