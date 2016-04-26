@@ -35,15 +35,13 @@ import org.primefaces.model.DualListModel;
 public class TimeSlotManager implements Serializable {
 
     private String passcode;
-    private String startTimeString;
-    private String endTimeString;
     private Date startTime;
     private Date endTime;
     private TimeslotTable selectedTimeSlot;
     private GroupTable selectedGroup;
     private String statusMessage;
-
-    @EJB
+    
+    @EJB 
     private TimeslotUserFacade timeSlotUserFacade;
     @EJB
     private GroupTimeslotFacade groupTimeSlotFacade;
@@ -107,22 +105,6 @@ public class TimeSlotManager implements Serializable {
 
     public void setEndTime(Date endTime) {
         this.endTime = endTime;
-    }
-
-    public String getStartTimeString() {
-        return startTimeString;
-    }
-
-    public void setStartTimeString(String startTimeString) {
-        this.startTimeString = startTimeString;
-    }
-
-    public String getEndTimeString() {
-        return endTimeString;
-    }
-
-    public void setEndTimeString(String endTimeString) {
-        this.endTimeString = endTimeString;
     }
 
     public GroupTable getSelectedGroup() {
@@ -220,7 +202,7 @@ public class TimeSlotManager implements Serializable {
             newTimeslot.setPasscode(passcode);
             newTimeslot.setStartTime(startTime);
             newTimeslot.setEndTime(endTime);
-
+            
             // add timeslot to the database
             timeSlotFacade.create(newTimeslot);
 
@@ -238,7 +220,6 @@ public class TimeSlotManager implements Serializable {
                 newTimeslotUserRow.setTsId(newTimeslot);
 
                 if (searchDriverById(user.getId())) {
-                    System.out.println(user.getFirstName());
                     newTimeslotUserRow.setDriver(Boolean.TRUE);
                 } else {
                     System.out.println("nope");
@@ -251,6 +232,8 @@ public class TimeSlotManager implements Serializable {
             passcode = "";
             startTime = null;
             endTime = null;
+            drivers.getTarget().clear();
+            drivers.getSource().clear();
             return "ViewTimeSlotForGroup?faces-redirect=true";
 
         } catch (EJBException e) {

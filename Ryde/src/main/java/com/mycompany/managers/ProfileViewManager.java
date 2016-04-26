@@ -13,6 +13,7 @@ import com.mycompany.session.UserTableFacade;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
+import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -37,9 +38,11 @@ public class ProfileViewManager implements Serializable {
      * UserFacade.
      */
     @EJB
-    private UserTableFacade userFacade = new UserTableFacade();
-    private GroupUserFacade groupUserFacade = new GroupUserFacade();
-    private TimeslotUserFacade timeSlotUserFacade = new TimeslotUserFacade();
+    private UserTableFacade userFacade;
+    @EJB
+    private GroupUserFacade groupUserFacade;
+    @EJB
+    private TimeslotUserFacade timeSlotUserFacade;
 
     public ProfileViewManager() {
 
@@ -52,7 +55,7 @@ public class ProfileViewManager implements Serializable {
     public UserTable getLoggedInUser() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
     }
-    
+
     public List<GroupTable> getUserGroups() {
         return groupUserFacade.findGroupsForUser(getLoggedInUser().getId());
     }
@@ -76,8 +79,9 @@ public class ProfileViewManager implements Serializable {
     public void setSelectedTimeSlot(TimeslotTable selectedTimeSlot) {
         this.selectedTimeSlot = selectedTimeSlot;
     }
-    
+
     public String logout() {
         return "Login?faces-redirect=true";
     }
+
 }

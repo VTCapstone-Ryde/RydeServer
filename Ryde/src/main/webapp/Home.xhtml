@@ -28,16 +28,24 @@
                                 <p:ajax event="rowSelect" update="groupsDT"
                                         listener="#{groupManager.onGroupRowSelect()}"/>  
                                 <p:column style="width:40px;align:center;">
-                                    <p:commandButton icon="ui-icon-cancel" update="groupsDT" action="#{groupManager.leaveGroup()}">
-                                        <f:setPropertyActionListener value="#{group}" target="#{groupManager.selectedGroup}" />
-                                    </p:commandButton>
+                                    <p:commandButton icon="ui-icon-cancel" update="display" oncomplete="PF('dlg').show()" /> 
+                                    <p:dialog id="dlg" header="Are you sure you want to leave?" height="50" width="350" modal="true" showEffect="fade" widgetVar="dlg" resizable="false">
+                                        <h:panelGrid columns="2" id="display" style="border: transparent">
+                                            <p:commandButton id="yes" value="Yes" action="#{groupManager.leaveGroup()}">
+                                                <f:setPropertyActionListener value="#{group}" target="#{groupManager.selectedGroup}" />
+                                            </p:commandButton>
+                                            <p:commandButton id="no" value="No" onclick="dlg.hide()"/>
+                                        </h:panelGrid>
+                                    </p:dialog>
                                 </p:column>
                                 <p:column headerText="Your Groups">
                                     <h:outputText value="#{group.title}" />
                                 </p:column>
+
                             </p:dataTable>
                         </div>
                     </div>
+
                 </h:form>
             </ui:define>
 

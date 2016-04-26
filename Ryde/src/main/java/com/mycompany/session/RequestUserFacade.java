@@ -5,10 +5,12 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.RequestUser;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -27,5 +29,13 @@ public class RequestUserFacade extends AbstractFacade<RequestUser> {
 
     public RequestUserFacade() {
         super(RequestUser.class);
+    }
+
+    public List<RequestUser> findRequestsForGroup(Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("RequestUser.findRequestUsersByGroupId").setParameter("groupId", groupId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        
+        return q.getResultList();
     }
 }

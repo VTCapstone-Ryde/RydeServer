@@ -26,7 +26,7 @@
                         <h1>#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}</h1> 
 
                         <p:graphicImage width="200" height="200" alt="defaultUserPhoto" value="/images/defaultUserPhoto.jpg"/>
-                        <p:tabView>
+                        <p:tabView style="padding-bottom: 30px">
                             <p:tab title="Basic Info">
                                 <p:panelGrid id="basic_info" style="width: 100%">
                                     <p:row>
@@ -85,28 +85,6 @@
                                         <p:column><h:outputText value="Thurs 4/21/2016 " /></p:column>
                                         <p:column><h:outputText value="Time: " style="font-weight: bold"/></p:column>
                                         <p:column><h:outputText value="9:00PM-11:00PM " /></p:column>
-                                    </p:row>
-                                </p:panelGrid>
-                            </p:tab>
-                            <p:tab title="Requests">
-                                <p:panelGrid id="requests" style="width: 100%">
-                                    <p:row>
-                                        <p:column colspan="4">Pending Requests</p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">Jimbo Jam requests to join Cool Group</p:column>
-                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
-                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">Jack Jacky requests to join Cool Group</p:column>
-                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
-                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
-                                    </p:row>
-                                    <p:row>
-                                        <p:column colspan="2">Josiah Jos requests to join Cool Group</p:column>
-                                        <p:column><p:button value="Accept" icon="ui-icon-check"></p:button></p:column>
-                                        <p:column><p:button value="Deny" icon="ui-icon-closethick"></p:button></p:column>
                                     </p:row>
                                 </p:panelGrid>
                             </p:tab>

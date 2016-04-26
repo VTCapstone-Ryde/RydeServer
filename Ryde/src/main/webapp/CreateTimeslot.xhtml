@@ -27,15 +27,13 @@
                         <h:outputText value="Passcode: " />
                         <p:inputText value="#{timeSlotManager.passcode}"/>
 
+                        
                         <h:outputText value="Start Time: " />
-                        <p:inputMask value="#{timeSlotManager.startTime}" mask="99-99-9999 99:99:99">
-                            <f:convertDateTime pattern="dd-mm-yyyy HH:mm:ss" />
-                        </p:inputMask>
+                        <p:calendar value="#{timeSlotManager.startTime}" pattern="yyyy-MM-dd hh:mm a"/>
+
 
                         <h:outputText value="End Time: " />
-                        <p:inputText value="#{timeSlotManager.endTime}" placeholder="dd-mm-yyyy hh:mm:ss">
-                            <f:convertDateTime pattern="dd-mm-yyyy HH:mm:ss" />
-                        </p:inputText>
+                        <p:calendar value="#{timeSlotManager.endTime}" pattern="yyyy-MM-dd hh:mm a"/>
 
                     </h:panelGrid>
                     <p:pickList id="pickList" value="#{timeSlotManager.drivers}" var="driverId" itemLabel="#{groupManager.getNameById(driverId)}" itemValue="#{driverId}">
