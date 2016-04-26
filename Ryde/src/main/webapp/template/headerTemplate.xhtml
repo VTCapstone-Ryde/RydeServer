@@ -34,8 +34,7 @@
                     <p:menuitem value="Timeslots" url="TimeSlot.xhtml?faces-redirect=true" style="color: #ffffff;"/>
                     
                     <f:facet name="options">
-                        <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!"/>
-                        <p:inputText style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{searchManager.searchedGroupName}"/>
+                        <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!  "/>
                         <p:commandButton  value="Search" action="SearchGroups?faces-redirect=true"/>
                         <p:commandButton  value="Logout" action="index?faces-redirect=true"/>
                     </f:facet>

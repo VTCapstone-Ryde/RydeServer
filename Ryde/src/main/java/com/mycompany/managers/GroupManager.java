@@ -325,17 +325,17 @@ public class GroupManager implements Serializable {
         if (requestedGroup != null) {
             try {
                 // add to request user table
-                RequestUser request = new RequestUser();
+                RequestUser req = new RequestUser();
 
                 // if already requested
-                if (requestUserFacade.findAll().contains(request)) {
+                if (requestUserFacade.findAll().contains(req)) {
                     requestedGroup = null;
                     return "";
                 }
                 
-                request.setUserId(user);
-                request.setGroupId(requestedGroup);
-                requestUserFacade.create(request);
+                req.setUserId(user);
+                req.setGroupId(requestedGroup);
+                requestUserFacade.create(req);
 
                 requestedGroup = null;
                 return "Profile?faces-redirect=true";
