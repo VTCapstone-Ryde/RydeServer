@@ -5,6 +5,7 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.GroupTable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -33,9 +34,13 @@ public class GroupTableFacade extends AbstractFacade<GroupTable> {
     }
     
     public List<GroupTable> searchGroupByTitle(String title) {
-        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", title);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return q.getResultList();
+        List<GroupTable> groups = new ArrayList<>();
+        
+        if (title.trim().length() != 0) {
+            groups = em.createQuery("SELECT g FROM GroupTable g WHERE g.title LIKE '%" + title + "%'", GroupTable.class)
+                .getResultList();
+        }
+
+        return groups;
     }
 }

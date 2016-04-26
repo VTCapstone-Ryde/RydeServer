@@ -43,9 +43,7 @@ public class GroupManager implements Serializable {
     private String name;
     private String description;
     private String statusMessage;
-    private String searchedGroupName;
     private UserTable selectedMember;
-    private List<GroupTable> matchedGroups = new ArrayList();
     private List<String> selectedMembers = new ArrayList();
     private GroupTable selectedGroup = new GroupTable();
     private GroupTable requestedGroup = new GroupTable();
@@ -125,32 +123,12 @@ public class GroupManager implements Serializable {
         this.selectedMember = selectedMember;
     }
 
-    public List<GroupTable> getMatchedGroup() {
-        return matchedGroups;
-    }
-
-    public void setMatchedGroups(List<GroupTable> matchedGroups) {
-        this.matchedGroups = matchedGroups;
-    }
-
-    public List<GroupTable> getMatchedGroups() {
-        return matchedGroups;
-    }
-
     public void setRequestedGroup(GroupTable requestedGroup) {
         this.requestedGroup = requestedGroup;
     }
 
     public GroupTable getRequestedGroup() {
         return requestedGroup;
-    }
-
-    public String getSearchedGroupName() {
-        return searchedGroupName;
-    }
-
-    public void setSearchedGroupName(String searchGroupName) {
-        this.searchedGroupName = searchGroupName;
     }
 
     public String promoteToAdmin() {
@@ -319,17 +297,5 @@ public class GroupManager implements Serializable {
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
-    }
-
-    public List<GroupTable> getSearchedGroups() {
-        matchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
-        List<GroupTable> userGroups = groupUserFacade.findGroupsForUser( getLoggedInUser().getId());
-        
-        for (GroupTable group : userGroups) {
-            if (matchedGroups.contains(group)) {
-                matchedGroups.remove(group);
-            }
-        }
-        return matchedGroups;
     }
 }
