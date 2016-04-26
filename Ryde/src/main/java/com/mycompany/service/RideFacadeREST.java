@@ -279,9 +279,9 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         } else {
             ride = list.get(0);
             if (!ride.getActive()) {
-                return new Response("nonActive", ride);
+                return new Response("nonActive", ride.getDriverUserId());
             }
-            return new Response("active", ride);
+            return new Response("active", ride.getDriverUserId());
         }
 //        try { 
 //            if (em.createNamedQuery("findByRider", Ride.class)

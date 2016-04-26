@@ -14,6 +14,7 @@ import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -185,12 +186,18 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
         
         for (int i = 0; i < timeslots.size(); i++) {
             Integer tsId = timeslots.get(i).getId();
+            
+            Date rightNow = new Date();
+            
+            if (timeslots.get(i).getStartTime().before(rightNow) 
+                    && timeslots.get(i).getEndTime().after(rightNow)) {
+            
+                GroupTable group = gtFacade.findGroupForTimeslot(tsId);
+                List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
+                List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
 
-            GroupTable group = gtFacade.findGroupForTimeslot(tsId);
-            List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
-            List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
-
-            responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+                responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+            }
         }
 
         return responses;
