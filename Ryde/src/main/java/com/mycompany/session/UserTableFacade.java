@@ -47,7 +47,7 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
             return null;
         }
         //TODO add empty result handling
-        return (UserTable)q.getSingleResult();
+        return (UserTable)q.getResultList().get(0);
     }
     
     public UserTable findByName(String firstName, String lastName) {

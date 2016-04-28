@@ -86,6 +86,7 @@ public class AccountManager implements Serializable {
     }
 
     public String getLastName() {
+        lastName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("last_name");
         return lastName;
     }
 
@@ -94,6 +95,7 @@ public class AccountManager implements Serializable {
     }
 
     public String getFirstName() {
+        firstName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("first_name");
         return firstName;
     }
 
@@ -244,16 +246,6 @@ public class AccountManager implements Serializable {
         }
     }
 
-    public void initializeSessionMap() {
-        UserTable user = userFacade.findByName(getFirstName(), getLastName());
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("first_name", user.getFirstName());
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("last_name", user.getLastName());
-        FacesContext.getCurrentInstance().getExternalContext().
-                getSessionMap().put("user_id", user.getId());
-    }
-
     public List<String> getEvents() {
         events.clear();
         events.add("Scheduled to drive for Capstone Sigma -- 4/1/2016  ");
@@ -277,5 +269,35 @@ public class AccountManager implements Serializable {
             return "Profile";
         }
         return "";
+    }
+
+    public String createAccount() {
+        // Check to see if a user already exists with the username given.
+        try {
+            UserTable user = new UserTable();
+            user.setFirstName(firstName);
+            user.setLastName(lastName);
+            user.setDriverStatus(false);
+            fbTok = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("access_token");
+            user.setFbTok(fbTok);
+            fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
+            user.setFbId(fbId);
+            user.setPhoneNumber(phoneNumber);
+            userFacade.create(user);
+            
+            System.out.println("HERE");
+            System.out.println(user.getFirstName() + " " + user.getLastName());
+            
+            // put user_id in session map
+            FacesContext.getCurrentInstance().getExternalContext().
+                getSessionMap().put("user_id", user.getId());
+            
+            return "Home?faces-redirect=true";
+        } catch (EJBException e) {
+            statusMessage = "Something went wrong while creating your account!";
+            System.out.println(statusMessage);
+            e.printStackTrace();
+            return "";
+        }
     }
 }

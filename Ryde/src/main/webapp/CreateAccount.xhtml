@@ -16,18 +16,21 @@
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
         <!-- This page is constructed based on the siteTemplate -->
-        <ui:composition template="/template/siteTemplate.xhtml">
+        <ui:composition template="/template/splashPageTemplate.xhtml">
 
             <title><ui:define name="title">Create User</ui:define></title>
 
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
-                <h2 title="#{facebookManager.firstName} #{facebookManager.lastName}"/>
-                                
-                <p:outputLabel for="phone" value="Phone:" />
-                <p:inputMask id="phone" value="#{facebookManager.phoneNumber}" mask="(999) 999-9999"/>
-                
-                <p:commandButton value="Submit" action="#{facebookManager.createUser()}"/>
+                <h:form>
+                    <p:outputLabel value="#{accountManager.firstName} #{accountManager.lastName}" />
+                    <br/>
+                    <p:outputLabel for="phone" value="Phone:" />
+                    <p:inputMask id="phone" value="#{accountManager.phoneNumber}" mask="(999) 999-9999"/>
+
+                    <p:commandButton value="Submit" action="#{accountManager.createAccount()}"/>
+                </h:form>
+
             </ui:define>
         </ui:composition>
     </h:body>
