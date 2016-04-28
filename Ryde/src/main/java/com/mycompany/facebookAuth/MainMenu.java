@@ -45,12 +45,10 @@ public class MainMenu extends HttpServlet {
                 UserTable user = userFacade.findByFbId(fb_id);
                 
                 if (user != null) {
-                    user.setFbTok(accessToken);
                     System.out.println(user.getFirstName());
                     httpSession.putValue("user_id", user.getId());
                     httpSession.putValue("first_name", user.getFirstName());
                     httpSession.putValue("last_name", user.getLastName());
-                    httpSession.putValue("access_token", user.getFbTok());
                     res.sendRedirect(req.getContextPath() + "/faces/Home.xhtml");
                 }
                 else {
@@ -58,7 +56,7 @@ public class MainMenu extends HttpServlet {
                     httpSession.putValue("first_name", first_name);
                     httpSession.putValue("last_name", last_name);
                     httpSession.putValue("fb_id", fb_id);
-                    httpSession.putValue("access_token", accessToken);
+                    httpSession.putValue("access_token", fb_id);
                     res.sendRedirect(req.getContextPath() + "/faces/CreateAccount.xhtml");
                 }
             } catch (Exception e) {
