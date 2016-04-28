@@ -156,7 +156,7 @@ style the footer component of the siteTemplate */
 #footer {
    position:absolute;
    left:0px;
-   bottom:-80px;
+   bottom:-100px;
    height:60px;
    width:100%;
 }
@@ -301,4 +301,8 @@ The following styles are used in the headerTemplate.xhtml file as:
 	font-weight: bold;
         padding-top: 20px;
         padding-bottom: 30px;
+}
+
+.hide-column-names table thead tr {
+    display: none;
 }

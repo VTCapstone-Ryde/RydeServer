@@ -92,4 +92,8 @@ public class UserTableFacade extends AbstractFacade<UserTable> {
         //TODO add empty result handling
         return q.getResultList();
     } 
+     
+    public void updatePhoneNumber(UserTable entity, String phoneNumber) {
+        
+    }
 }

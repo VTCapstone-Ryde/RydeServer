@@ -13,7 +13,6 @@ import com.mycompany.session.UserTableFacade;
 import java.io.Serializable;
 import java.util.List;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -25,9 +24,6 @@ import javax.inject.Named;
  * @author Balci
  */
 public class ProfileViewManager implements Serializable {
-
-    // Instance Variable (Property)
-    private UserTable user;
 
     private TimeslotTable selectedTimeSlot = new TimeslotTable();
 
@@ -64,14 +60,6 @@ public class ProfileViewManager implements Serializable {
         return timeSlotUserFacade.findTimeslotsForUser(getLoggedInUser().getId());
     }
 
-    public UserTable getUser() {
-        return user;
-    }
-
-    public void setUser(UserTable user) {
-        this.user = user;
-    }
-
     public TimeslotTable getSelectedTimeSlot() {
         return selectedTimeSlot;
     }
@@ -83,5 +71,52 @@ public class ProfileViewManager implements Serializable {
     public String logout() {
         return "Login?faces-redirect=true";
     }
-
+    
+    public String getPhoneNumber() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getPhoneNumber();
+    }
+    
+    public void setPhoneNumber(String phoneNumber) {
+        UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+        
+        user.setPhoneNumber(phoneNumber);
+        
+        userFacade.edit(user);
+    }
+    
+    public String getCarMake() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarMake();
+    }
+    
+    public void setCarMake(String carMake) {
+        UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+        
+        user.setCarMake(carMake);
+        
+        userFacade.edit(user);
+    }
+    
+    public String getCarModel() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarModel();
+    }
+    
+    public void setCarModel(String carModel) {
+        UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+        
+        user.setCarModel(carModel);
+        
+        userFacade.edit(user);
+    }
+    
+    public String getCarColor() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarColor();
+    }
+    
+    public void setCarColor(String carColor) {
+        UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+        
+        user.setCarColor(carColor);
+        
+        userFacade.edit(user);
+    }
 }

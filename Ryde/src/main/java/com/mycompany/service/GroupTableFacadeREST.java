@@ -143,9 +143,10 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @Path("/findRequestUserForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findRequestUserForGroup (@PathParam("groupId") Integer groupId) {
-        Query q = getEntityManager().createNamedQuery("RequestUser.findRequestUsersByGroupId").setParameter("groupId", groupId);
+        Query q = getEntityManager().createNamedQuery("RequestUser.findUsersByRequestsForGroupId").setParameter("groupId", groupId);
         q.setFirstResult(0);
         //TODO add empty result handling
+        List list = q.getResultList();
         return q.getResultList();
     }
 }
