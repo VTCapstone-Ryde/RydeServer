@@ -4,17 +4,22 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
+import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.TimeslotUserFacade;
 import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -40,6 +45,14 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    @EJB
+    private GroupTimeslotFacade gtFacade;
+    @EJB
+    private GroupTableFacade groupFacade;
+    @EJB
+    private UserTableFacadeREST userFacade;
+    @EJB
+    private TimeslotUserFacade tuFacade;
     private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
     private static SecureRandom rnd = new SecureRandom();
 
@@ -106,16 +119,54 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @POST
     @Path("createTimeslotForGroup/{groupId}")
     @Consumes({MediaType.APPLICATION_JSON})
-    public void createTimeslotForGroup(TimeslotTable entity, @PathParam("groupId") Integer groupId) {
-        String passcode = tadGenerator(6);
+    @Produces({MediaType.APPLICATION_JSON})
+    public TimeslotTable createTimeslotForGroup(TimeslotTable entity, @PathParam("groupId") Integer groupId) {
+        GroupTable group = groupFacade.find(groupId);
+        String passcode = timeslotPasscodeGenerator(6);
         //While loop to ensure unique TAD passcode
-        while (!em.createNamedQuery("TimeslotTable.findByPasscode").setParameter("passcode", passcode).getResultList().isEmpty()) {
-            passcode = tadGenerator(6);
+        while (!getEntityManager().createNamedQuery("TimeslotTable.findByPasscode").setParameter("passcode", passcode).getResultList().isEmpty()) {
+            passcode = timeslotPasscodeGenerator(6);
         }
         entity.setPasscode(passcode);
         super.create(entity);
-        em.flush();
-        
+        getEntityManager().flush();
+        //GroupTimeslot relation entry
+        GroupTimeslot gt = new GroupTimeslot();
+        gt.setGroupId(group);
+        gt.setTsId(entity);
+        gtFacade.create(gt);
+        //UserTimeslot relational entries
+        List<UserTable> usersInGroup = userFacade.findUsersInGroup(groupId);
+        for (UserTable user: usersInGroup) {
+            TimeslotUser tu = new TimeslotUser();
+            tu.setUserId(user);
+            tu.setTsId(entity);
+            tu.setDriver(false);
+            tuFacade.create(tu);
+        }
+        return entity;
+    }
+    
+    @PUT
+    @Path("assignDriverForTimeslot/{userId}/{tsId}")
+    public void assignDriverForTimeslot(@PathParam("userId") Integer userId, @PathParam("tsId") Integer tsId) {
+        List<TimeslotUser> queryResult = getEntityManager().createNamedQuery("TimeslotUser.findByUserIdAndTimeSlotId").setParameter("userId", userId).
+                setParameter("tsId", tsId).getResultList();
+        if (!queryResult.isEmpty()) {
+            TimeslotUser tu = queryResult.get(0);
+            tu.setDriver(true);
+        }
+    }
+    
+    @PUT
+    @Path("removeDriverForTimeslot/{userId}/{tsId}")
+    public void removeDriverForTimeslot(@PathParam("userId") Integer userId, @PathParam("tsId") Integer tsId) {
+        List<TimeslotUser> queryResult = getEntityManager().createNamedQuery("TimeslotUser.findByUserIdAndTimeSlotId").setParameter("userId", userId).
+                setParameter("tsId", tsId).getResultList();
+        if (!queryResult.isEmpty()) {
+            TimeslotUser tu = queryResult.get(0);
+            tu.setDriver(false);
+        }
     }
 
     @GET
@@ -240,7 +291,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     /**
      * Simple method to generate a random length long character string
      */
-    public String tadGenerator(int length) {
+    public String timeslotPasscodeGenerator(int length) {
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
