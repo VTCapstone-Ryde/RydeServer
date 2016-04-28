@@ -35,11 +35,11 @@
                     
                     <f:facet name="options">
                         <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!  "/>
-                        <p:inputText id="searchBox" style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{searchManager.searchedGroupName}">
-                            <p:ajax event="keyup" update="searchDT" listener="#{searchManager.searchedGroups}" />
+                        <p:inputText id="searchBox" style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{groupManager.searchedGroupName}">
+                            <p:ajax event="keyup" update="searchDT" listener="#{groupManager.searchedGroups}" />
                         </p:inputText>
                         <p:overlayPanel id="searchPanel" for="searchBox" hideEffect="fade">
-                            <p:dataTable id="searchDT" var="group" value="#{searchManager.matchedGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}" styleClass="hide-column-names">
+                            <p:dataTable id="searchDT" var="group" value="#{groupManager.matchedGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}" styleClass="hide-column-names">
                                 <p:ajax event="rowSelect" update="searchDT" listener="#{groupManager.onGroupRowSelect()}"/> 
                                 <p:column>
                                     <h:outputText value="#{group.title}" />

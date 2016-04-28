@@ -43,13 +43,14 @@ public class GroupManager implements Serializable {
     private String name;
     private String description;
     private String statusMessage;
+    private String searchedGroupName;
     private UserTable selectedMember;
     private GroupTable selectedGroup = new GroupTable();
     private GroupTable requestedGroup = new GroupTable();
     private RequestUser request = new RequestUser();
     private List<RequestUser> requests = new ArrayList();
     private List<String> selectedMembers = new ArrayList();
- 
+    private List<GroupTable> matchedGroups = new ArrayList();
 
     @EJB
     private GroupTableFacade groupFacade;
@@ -68,6 +69,22 @@ public class GroupManager implements Serializable {
         List<UserTable> list = userFacade.findAll();
         list.remove(getLoggedInUser());
         return list;
+    }
+    
+    public String getSearchedGroupName() {
+        return searchedGroupName;
+    }
+
+    public void setSearchedGroupName(String searchGroupName) {
+        this.searchedGroupName = searchGroupName;
+    }
+
+    public void setMatchedGroups(List<GroupTable> matchedGroups) {
+        this.matchedGroups = matchedGroups;
+    }
+
+    public List<GroupTable> getMatchedGroups() {
+        return matchedGroups;
     }
 
     public List<String> getSelectedMembers() {
@@ -164,7 +181,9 @@ public class GroupManager implements Serializable {
                 getCurrentInstance().getApplication().getNavigationHandler();
 
         configurableNavigationHandler.performNavigation("ViewGroup?faces-redirect=true");
-
+        
+        searchedGroupName = "";
+        matchedGroups.clear();
     }
 
     public String createGroup() {
@@ -361,5 +380,16 @@ public class GroupManager implements Serializable {
         
         
         return requests;
+    }
+    
+    public void searchedGroups() {
+        matchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
+        List<GroupTable> userGroups = groupUserFacade.findGroupsForUser( getLoggedInUser().getId());
+        
+        for (GroupTable group : userGroups) {
+            if (matchedGroups.contains(group)) {
+                matchedGroups.remove(group);
+            }
+        }
     }
 }

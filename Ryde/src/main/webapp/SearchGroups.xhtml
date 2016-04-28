@@ -25,10 +25,10 @@
                 <h:form>
                     <div id="main-wrap">
                         <div id="first-column" class="Home">
-                            <p:inputText style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{searchManager.searchedGroupName}">
-                                <p:ajax event="keyup" update="groupsDT" listener="#{searchManager.searchedGroups}" />
+                            <p:inputText style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{groupManager.searchedGroupName}">
+                                <p:ajax event="keyup" update="groupsDT" listener="#{groupManager.searchedGroups}" />
                             </p:inputText>
-                            <p:dataTable id="groupsDT" var="group" value="#{searchManager.matchedGroups}">
+                            <p:dataTable id="searchDT" var="group" value="#{groupManager.matchedGroups}" selectionMode="single" selection="#{groupManager.selectedGroup}" rowKey="#{group.id}" styleClass="hide-column-names">
                                 <p:column style="width:40px;align:center;">
                                     <p:commandButton icon="ui-icon-plus" update="groupsDT" action="#{groupManager.requestGroup}">
                                         <f:setPropertyActionListener value="#{group}" target="#{groupManager.requestedGroup}" />
