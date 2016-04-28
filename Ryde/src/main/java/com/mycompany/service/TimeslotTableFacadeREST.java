@@ -53,8 +53,6 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     private UserTableFacadeREST userFacade;
     @EJB
     private TimeslotUserFacade tuFacade;
-    private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-    private static SecureRandom rnd = new SecureRandom();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -292,6 +290,8 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
      * Simple method to generate a random length long character string
      */
     public String timeslotPasscodeGenerator(int length) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
         StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             sb.append(AB.charAt(rnd.nextInt(AB.length())));
