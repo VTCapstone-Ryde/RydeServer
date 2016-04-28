@@ -12,8 +12,10 @@ import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -40,9 +42,14 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
-    private final GroupTimeslotFacade gtFacade = new GroupTimeslotFacade();
-    private final TimeslotUserFacade tuFacade = new TimeslotUserFacade();
-    private final RideFacadeREST rideFacade = new RideFacadeREST();
+    @EJB
+    private GroupTimeslotFacade gtFacade;
+    @EJB
+    private TimeslotUserFacade tuFacade;
+    @EJB
+    private RideFacadeREST rideFacade;
+    @EJB
+    private UserTableFacade userFacade;
 
     public TimeslotUserFacadeREST() {
         super(TimeslotUser.class);
@@ -188,7 +195,8 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     @POST
     @Path("createWithParams/{userFbTok}/{tsId}/{isDriver}")
     public void createWithParams(@PathParam("userFbTok") String userFbTok, @PathParam("tsId") Integer tsId, @PathParam("isDriver") Integer isDriver) {
-        UserTable user = findUserByToken(userFbTok);
+//        UserTable user = findUserByToken(userFbTok);
+        UserTable user = userFacade.findByToken(userFbTok);
         Query q = getEntityManager().createNamedQuery("TimeslotTable.findById").setParameter("id", tsId);
         if (q.getResultList().isEmpty()) {
             return;
