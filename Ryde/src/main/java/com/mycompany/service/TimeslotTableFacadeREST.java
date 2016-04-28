@@ -4,16 +4,22 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
+import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.TimeslotUserFacade;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -39,6 +45,16 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    @EJB
+    private GroupTimeslotFacade gtFacade;
+    @EJB
+    private GroupTableFacade groupFacade;
+    @EJB
+    private UserTableFacadeREST userFacade;
+    @EJB
+    private TimeslotUserFacade tuFacade;
+    private static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    private static SecureRandom rnd = new SecureRandom();
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -100,6 +116,59 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     /*
         The following methods are added to the generated code
      */
+    @POST
+    @Path("createTimeslotForGroup/{groupId}")
+    @Consumes({MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_JSON})
+    public TimeslotTable createTimeslotForGroup(TimeslotTable entity, @PathParam("groupId") Integer groupId) {
+        GroupTable group = groupFacade.find(groupId);
+        String passcode = timeslotPasscodeGenerator(6);
+        //While loop to ensure unique TAD passcode
+        while (!getEntityManager().createNamedQuery("TimeslotTable.findByPasscode").setParameter("passcode", passcode).getResultList().isEmpty()) {
+            passcode = timeslotPasscodeGenerator(6);
+        }
+        entity.setPasscode(passcode);
+        super.create(entity);
+        getEntityManager().flush();
+        //GroupTimeslot relation entry
+        GroupTimeslot gt = new GroupTimeslot();
+        gt.setGroupId(group);
+        gt.setTsId(entity);
+        gtFacade.create(gt);
+        //UserTimeslot relational entries
+        List<UserTable> usersInGroup = userFacade.findUsersInGroup(groupId);
+        for (UserTable user: usersInGroup) {
+            TimeslotUser tu = new TimeslotUser();
+            tu.setUserId(user);
+            tu.setTsId(entity);
+            tu.setDriver(false);
+            tuFacade.create(tu);
+        }
+        return entity;
+    }
+    
+    @PUT
+    @Path("assignDriverForTimeslot/{userId}/{tsId}")
+    public void assignDriverForTimeslot(@PathParam("userId") Integer userId, @PathParam("tsId") Integer tsId) {
+        List<TimeslotUser> queryResult = getEntityManager().createNamedQuery("TimeslotUser.findByUserIdAndTimeSlotId").setParameter("userId", userId).
+                setParameter("tsId", tsId).getResultList();
+        if (!queryResult.isEmpty()) {
+            TimeslotUser tu = queryResult.get(0);
+            tu.setDriver(true);
+        }
+    }
+    
+    @PUT
+    @Path("removeDriverForTimeslot/{userId}/{tsId}")
+    public void removeDriverForTimeslot(@PathParam("userId") Integer userId, @PathParam("tsId") Integer tsId) {
+        List<TimeslotUser> queryResult = getEntityManager().createNamedQuery("TimeslotUser.findByUserIdAndTimeSlotId").setParameter("userId", userId).
+                setParameter("tsId", tsId).getResultList();
+        if (!queryResult.isEmpty()) {
+            TimeslotUser tu = queryResult.get(0);
+            tu.setDriver(false);
+        }
+    }
+
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -136,7 +205,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
                 return o1.getStartTime().compareTo(o2.getStartTime());
             }
         });
-        
+
         ArrayList<TimeslotDateResponse> responseList = new ArrayList();
         TimeslotTable first = list.get(0);
         Date currentDate = new Date(first.getStartTime().getYear(), first.getStartTime().getMonth(), first.getStartTime().getDate());
@@ -144,17 +213,15 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         currentResponse.setDate(currentDate);
         currentResponse.setTimeslots(new ArrayList<TimeslotTable>());
         currentResponse.getTimeslots().add(first);
-        
-        for (TimeslotTable timeslot: list) {
+
+        for (TimeslotTable timeslot : list) {
             if (timeslot == first) {
-                
-            }
-            else if (timeslot.getStartTime().getYear() == currentDate.getYear() && 
-            timeslot.getStartTime().getMonth() == currentDate.getMonth() && 
-            timeslot.getStartTime().getDate() == currentDate.getDate()) {
+
+            } else if (timeslot.getStartTime().getYear() == currentDate.getYear()
+                    && timeslot.getStartTime().getMonth() == currentDate.getMonth()
+                    && timeslot.getStartTime().getDate() == currentDate.getDate()) {
                 currentResponse.getTimeslots().add(timeslot);
-            }
-            else {
+            } else {
                 responseList.add(currentResponse);
                 currentDate = new Date(timeslot.getStartTime().getYear(), timeslot.getStartTime().getMonth(), timeslot.getStartTime().getDate());
                 currentResponse = new TimeslotDateResponse();
@@ -178,7 +245,7 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         for (TimeslotUser ut : timeslotUsers) {
             timeslots.add(ut.getTsId());
         }
-        return timeslots; 
+        return timeslots;
     }
 
     @GET
@@ -205,13 +272,13 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
         //TODO add empty result handling
         return q.getResultList();
     }
-    
+
     @GET
     @Path("driver/{fbTok}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findDriverTimeslots(@PathParam("fbTok") String fbTok) {
         UserTable driver = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", fbTok).getResultList().get(0);
+                .setParameter("fbTok", fbTok).getResultList().get(0);
         List<TimeslotUser> timeslotUsers = em.createQuery("SELECT tu FROM TimeslotUser tu WHERE tu.userId.id = :tId", TimeslotUser.class)
                 .setParameter("tId", driver.getId()).getResultList();
         ArrayList<TimeslotTable> timeslots = new ArrayList<>();
@@ -219,5 +286,16 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
             timeslots.add(tu.getTsId());
         }
         return timeslots;
+    }
+
+    /**
+     * Simple method to generate a random length long character string
+     */
+    public String timeslotPasscodeGenerator(int length) {
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 }
