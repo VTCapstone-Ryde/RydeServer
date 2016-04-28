@@ -156,7 +156,7 @@ style the footer component of the siteTemplate */
 #footer {
    position:absolute;
    left:0px;
-   bottom:-80px;
+   bottom:-100px;
    height:60px;
    width:100%;
 }

@@ -34,22 +34,38 @@
                                     </p:row>
                                     <p:row>
                                         <p:column><h:outputText value="Phone Number: " /></p:column>
-                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.phoneNumber}" /></p:column>
+                                        <p:column>
+                                            <p:inplace id="phoneNumber" editor="true">
+                                                <p:inputText value="#{profileViewManager.phoneNumber}" required="true" label="text" />
+                                            </p:inplace>
+                                        </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column colspan="2" style="font-weight: bold">Car Information</p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column><h:outputText value="Car Make: " /></p:column>
-                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carMake}" /></p:column>
+                                        <p:column>
+                                            <p:inplace id="carMake" editor="true">
+                                                <p:inputText value="#{profileViewManager.carMake}" required="true" label="text" />
+                                            </p:inplace>
+                                        </p:column>
                                     </p:row>            
                                     <p:row>
                                         <p:column><h:outputText value="Car Model: " /></p:column>
-                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carModel}" /></p:column>
+                                        <p:column>
+                                            <p:inplace id="carModel" editor="true">
+                                                <p:inputText value="#{profileViewManager.carModel}" required="true" label="text" />
+                                            </p:inplace>
+                                        </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column><h:outputText value="Car Color: " /></p:column>
-                                        <p:column><h:outputText value="#{profileViewManager.loggedInUser.carColor}" /></p:column>
+                                        <p:column>
+                                            <p:inplace id="carColor" editor="true">
+                                                <p:inputText value="#{profileViewManager.carColor}" required="true" label="text" />
+                                            </p:inplace>
+                                        </p:column>
                                     </p:row>
                                     <p:row>
                                         <p:column><h:outputText value="Seats: " /></p:column>
