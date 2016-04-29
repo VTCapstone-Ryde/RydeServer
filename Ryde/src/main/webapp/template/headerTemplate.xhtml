@@ -35,7 +35,7 @@
                     
                     <f:facet name="options">
                         <h:outputText value="Hi #{profileViewManager.loggedInUser.firstName}!  "/>
-                        <p:graphicImage url="http://graph.facebook.com/#{profileViewManager.loggedInUser.fbId}/picture?type=small"
+                        <p:graphicImage url="http://graph.facebook.com/#{profileViewManager.loggedInUser.fbId}/picture?type=small" />
                         <p:inputText id="searchBox" style="margin-right:10px; margin-left:10px; " placeholder="Search groups" value="#{groupManager.searchedGroupName}">
                             <p:ajax event="keyup" update="searchDT" listener="#{groupManager.searchedGroups}" />
                         </p:inputText>
