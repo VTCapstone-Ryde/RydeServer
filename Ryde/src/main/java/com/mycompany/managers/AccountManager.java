@@ -112,6 +112,7 @@ public class AccountManager implements Serializable {
     }
 
     public String getFbId() {
+        fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
         return fbId;
     }
 
@@ -280,7 +281,7 @@ public class AccountManager implements Serializable {
             user.setDriverStatus(false);
             fbTok = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("access_token");
             user.setFbTok(fbTok);
-            fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
+            //fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
             user.setFbId(fbId);
             user.setPhoneNumber(phoneNumber);
             userFacade.create(user);

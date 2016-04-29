@@ -23,12 +23,19 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form>
-                    <p:outputLabel value="#{accountManager.firstName} #{accountManager.lastName}" />
-                    <br/>
-                    <p:outputLabel for="phone" value="Phone:" />
-                    <p:inputMask id="phone" value="#{accountManager.phoneNumber}" mask="(999) 999-9999"/>
+                    <div align="center">
+                        <br/>
+                        <p:outputLabel value="Welcome #{accountManager.firstName} #{accountManager.lastName}" />
+                        <br/><br/>
+                        <p:graphicImage url="http://graph.facebook.com/#{accountManager.fbId}/picture?type=large" />
+                        <br/><br/><br/><br/>
+                        <p:outputLabel value="Please provide some additional information"/>
+                        <br/><br/>
+                        <p:outputLabel for="phone" value="Phone:" />
+                        <p:inputMask id="phone" value="#{accountManager.phoneNumber}" mask="(999) 999-9999"/>
 
-                    <p:commandButton value="Submit" action="#{accountManager.createAccount()}"/>
+                        <p:commandButton value="Submit" action="#{accountManager.createAccount()}"/>
+                    </div>
                 </h:form>
 
             </ui:define>
