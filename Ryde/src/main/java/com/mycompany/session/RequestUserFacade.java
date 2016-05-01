@@ -5,12 +5,14 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.RequestUser;
+import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.PathParam;
 
 /**
  *
@@ -37,5 +39,22 @@ public class RequestUserFacade extends AbstractFacade<RequestUser> {
         //TODO add empty result handling
         
         return q.getResultList();
+    }
+    
+    public List<UserTable> findRequestUserForGroup (Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("RequestUser.findUsersByRequestsForGroupId").setParameter("groupId", groupId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        
+        return q.getResultList();
+    }
+    
+    public RequestUser findByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("RequestUser.findByGroupAndUserIDs").
+                setParameter("userId", userId).setParameter("groupId", groupId);
+        if (!q.getResultList().isEmpty()) {
+            return (RequestUser) q.getSingleResult();
+        }
+        return null;
     }
 }

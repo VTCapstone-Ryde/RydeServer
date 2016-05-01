@@ -31,4 +31,14 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
     public TimeslotTableFacade() {
         super(TimeslotTable.class);
     }
+    
+    public List<TimeslotTable> findById(Integer id) {
+        Query q = getEntityManager().createNamedQuery("TimeslotTable.findById").setParameter("id", id);
+        
+        if (!q.getResultList().isEmpty()) {
+            return q.getResultList();
+        }
+        
+        return null;
+    }
 }

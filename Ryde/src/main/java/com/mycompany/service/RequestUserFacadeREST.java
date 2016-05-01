@@ -8,7 +8,11 @@ import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
+import com.mycompany.session.RequestUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -33,6 +37,13 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
+    
+    @EJB
+    private RequestUserFacade ruFacade;
+    @EJB
+    private UserTableFacade userFacade;
+    @EJB
+    private GroupTableFacade groupFacade;
 
     public RequestUserFacadeREST() {
         super(RequestUser.class);
@@ -66,18 +77,20 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
     }
     
     private UserTable findUserById(Integer id) {
-        List<UserTable> list = getEntityManager().createNamedQuery("UserTable.findById").setParameter("id", id).getResultList();
-        if (list.isEmpty()) {
-            return null;
-        }
-        return list.get(0);
+        return userFacade.findById(id);
+//        List<UserTable> list = getEntityManager().createNamedQuery("UserTable.findById").setParameter("id", id).getResultList();
+//        if (list.isEmpty()) {
+//            return null;
+//        }
+//        return list.get(0);
     }
     private GroupTable findGroupById(Integer id) {
-        List<GroupTable> list = getEntityManager().createNamedQuery("GroupTable.findById").setParameter("id", id).getResultList();
-        if (list.isEmpty()) {
-            return null;
-        }
-        return list.get(0);
+        return groupFacade.findById(id);
+//        List<GroupTable> list = getEntityManager().createNamedQuery("GroupTable.findById").setParameter("id", id).getResultList();
+//        if (list.isEmpty()) {
+//            return null;
+//        }
+//        return list.get(0);
     }
 
     @GET
@@ -104,19 +117,20 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
     @Path("/findByUserAndGroup/{userId}/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
     public RequestUser findByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
-        Query q = getEntityManager().createNamedQuery("RequestUser.findByGroupAndUserIDs").
-                setParameter("userId", userId).setParameter("groupId", groupId);
-        if (!q.getResultList().isEmpty()) {
-            return (RequestUser) q.getSingleResult();
-        }
-        return null;
+        return ruFacade.findByUserAndGroup(userId, groupId);
+//        Query q = getEntityManager().createNamedQuery("RequestUser.findByGroupAndUserIDs").
+//                setParameter("userId", userId).setParameter("groupId", groupId);
+//        if (!q.getResultList().isEmpty()) {
+//            return (RequestUser) q.getSingleResult();
+//        }
+//        return null;
     }
     
     @POST
     @Path("/createByUserAndGroup/{userId}/{groupId}")
     public void createByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
-        UserTable user = this.findUserById(userId);
-        GroupTable group = this.findGroupById(groupId);
+        UserTable user = findUserById(userId);
+        GroupTable group = findGroupById(groupId);
         RequestUser ru = new RequestUser();
         ru.setGroupId(group);
         ru.setUserId(user);

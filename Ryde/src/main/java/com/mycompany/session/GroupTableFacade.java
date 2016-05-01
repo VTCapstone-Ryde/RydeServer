@@ -33,6 +33,13 @@ public class GroupTableFacade extends AbstractFacade<GroupTable> {
         super(GroupTable.class);
     }
     
+    public GroupTable findById(Integer id) {
+        Query q = getEntityManager().createNamedQuery("GroupTable.findById").setParameter("id", id);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return (GroupTable)q.getSingleResult();
+    }
+    
     public List<GroupTable> searchGroupByTitle(String title) {
         List<GroupTable> groups = new ArrayList<>();
         
@@ -42,5 +49,13 @@ public class GroupTableFacade extends AbstractFacade<GroupTable> {
         }
 
         return groups;
+    }
+    
+    public List<GroupTable> findGroupsByTitle(String title) {
+        String addSpacesToTitle = title.replaceAll("\\+", " ");
+        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", addSpacesToTitle);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 }

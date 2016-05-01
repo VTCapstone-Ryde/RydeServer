@@ -4,8 +4,14 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupUser;
+import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
+import com.mycompany.session.GroupUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -32,6 +38,13 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
 
+    @EJB
+    private GroupUserFacade guFacade;
+    @EJB
+    private UserTableFacade userFacade;
+    @EJB
+    private GroupTableFacade groupFacade;
+    
     public GroupUserFacadeREST() {
         super(GroupUser.class);
     }
@@ -59,7 +72,7 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     @DELETE
     @Path("/{userId}/{groupId}")
     public void removeByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
-        GroupUser gu = findByUserAndGroup(userId, groupId);
+        GroupUser gu = findByGroupAndUser(userId, groupId);
         super.remove(gu);
     }
 
@@ -92,19 +105,23 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     @GET
     @Path("/{userId}/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public GroupUser findByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
-        Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUserIDs").
-                setParameter("userId", userId).setParameter("groupId", groupId);
-        if (!q.getResultList().isEmpty()) {
-            return (GroupUser) q.getSingleResult();
-        }
-        return null;
+    public GroupUser findByGroupAndUser(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
+        UserTable user = userFacade.findById(userId);
+        GroupTable group = groupFacade.findById(groupId);
+        
+        return guFacade.findByGroupAndUser(group, user);
+//        Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUserIDs").
+//                setParameter("userId", userId).setParameter("groupId", groupId);
+//        if (!q.getResultList().isEmpty()) {
+//            return (GroupUser) q.getSingleResult();
+//        }
+//        return null;
     }
     
     @PUT
     @Path("/admin/{userId}/{groupId}/{admin}")
     public void setUserAsAdmin(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId, @PathParam("admin") Integer adminParam) {
-        GroupUser gu = findByUserAndGroup(userId, groupId);
+        GroupUser gu = findByGroupAndUser(userId, groupId);
         Boolean admin = false;
         if (adminParam == 1) {
             admin = true;
