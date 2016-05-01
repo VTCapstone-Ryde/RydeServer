@@ -25,7 +25,7 @@
                     <div id="page-content" class="Profile" >
                         <h1>#{profileViewManager.loggedInUser.firstName} #{profileViewManager.loggedInUser.lastName}</h1> 
 
-                        <p:graphicImage width="200" height="200" alt="defaultUserPhoto" value="/images/defaultUserPhoto.jpg"/>
+                        <p:graphicImage width="200" height="200" alt="defaultUserPhoto" url="http://graph.facebook.com/#{profileViewManager.loggedInUser.fbId}/picture?type=large"/>
                         <p:tabView style="padding-bottom: 30px">
                             <p:tab title="Basic Info">
                                 <p:panelGrid id="basic_info" style="width: 100%">

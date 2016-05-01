@@ -12,8 +12,10 @@ import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -39,6 +41,9 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    
+    @EJB
+    UserTableFacade userFacade;
     
     public UserTableFacadeREST() {
         super(UserTable.class);
@@ -143,7 +148,8 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Path("findByToken/{fbTok}")
     @Produces(MediaType.APPLICATION_JSON)
     public UserTable findUserByToken(@PathParam("fbTok") String fbTok) {
-        return this.findByToken(fbTok);
+        return userFacade.findByToken(fbTok);
+//        return findByToken(fbTok);
     }
     
     public UserTable findByToken(String token) {
@@ -167,14 +173,15 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Path("/name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findUsersByName(@PathParam("name") String name) {
-        //Format name as %first%last% (or %last%first% depending on input)
-        String addSpacesToName = name.replaceAll("\\+", "%");
-        addSpacesToName = addSpacesToName.concat("%");
-        addSpacesToName = "%".concat(addSpacesToName);
-        Query q = getEntityManager().createNamedQuery("UserTable.findByEntireName").setParameter("name", addSpacesToName);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return q.getResultList();
+        return userFacade.findUsersByName(name);
+//        //Format name as %first%last% (or %last%first% depending on input)
+//        String addSpacesToName = name.replaceAll("\\+", "%");
+//        addSpacesToName = addSpacesToName.concat("%");
+//        addSpacesToName = "%".concat(addSpacesToName);
+//        Query q = getEntityManager().createNamedQuery("UserTable.findByEntireName").setParameter("name", addSpacesToName);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        return q.getResultList();
     } 
     
         
