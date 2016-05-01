@@ -279,29 +279,10 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         } else {
             ride = list.get(0);
             if (!ride.getActive()) {
-                return new Response("nonActive", ride.getDriverUserId());
+                return new Response("nonActive", ride);
             }
-            return new Response("active", ride.getDriverUserId());
+            return new Response("active", ride);
         }
-//        try { 
-//            if (em.createNamedQuery("findByRider", Ride.class)
-//                .setParameter("riderUserId", user.getId())
-//                .getResultList().isEmpty()) {
-//                return null;
-//            }
-//            else {
-//                ride = em.createNamedQuery("findByRider", Ride.class)
-//                .setParameter("riderUserId", user.getId())
-//                .getResultList().get(0);
-//                //TALK W/ PAT
-//                //Why doing a search? getDriverUserId returns a usertable already
-////                return userFacade.findById(ride.getDriverUserId().getId());
-//                return ride.getDriverUserId();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//          return null;
     }
 
     @DELETE
