@@ -4,7 +4,10 @@
  */
 package com.mycompany.service;
 
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
+import com.mycompany.entity.RequestUser;
+import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -80,5 +83,21 @@ public class GroupTimeslotFacadeREST extends AbstractFacade<GroupTimeslot> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+//    /**
+//     * TALK W/ PAT
+//     * @param userId
+//     * @param groupId 
+//     */
+//    @POST
+//    @Path("/createByTimeslotAndGroup/{timeslotId}/{groupId}")
+//    public void createByTimeslotAndGroup(@PathParam("timeslotId") Integer userId, @PathParam("groupId") Integer groupId) {
+//        UserTable user = this.findUserById(userId);
+//        GroupTable group = this.findGroupById(groupId);
+//        RequestUser ru = new RequestUser();
+//        ru.setGroupId(group);
+//        ru.setUserId(user);
+//        create(ru);
+//    } 
     
 }

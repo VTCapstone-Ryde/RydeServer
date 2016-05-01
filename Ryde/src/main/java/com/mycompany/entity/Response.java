@@ -52,11 +52,10 @@ public class Response implements Serializable{
     }
     
     public Response (String queueStatus, Ride ride) {
-//        this.driver = driver;
         this.queueStatus = queueStatus;
         this.ride = ride;
     }
-    
+     
     public Response(Integer tsId, Integer numDrivers, Integer queueSize,
             Integer position, String groupName) {
         this.tsId = tsId;

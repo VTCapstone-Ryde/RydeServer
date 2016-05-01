@@ -5,6 +5,7 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
+import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.Response;
 import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
@@ -14,6 +15,7 @@ import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -137,6 +139,46 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     protected EntityManager getEntityManager() {
         return em;
     }
+    
+    public List<TimeslotTable> findTimeslotsForUser(Integer userId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findTimeslotById").setParameter("userId", userId);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
+    }
+    
+    public GroupTable findGroupForTimeslot(Integer id) {
+        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
+        q.setFirstResult(0);
+        List<GroupTimeslot> result = q.getResultList();
+        //TODO add empty result handling
+        return result.get(0).getGroupId();
+    }
+    
+     @GET
+    @Path("testGetTad/{fbTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public TimeslotTable getTadsTest(@PathParam("fbTok") String fbTok) {
+        List<Response> responses = new ArrayList<Response>();
+
+        UserTable user = em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                .setParameter("fbTok", fbTok).getSingleResult();
+
+        List<TimeslotTable> timeslots = this.findTimeslotsForUser(user.getId());
+        return timeslots.get(0);
+        
+//        for (int i = 0; i < timeslots.size(); i++) {
+//            Integer tsId = timeslots.get(i).getId();
+//
+//            GroupTable group = gtFacade.findGroupForTimeslot(tsId);
+//            List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
+//            List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
+//
+//            responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+//        }
+//
+//        return responses;
+    }
 
     @GET
     @Path("gettads/{fbTok}")
@@ -148,15 +190,21 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
                 .setParameter("fbTok", fbTok).getSingleResult();
 
         List<TimeslotTable> timeslots = tuFacade.findTimeslotsForUser(user.getId());
-
+        
         for (int i = 0; i < timeslots.size(); i++) {
             Integer tsId = timeslots.get(i).getId();
+            
+            Date rightNow = new Date();
+            
+            if (timeslots.get(i).getStartTime().before(rightNow) 
+                    && timeslots.get(i).getEndTime().after(rightNow)) {
+            
+                GroupTable group = gtFacade.findGroupForTimeslot(tsId);
+                List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
+                List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
 
-            GroupTable group = gtFacade.findGroupForTimeslot(tsId);
-            List<UserTable> drivers = tuFacade.findDriversForTimeslot(tsId);
-            List<Ride> rides = rideFacade.findAllRidesForTimeslot(tsId);
-
-            responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+                responses.add(new Response(tsId, drivers.size(), rides.size(), null, group.getTitle()));
+            }
         }
 
         return responses;
