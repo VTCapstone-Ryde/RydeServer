@@ -4,7 +4,6 @@
  */
 package com.mycompany.service;
 
-
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
@@ -14,6 +13,7 @@ import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -41,10 +41,10 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-    
+
     @EJB
     UserTableFacade userFacade;
-    
+
     public UserTableFacadeREST() {
         super(UserTable.class);
     }
@@ -96,28 +96,26 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     public String countREST() {
         return String.valueOf(super.count());
     }
-    
+
     @Override
     protected EntityManager getEntityManager() {
         return em;
     }
-    
+
     /*
     The following methods were added after code generation
-    */
-    
+     */
     @GET
     @Path("validateToken/{token}")
     @Produces({MediaType.TEXT_PLAIN})
     public String validateToken(@PathParam("token") String token) {
         if (findByToken(token) == null) {
             return "false";
-        }
-        else {
+        } else {
             return "true";
         }
     }
-    
+
     @GET
     @Path("inGroup/{groupId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -130,7 +128,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         }
         return users;
     }
-    
+
     @GET
     @Path("inTimeslot/{timeslotId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -143,7 +141,7 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         }
         return users;
     }
-    
+
     @GET
     @Path("findByToken/{fbTok}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -151,24 +149,23 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         return userFacade.findByToken(fbTok);
 //        return findByToken(fbTok);
     }
-    
+
     public UserTable findByToken(String token) {
         try {
             if (em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
                     .setParameter("fbTok", token)
                     .getResultList().isEmpty()) {
                 return null;
+            } else {
+                return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
+                        .setParameter("fbTok", token).getResultList().get(0);
             }
-            else {
-                 return em.createQuery("SELECT u FROM UserTable u WHERE u.fbTok = :fbTok", UserTable.class)
-                    .setParameter("fbTok", token).getResultList().get(0);
-                            }
         } catch (Exception e) {
-             e.printStackTrace();
+            e.printStackTrace();
         }
         return null;
     }
-    
+
     @GET
     @Path("/name/{name}")
     @Produces({MediaType.APPLICATION_JSON})
@@ -182,9 +179,8 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 //        q.setFirstResult(0);
 //        //TODO add empty result handling
 //        return q.getResultList();
-    } 
-    
-        
+    }
+
     /**
      * Returns list of timeslots that a user is a driver for
      */
@@ -193,19 +189,38 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
     @Produces({MediaType.APPLICATION_JSON})
     public List<TimeslotTable> findDriverTimeslots(@PathParam("fbTok") String fbTok) {
         UserTable driver = findByToken(fbTok);
-        List<TimeslotUser> timeslotUsers = em.createQuery("SELECT tu FROM TimeslotUser tu WHERE tu.userId.id = :tId", TimeslotUser.class)
+        List<TimeslotTable> timeslots = em.createQuery("SELECT tu.tsId FROM TimeslotUser tu WHERE tu.userId.id = :tId", TimeslotTable.class)
                 .setParameter("tId", driver.getId()).getResultList();
-        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
-        for (TimeslotUser tu : timeslotUsers) {
-            timeslots.add(tu.getTsId());
-        }
         return timeslots;
     }
-    
+
+    /**
+     * Returns list of only active timeslots that a user is a driver for
+     * @param fbTok
+     * @return 
+     */
+    @GET
+    @Path("findActiveDriverTimeslot/{fbTok}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public TimeslotTable findActiveDriverTimeslot(@PathParam("fbTok") String fbTok) {
+        List<TimeslotTable> timeslots = findDriverTimeslots(fbTok);
+
+        Date rightNow = new Date();
+        for (TimeslotTable ts : timeslots) {
+            if (ts.getStartTime().before(rightNow)
+                    && ts.getEndTime().after(rightNow)) {
+                return ts;
+            }
+        }
+        return null;
+    }
+
     /**
      * Sets the driver status for a user
+     *
      * @param fbTok the FB token of the user
-     * @param driverStatus The driver status as an int. (0 for false, 1 for true)
+     * @param driverStatus The driver status as an int. (0 for false, 1 for
+     * true)
      */
     @PUT
     @Path("setDriverStatus/{fbTok}/{driverStatus}")
