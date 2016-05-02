@@ -32,7 +32,7 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
     public GroupUserFacade() {
         super(GroupUser.class);
     }
-    
+
     public List<GroupTable> findGroupsForUser(Integer id) {
 //        getEntityManager().clear();
         Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
@@ -40,30 +40,47 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
         //TODO add empty result handling
         return q.getResultList();
     }
-    
+
     public List<UserTable> findAdminsForGroup(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupUser.findAdminsByGroupId").setParameter("id", id);
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
     }
-    
+
     public List<UserTable> findUsersForGroup(Integer id) {
         Query q = getEntityManager().createNamedQuery("GroupUser.findByUsersByGroupId").setParameter("id", id);
         q.setFirstResult(0);
         //TODO add empty result handling
         return q.getResultList();
     }
-    
-    public GroupUser findByGroupAndUser(GroupTable groupId, UserTable userId){
+
+    public GroupUser findByGroupAndUser(GroupTable groupId, UserTable userId) {
         Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUser").
                 setParameter("groupId", groupId).setParameter("userId", userId);
         q.setFirstResult(0);
         //TODO add empty result handling
         return (GroupUser) q.getSingleResult();
     }
-    
+
     public void clearEM() {
         getEntityManager().clear();
     }
+
+    public GroupUser findByUserAndGroupIds(Integer userId, Integer groupId) {
+        Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUserIDs").
+                setParameter("userId", userId).setParameter("groupId", groupId);
+        if (!q.getResultList().isEmpty()) {
+            return (GroupUser) q.getSingleResult();
+        }
+        return null;
+    }
+
+    public void removeByUserAndGroupIds(Integer userId, Integer groupId) {
+        GroupUser gu = findByUserAndGroupIds(userId, groupId);
+        if (gu != null) {
+            super.remove(gu);
+        }
+    }
+
 }

@@ -35,6 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TimeslotUser.findUserById", query = "SELECT t.userId FROM TimeslotUser t WHERE t.tsId.id = :tsId"),
     @NamedQuery(name = "TimeslotUser.findTimeslotById", query = "SELECT t.tsId FROM TimeslotUser t WHERE t.userId.id = :userId"),
     @NamedQuery(name = "TimeslotUser.findDriversByTimeslotId", query = "SELECT t.userId FROM TimeslotUser t WHERE t.tsId.id = :tsId AND t.driver = :driver"),
+    @NamedQuery(name = "TimeslotUser.findByUserIdAndTimeslotId", query = "SELECT t FROM TimeslotUser t WHERE t.userId.id = :userId AND t.tsId.id = :tsId"),
     @NamedQuery(name = "TimeslotUser.findByDriver", query = "SELECT t FROM TimeslotUser t WHERE t.driver = :driver")})
 public class TimeslotUser implements Serializable {
 

@@ -105,4 +105,20 @@ public class TimeslotUserFacade extends AbstractFacade<TimeslotUser> {
         
         return !tu.isEmpty();
     }
+    
+    public TimeslotUser findByUserAndTimeslot(Integer userId, Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findByUserIdAndTimeslotId").
+                setParameter("userId", userId).setParameter("tsId", tsId);
+        if (!q.getResultList().isEmpty()) {
+            return (TimeslotUser) q.getSingleResult();
+        }
+        return null;
+    }
+    
+    public void removeByUserAndTimeslot(Integer userId, Integer tsId) {
+        TimeslotUser tu = findByUserAndTimeslot(userId, tsId);
+        if (tu != null) {
+            super.remove(tu);
+        }
+    }
 }
