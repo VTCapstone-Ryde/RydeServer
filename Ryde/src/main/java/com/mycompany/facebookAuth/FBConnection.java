@@ -10,6 +10,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -20,7 +21,7 @@ import javax.servlet.http.HttpSession;
  * @author archer
  */
 @Named(value = "fbConnection")
-@SessionScoped
+@RequestScoped
 public class FBConnection implements Serializable {
     public static final String FB_APP_ID = "462642387261561";
     public static final String FB_APP_SECRET = "2c98b08fe5e211d1fcef4c667b1d20a2";
