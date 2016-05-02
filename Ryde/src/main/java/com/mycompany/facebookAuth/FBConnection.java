@@ -24,7 +24,7 @@ import javax.servlet.http.HttpSession;
 public class FBConnection implements Serializable {
     public static final String FB_APP_ID = "462642387261561";
     public static final String FB_APP_SECRET = "2c98b08fe5e211d1fcef4c667b1d20a2";
-    public static final String REDIRECT_URI = "http://localhost:8080/Ryde/faces/Facebook.xhtml";
+    public static final String REDIRECT_URI = "http://jupiter.cs.vt.edu/Ryde/faces/Facebook.xhtml";
 
     static String accessToken = "";
     private String code = "";
