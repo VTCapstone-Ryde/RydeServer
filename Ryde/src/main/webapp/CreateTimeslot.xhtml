@@ -23,24 +23,27 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form style="width:90%">
-                    <h:panelGrid columns="2" cellpadding="6" style="width:40%;">
-                        <h:outputText value="Passcode: " />
-                        <p:inputText value="#{timeSlotManager.passcode}"/>
+                    <div align="center">
 
-                        
-                        <h:outputText value="Start Time: " />
-                        <p:calendar value="#{timeSlotManager.startTime}" pattern="yyyy-MM-dd hh:mm a"/>
+                        <h:panelGrid columns="2" cellpadding="6" style="width:40%;">
+                            <h:outputText value="Passcode: " />
+                            <h:outputText value="#{timeSlotManager.passcode}"/>
 
 
-                        <h:outputText value="End Time: " />
-                        <p:calendar value="#{timeSlotManager.endTime}" pattern="yyyy-MM-dd hh:mm a"/>
+                            <h:outputText value="Start Time: " />
+                            <p:calendar value="#{timeSlotManager.startTime}" pattern="yyyy-MM-dd hh:mm a"/>
 
-                    </h:panelGrid>
-                    <p:pickList id="pickList" value="#{timeSlotManager.drivers}" var="driverId" itemLabel="#{groupManager.getNameById(driverId)}" itemValue="#{driverId}">
-                        <f:facet name="sourceCaption">Members</f:facet>
-                        <f:facet name="targetCaption">Drivers</f:facet>
-                    </p:pickList>
-                    <p:commandButton icon="ui-icon-star" value="Add Timeslot to #{timeSlotManager.selectedGroup.title}" action="#{timeSlotManager.createTimeslot()}"/>
+
+                            <h:outputText value="End Time: " />
+                            <p:calendar value="#{timeSlotManager.endTime}" pattern="yyyy-MM-dd hh:mm a"/>
+
+                        </h:panelGrid>
+                        <p:pickList id="pickList" value="#{timeSlotManager.drivers}" var="driverId" itemLabel="#{groupManager.getNameById(driverId)}" itemValue="#{driverId}">
+                            <f:facet name="sourceCaption">Members</f:facet>
+                            <f:facet name="targetCaption">Drivers</f:facet>
+                        </p:pickList>
+                        <p:commandButton icon="ui-icon-star" value="Add Timeslot to #{timeSlotManager.selectedGroup.title}" action="#{timeSlotManager.createTimeslot()}"/>
+                    </div>
                 </h:form>
             </ui:define>
 

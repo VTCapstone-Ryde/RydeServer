@@ -26,7 +26,7 @@
                     <div id="page" class="Timeslot">
                         <p:dataTable var="timeslot" value="#{profileViewManager.userTimeSlots}">
                             <p:column headerText="Group">
-                                <h:outputText value="nothing" />
+                                <h:outputText value="#{timeSlotManager.getTimeSlotGroupTitle(timeslot.id)}" />
                             </p:column>
 
                             <p:column headerText="Start Time">
