@@ -141,7 +141,9 @@ public class RequestUserFacadeREST extends AbstractFacade<RequestUser> {
     @Path("/removeByUserAndGroup/{userId}/{groupId}")
     public void removeByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
         RequestUser ru = findByUserAndGroup(userId, groupId);
-        super.remove(ru);
+        if (ru != null) {
+            super.remove(ru);
+        }
     }
     
 }

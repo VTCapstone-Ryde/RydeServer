@@ -32,7 +32,7 @@ import javax.ws.rs.core.MediaType;
 public class GroupTimeslotFacadeREST extends AbstractFacade<GroupTimeslot> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    private EntityManager em;
 
     public GroupTimeslotFacadeREST() {
         super(GroupTimeslot.class);

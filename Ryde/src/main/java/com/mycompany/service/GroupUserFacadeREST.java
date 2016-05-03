@@ -36,7 +36,7 @@ import javax.ws.rs.core.MediaType;
 public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    private EntityManager em;
 
     @EJB
     private GroupUserFacade guFacade;
@@ -73,7 +73,9 @@ public class GroupUserFacadeREST extends AbstractFacade<GroupUser> {
     @Path("/{userId}/{groupId}")
     public void removeByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
         GroupUser gu = findByGroupAndUser(userId, groupId);
-        super.remove(gu);
+        if (gu != null) {
+            super.remove(gu);
+        }
     }
 
     @GET

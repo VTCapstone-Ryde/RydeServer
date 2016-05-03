@@ -6,10 +6,12 @@ package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
+import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
+import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.RequestUserFacade;
 import java.util.List;
 import javax.ejb.EJB;
@@ -37,14 +39,15 @@ import javax.ws.rs.core.MediaType;
 public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
-    
-    @EJB
-    private GroupTableFacade groupFacade;
+    private EntityManager em;
     @EJB
     private GroupTimeslotFacade gtFacade;
     @EJB
+    private TimeslotUserFacade tuFacade;
+    @EJB
     private GroupUserFacade guFacade;
+    @EJB
+    private GroupTableFacade groupFacade;
     @EJB
     private RequestUserFacade ruFacade;
    
@@ -165,5 +168,15 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 //        //TODO add empty result handling
 //        List list = q.getResultList();
 //        return q.getResultList();
+    }
+    
+    @DELETE
+    @Path("/removeUserFromGroup/{userId}/{groupId}")
+    public void removeUserFromGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
+        List<TimeslotTable> groupTimeslots = gtFacade.findTimeslotsForGroup(groupId);
+        for (TimeslotTable ts: groupTimeslots) {
+            tuFacade.removeByUserAndTimeslot(userId, ts.getId());
+        }
+        guFacade.removeByUserAndGroupIds(userId, groupId);
     }
 }

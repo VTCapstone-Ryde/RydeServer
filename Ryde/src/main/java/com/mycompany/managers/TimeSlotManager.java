@@ -14,6 +14,7 @@ import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotTableFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import java.io.Serializable;
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,8 +38,8 @@ public class TimeSlotManager implements Serializable {
     private TimeslotTable selectedTimeSlot;
     private GroupTable selectedGroup;
     private String statusMessage;
-    
-    @EJB 
+
+    @EJB
     private TimeslotUserFacade timeSlotUserFacade;
     @EJB
     private GroupTimeslotFacade groupTimeSlotFacade;
@@ -54,6 +55,11 @@ public class TimeSlotManager implements Serializable {
 
     public GroupTable getTimeSlotGroup(Integer tsId) {
         return groupTimeSlotFacade.findGroupForTimeslot(tsId);
+    }
+    
+    
+    public String getTimeSlotGroupTitle(Integer tsId) {
+        return groupTimeSlotFacade.findGroupForTimeslot(tsId).getTitle();
     }
 
     public TimeslotTable getSelectedTimeSlot() {
@@ -81,6 +87,9 @@ public class TimeSlotManager implements Serializable {
     }
 
     public String getPasscode() {
+        if (passcode == null) {
+            passcode = timeslotPasscodeGenerator(6);
+        }
         return passcode;
     }
 
@@ -199,7 +208,7 @@ public class TimeSlotManager implements Serializable {
             newTimeslot.setPasscode(passcode);
             newTimeslot.setStartTime(startTime);
             newTimeslot.setEndTime(endTime);
-            
+
             // add timeslot to the database
             timeSlotFacade.create(newTimeslot);
 
@@ -273,6 +282,19 @@ public class TimeSlotManager implements Serializable {
 
     public String assignDriversPage() {
         return "AssignDrivers?faces-redirect=true";
+    }
+
+    /**
+     * Simple method to generate a random length long character string
+     */
+    public String timeslotPasscodeGenerator(int length) {
+        String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+        SecureRandom rnd = new SecureRandom();
+        StringBuilder sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
+        }
+        return sb.toString();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.mycompany.facebookAuth;
 
-import com.mycompany.entity.UserTable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -24,14 +23,14 @@ import javax.servlet.http.HttpSession;
 public class FBConnection implements Serializable {
     public static final String FB_APP_ID = "462642387261561";
     public static final String FB_APP_SECRET = "2c98b08fe5e211d1fcef4c667b1d20a2";
-    public static final String REDIRECT_URI = "http://localhost:8080/Ryde/faces/Facebook.xhtml";
+    public static final String REDIRECT_URI = "http://jupiter.cs.vt.edu/Ryde/faces/Facebook.xhtml";
 
-    static String accessToken = "";
+    private String accessToken = "";
     private String code = "";
 
     public String getFBAuthUrl() {
         String fbLoginUrl = "";
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         String sessionId = session.getId();
         try {
             fbLoginUrl = "http://www.facebook.com/dialog/oauth?" + "client_id="
