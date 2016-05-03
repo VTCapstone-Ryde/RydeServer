@@ -383,6 +383,11 @@ public class GroupManager implements Serializable {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
     }
+    
+    public String getFbIdById(int user_id) {
+        UserTable user = userFacade.findById(user_id);
+        return user.getFbId();
+    }
 
     public List<RequestUser> getRequests() {
         requests = requestUserFacade.findRequestsForGroup(selectedGroup.getId());

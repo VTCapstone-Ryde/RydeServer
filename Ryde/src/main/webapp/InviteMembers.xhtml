@@ -27,10 +27,11 @@
                         <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">       
                             <p:outputLabel for="members" value="Members:" />
                             <p:selectManyMenu id="members" value="#{groupManager.selectedMembers}"
-                                              var="m" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                              var="m" filter="true" filterMatchMode="contains" showCheckbox="true" style="min-width: 314px;">
                                 <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}" />
 
                                 <p:column>
+                                    <p:graphicImage url="http://graph.facebook.com/#{groupManager.getFbIdById(m)}/picture?type=small" style="width: 35px;height: 35px;vertical-align: middle"/>
                                     <h:outputText value="#{groupManager.getNameById(m)}" />
                                 </p:column>
                             </p:selectManyMenu>
