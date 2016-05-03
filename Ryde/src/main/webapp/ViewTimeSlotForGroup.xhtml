@@ -24,7 +24,7 @@
             <ui:define name="editableContent">
                 <h:form style="width:90%">
                     <div id="page" class="Timeslot">
-                        <p:commandButton value="Add New Timeslot" icon="ui-icon-circle-plus" update="timeslots" action="#{timeSlotManager.createTimeslotPage()}" rendered="#{groupManager.adminInGroup}"/>
+                        <p:commandButton value="Add New Timeslot" icon="ui-icon-circle-plus" update="timeslots" action="#{timeSlotManager.createTimeslotPage()}" rendered="#{groupManager.adminInGroup()}"/>
 
                         <p:dataTable id="timeslots" var="timeslot" value="#{groupManager.groupTimeslots}">
                             <p:column headerText="Start Time">
