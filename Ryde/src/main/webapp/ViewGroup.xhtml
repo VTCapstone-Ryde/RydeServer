@@ -31,13 +31,15 @@
 
                         <p:dataTable id="adminsDT" class="ViewGroupElements" var="admin" value="#{groupManager.groupAdmins}">
                             <p:column headerText="Admins">
-                                <h:outputText value="#{admin.firstName} #{admin.lastName}" />
+                                <p:graphicImage url="http://graph.facebook.com/#{admin.fbId}/picture?type=small" style="width: 35px;height: 35px;vertical-align: middle"/>
+                                <h:outputText value="        #{admin.firstName} #{admin.lastName}" />
                             </p:column>
                         </p:dataTable>
 
                         <p:dataTable id="membersDT" class="ViewGroupElements" var="member" value="#{groupManager.groupUsers}">
                             <p:column headerText="Members">
-                                <h:outputText value="#{member.firstName} #{member.lastName}" />
+                                <p:graphicImage url="http://graph.facebook.com/#{member.fbId}/picture?type=small" style="width: 35px;height: 35px;vertical-align: middle"/>
+                                <h:outputText value="        #{member.firstName} #{member.lastName}" />
                             </p:column>
                             <p:column style="width:40px"> 
                                 <p:commandButton icon="ui-icon-star" action="#{groupManager.promoteToAdmin()}" rendered="#{groupManager.adminInGroup()}">
