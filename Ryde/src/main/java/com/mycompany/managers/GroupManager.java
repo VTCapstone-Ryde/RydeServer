@@ -61,20 +61,29 @@ public class GroupManager implements Serializable {
     private UserTableFacade userFacade;
     @EJB
     private TimeslotUserFacade timeslotUserFacade;
-    @EJB 
+    @EJB
     private RequestUserFacade requestUserFacade;
-    
+
+    public UserTable getLoggedInUser() {
+        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+    }
+
     public List<UserTable> getUsers() {
         List<UserTable> list = userFacade.findAll();
         list.remove(getLoggedInUser());
         return list;
     }
-    
+
     public boolean userInGroup() {
         List<UserTable> list = groupUserFacade.findUsersForGroup(selectedGroup.getId());
         return list.contains(getLoggedInUser());
     }
-    
+
+    public boolean adminInGroup() {
+        List<UserTable> list = groupUserFacade.findAdminsForGroup(selectedGroup.getId());
+        return list.contains(getLoggedInUser());
+    }
+
     public String getSearchedGroupName() {
         return searchedGroupName;
     }
@@ -135,10 +144,6 @@ public class GroupManager implements Serializable {
         return groupTimeslotFacade.findTimeslotsForGroup(getSelectedGroup().getId());
     }
 
-    public UserTable getLoggedInUser() {
-        return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
-    }
-
     public UserTable getSelectedMember() {
         return selectedMember;
     }
@@ -162,7 +167,7 @@ public class GroupManager implements Serializable {
     public void setRequest(RequestUser request) {
         this.request = request;
     }
-    
+
     public String promoteToAdmin() {
         if (selectedMember != null) {
             GroupUser editRow = groupUserFacade.findByGroupAndUser(selectedGroup, selectedMember);
@@ -173,8 +178,8 @@ public class GroupManager implements Serializable {
         selectedMember = null;
         return "ViewGroup?faces-redirect=true";
     }
-    
-    public String lastAdminToLeave(){
+
+    public String lastAdminToLeave() {
         return "";
     }
 
@@ -185,7 +190,7 @@ public class GroupManager implements Serializable {
                 getCurrentInstance().getApplication().getNavigationHandler();
 
         configurableNavigationHandler.performNavigation("ViewGroup?faces-redirect=true");
-        
+
         searchedGroupName = "";
         matchedGroups.clear();
     }
@@ -263,9 +268,13 @@ public class GroupManager implements Serializable {
             for (String userId : selectedMembers) {
                 GroupUser addGroupUserRow = new GroupUser();
                 UserTable addedUser = userFacade.findById(Integer.parseInt(userId));
-                
+
                 // check if user already exists in group
-                
+                if (userInGroup()) {
+                    continue;
+                }
+
+                // add to realtional table
                 addGroupUserRow.setGroupId(selectedGroup);
                 addGroupUserRow.setUserId(addedUser);
                 groupUserFacade.create(addGroupUserRow);
@@ -320,6 +329,7 @@ public class GroupManager implements Serializable {
                 selectedMembers.add(request.getUserId().getId().toString());
                 requestUserFacade.remove(request);
                 addToGroup();
+                selectedMembers.clear();
                 return "ViewGroup?faces-redirect=true";
             } catch (EJBException e) {
                 statusMessage = "Something went trying to add to group";
@@ -328,7 +338,7 @@ public class GroupManager implements Serializable {
         }
         return "";
     }
-    
+
     public String denyRequest() {
         if (request != null) {
             try {
@@ -341,10 +351,10 @@ public class GroupManager implements Serializable {
         }
         return "";
     }
-    
+
     public String requestGroup() {
         UserTable user = getLoggedInUser();
-        
+
         if (selectedGroup != null) {
             try {
                 // add to request user table
@@ -352,15 +362,14 @@ public class GroupManager implements Serializable {
 
                 // if already requested
                 if (requestUserFacade.findAll().contains(req)) {
-                    selectedGroup = null;
                     return "";
                 }
-                
+
+                // make the request in the requestUser table
                 req.setUserId(user);
                 req.setGroupId(selectedGroup);
                 requestUserFacade.create(req);
 
-                selectedGroup = null;
                 return "Profile?faces-redirect=true";
             } catch (EJBException e) {
                 statusMessage = "Something went wrong when requesting to join group";
@@ -374,22 +383,21 @@ public class GroupManager implements Serializable {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
     }
-    
+
     public List<RequestUser> getRequests() {
         requests = requestUserFacade.findRequestsForGroup(selectedGroup.getId());
-        
+
         for (RequestUser req : requests) {
             System.out.println(req.getUserId().getFirstName() + " " + req.getGroupId().getTitle());
         }
-        
-        
+
         return requests;
     }
-    
+
     public void searchedGroups() {
         matchedGroups = groupFacade.searchGroupByTitle(searchedGroupName);
-        List<GroupTable> userGroups = groupUserFacade.findGroupsForUser( getLoggedInUser().getId());
-        
+        List<GroupTable> userGroups = groupUserFacade.findGroupsForUser(getLoggedInUser().getId());
+
         for (GroupTable group : userGroups) {
             if (matchedGroups.contains(group)) {
                 matchedGroups.remove(group);

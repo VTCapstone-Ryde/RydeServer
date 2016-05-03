@@ -61,7 +61,7 @@
                                 </p:menuitem>>
                                 <p:menuitem value="Invite Members" icon=" ui-icon-person"  action="InviteMembers?faces-redirect=true" rendered="#{groupManager.userInGroup()}" />
                                 <p:menuitem value="View Reports" icon="ui-icon-folder-open"  action="ViewReports?faces-redirect=true" rendered="#{groupManager.userInGroup()}"/>
-                                <p:menuitem value="View Requests" icon="ui-icon-notice"  action="Requests?faces-redirect=true" rendered="#{groupManager.userInGroup()}"/>
+                                <p:menuitem value="View Requests" icon="ui-icon-notice"  action="Requests?faces-redirect=true" rendered="#{groupManager.adminInGroup()}"/>
                                 <p:menuitem value="Leave Group" icon=" ui-icon-arrowreturnthick-1-w"  action="#{groupManager.leaveGroup()}" rendered="#{groupManager.userInGroup()}"/>
                                 <p:menuitem value="Request to Join Group" icon=" ui-icon-person"  action="#{groupManager.requestGroup()}" rendered="#{groupManager.userInGroup() == false}"/>
                             </p:splitButton>
