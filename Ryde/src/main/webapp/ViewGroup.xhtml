@@ -40,13 +40,13 @@
                                 <h:outputText value="#{member.firstName} #{member.lastName}" />
                             </p:column>
                             <p:column style="width:40px"> 
-                                <p:commandButton icon="ui-icon-star" action="#{groupManager.promoteToAdmin()}">
-                                    <f:setPropertyActionListener value="#{member}" target="#{groupManager.selectedMember}" />
+                                <p:commandButton icon="ui-icon-star" action="#{groupManager.promoteToAdmin()}" rendered="#{groupManager.adminInGroup()}">
+                                    <f:setPropertyActionListener value="#{member}" target="#{groupManager.selectedMember}"/>
                                 </p:commandButton>
                             </p:column>            
 
                             <p:column style="width:40px">
-                                <p:commandButton icon="ui-icon-trash" action="#{groupManager.kickFromGroup()}">
+                                <p:commandButton icon="ui-icon-trash" action="#{groupManager.kickFromGroup()}" rendered="#{groupManager.adminInGroup()}">
                                     <f:setPropertyActionListener value="#{member}" target="#{groupManager.selectedMember}" />
                                 </p:commandButton>
                             </p:column>
@@ -59,13 +59,12 @@
                                 <p:menuitem value="View Timeslots" icon="ui-icon-clock"  action="ViewTimeSlotForGroup?faces-redirect=true" rendered="#{groupManager.userInGroup()}">
                                     <f:setPropertyActionListener value="#{groupManager.selectedGroup}" target="#{timeSlotManager.selectedGroup}" />
                                 </p:menuitem>>
-                                <p:menuitem value="Invite Members" icon=" ui-icon-person"  action="InviteMembers?faces-redirect=true" rendered="#{groupManager.userInGroup()}" />
-                                <p:menuitem value="View Reports" icon="ui-icon-folder-open"  action="ViewReports?faces-redirect=true" rendered="#{groupManager.userInGroup()}"/>
+                                <p:menuitem value="Invite Members" icon=" ui-icon-person"  action="InviteMembers?faces-redirect=true" rendered="#{groupManager.adminInGroup()}" />
+                                <p:menuitem value="View Reports" icon="ui-icon-folder-open"  action="ViewReports?faces-redirect=true" rendered="#{groupManager.adminInGroup()}"/>
                                 <p:menuitem value="View Requests" icon="ui-icon-notice"  action="Requests?faces-redirect=true" rendered="#{groupManager.adminInGroup()}"/>
                                 <p:menuitem value="Leave Group" icon=" ui-icon-arrowreturnthick-1-w"  action="#{groupManager.leaveGroup()}" rendered="#{groupManager.userInGroup()}"/>
                                 <p:menuitem value="Request to Join Group" icon=" ui-icon-person"  action="#{groupManager.requestGroup()}" rendered="#{groupManager.userInGroup() == false}"/>
                             </p:splitButton>
-
                         </div>
                     </div>
 
