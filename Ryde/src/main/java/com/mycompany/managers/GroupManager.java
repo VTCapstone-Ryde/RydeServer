@@ -46,7 +46,6 @@ public class GroupManager implements Serializable {
     private String searchedGroupName;
     private UserTable selectedMember;
     private GroupTable selectedGroup = new GroupTable();
-    private GroupTable requestedGroup = new GroupTable();
     private RequestUser request = new RequestUser();
     private List<RequestUser> requests = new ArrayList();
     private List<String> selectedMembers = new ArrayList();
@@ -69,6 +68,11 @@ public class GroupManager implements Serializable {
         List<UserTable> list = userFacade.findAll();
         list.remove(getLoggedInUser());
         return list;
+    }
+    
+    public boolean userInGroup() {
+        List<UserTable> list = groupUserFacade.findUsersForGroup(selectedGroup.getId());
+        return list.contains(getLoggedInUser());
     }
     
     public String getSearchedGroupName() {
@@ -143,12 +147,12 @@ public class GroupManager implements Serializable {
         this.selectedMember = selectedMember;
     }
 
-    public void setRequestedGroup(GroupTable requestedGroup) {
-        this.requestedGroup = requestedGroup;
+    public void setRequestedGroup(GroupTable selectedGroup) {
+        this.selectedGroup = selectedGroup;
     }
 
     public GroupTable getRequestedGroup() {
-        return requestedGroup;
+        return selectedGroup;
     }
 
     public RequestUser getRequest() {
@@ -341,22 +345,22 @@ public class GroupManager implements Serializable {
     public String requestGroup() {
         UserTable user = getLoggedInUser();
         
-        if (requestedGroup != null) {
+        if (selectedGroup != null) {
             try {
                 // add to request user table
                 RequestUser req = new RequestUser();
 
                 // if already requested
                 if (requestUserFacade.findAll().contains(req)) {
-                    requestedGroup = null;
+                    selectedGroup = null;
                     return "";
                 }
                 
                 req.setUserId(user);
-                req.setGroupId(requestedGroup);
+                req.setGroupId(selectedGroup);
                 requestUserFacade.create(req);
 
-                requestedGroup = null;
+                selectedGroup = null;
                 return "Profile?faces-redirect=true";
             } catch (EJBException e) {
                 statusMessage = "Something went wrong when requesting to join group";

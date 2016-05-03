@@ -23,11 +23,13 @@
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form style="width:90%">
-                    <p:pickList id="pickList" value="#{timeSlotManager.drivers}" var="driverId" itemLabel="#{groupManager.getNameById(driverId)}" itemValue="#{driverId}">
-                        <f:facet name="sourceCaption">Members</f:facet>
-                        <f:facet name="targetCaption">Drivers</f:facet>
-                    </p:pickList>
-                    <p:commandButton icon=" ui-icon-star" value="Submit New Drivers" action="#{timeSlotManager.assignDrivers()}"/>
+                    <div align="center">
+                        <p:pickList id="pickList" value="#{timeSlotManager.drivers}" var="driverId" itemLabel="#{groupManager.getNameById(driverId)}" itemValue="#{driverId}">
+                            <f:facet name="sourceCaption">Members</f:facet>
+                            <f:facet name="targetCaption">Drivers</f:facet>
+                        </p:pickList>
+                        <p:commandButton icon=" ui-icon-star" value="Submit New Drivers" action="#{timeSlotManager.assignDrivers()}"/>
+                    </div>  
                 </h:form>
             </ui:define>
 

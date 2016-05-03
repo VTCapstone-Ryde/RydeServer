@@ -6,12 +6,12 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://java.sun.com/jsf/core">
-    
+
     <h:head>
         <title>Create Group</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     </h:head>
-    
+
     <h:body>
         <!-- Do not enter tags before the composition line since they are ignored by JSF -->
 
@@ -19,32 +19,34 @@
         <ui:composition template="/template/siteTemplate.xhtml">
 
             <title><ui:define name="title">Create Group</ui:define></title>
-            
+
             <!-- Create the content for this page below -->
             <ui:define name="editableContent">
                 <h:form>
-                    <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
-                        <p:outputLabel value="Name:" />
-                        <p:inputTextarea rows="1" cols="33" value="#{groupManager.name}"/>
+                    <div align="center">
+                        <h:panelGrid columns="2" style="margin-bottom:10px" cellpadding="5" columnClasses="label, value">
+                            <p:outputLabel value="Name:" />
+                            <p:inputTextarea rows="1" cols="33" value="#{groupManager.name}"/>
 
-                        <p:outputLabel value="Description:" />
-                        <p:inputTextarea rows="1" cols="33" value="#{groupManager.description}" />
-                        
-                        <p:outputLabel for="advanced" value="Advanced:" />
-                        <p:selectManyMenu id="advanced" value="#{groupManager.selectedMembers}"
-                                          var="m" filter="true" filterMatchMode="contains" showCheckbox="true">
-                            <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}" />
+                            <p:outputLabel value="Description:" />
+                            <p:inputTextarea rows="1" cols="33" value="#{groupManager.description}" />
 
-                            <p:column>
-                                <h:outputText value="#{groupManager.getNameById(m)}" />
-                            </p:column>
-                        </p:selectManyMenu>
-                           
-                    </h:panelGrid>
-                    
-                    <p:separator /> 
- 
-                    <p:commandButton value="Submit" action="#{groupManager.createGroup()}"/>
+                            <p:outputLabel for="advanced" value="Advanced:" />
+                            <p:selectManyMenu id="advanced" value="#{groupManager.selectedMembers}"
+                                              var="m" filter="true" filterMatchMode="contains" showCheckbox="true">
+                                <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}" />
+
+                                <p:column>
+                                    <h:outputText value="#{groupManager.getNameById(m)}" />
+                                </p:column>
+                            </p:selectManyMenu>
+
+                        </h:panelGrid>
+
+                        <p:separator /> 
+
+                        <p:commandButton value="Submit" action="#{groupManager.createGroup()}"/>
+                    </div>
                 </h:form>
             </ui:define>
 
