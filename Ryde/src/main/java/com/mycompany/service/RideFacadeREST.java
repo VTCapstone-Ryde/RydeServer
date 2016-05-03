@@ -9,11 +9,11 @@ import com.mycompany.entity.Response;
 import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
-import com.mycompany.session.EventFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
@@ -39,6 +39,10 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    
+    @EJB
+    UserTableFacade userFacade;
+ 
 
     public RideFacadeREST() {
         super(Ride.class);
@@ -117,16 +121,23 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("getposition/{fbTok}/{tsId}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
-        UserTable user = findByToken(fbTok);
+        UserTable user = userFacade.findByToken(fbTok);
 
         List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
                 .setParameter("tsId", tsId).getResultList();
-
-        if (user != null && !ts.isEmpty()) {
-            return new Response(getPosition(user.getId(), ts.get(0).getId()));
-        } else {
+        
+        List<Ride> querylist = getEntityManager().createNamedQuery("Ride.findByRiderAndTimeslotIds")
+                .setParameter("riderUserId", user.getId())
+                .setParameter("tsId", tsId)
+                .getResultList();
+        if (querylist.isEmpty() || user == null || ts.isEmpty()) {
             return new Response();
         }
+        Ride ride = querylist.get(0);
+        if (ride.getActive()) {
+            return new Response("active", ride);
+        }
+        return new Response("notInQueue", ride);
     }
 
     @Override

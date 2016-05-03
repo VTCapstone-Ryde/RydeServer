@@ -4,14 +4,13 @@
  */
 package com.mycompany.session;
 
-import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.TimeslotTable;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
@@ -30,5 +29,13 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
 
     public TimeslotTableFacade() {
         super(TimeslotTable.class);
+    }
+    
+    public List<TimeslotTable> findAllActiveTimeslots() {
+        Date time = new Date();
+        List<TimeslotTable> activeTimeslots = getEntityManager().createQuery("SELECT t FROM TimeslotTable t WHERE t.startTime <= :time AND t.endTime >= :time")
+                .setParameter("time", time)
+                .getResultList();
+        return activeTimeslots;
     }
 }

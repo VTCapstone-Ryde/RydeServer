@@ -21,7 +21,7 @@ INSERT INTO Group_Table (title, description, directory_path) VALUES
 ('Balci Kappa Theta', 'Another description', 'none'),
 ('No Balci Beta', 'No Balcis allowed', 'none');
 INSERT INTO Timeslot_Table (passcode, start_time, end_time) VALUES 
-('aaaaa', CAST(N'2016-05-15 15:00:00' AS DATETIME), CAST(N'2016-05-15 17:00:00' AS DATETIME)),
+('aaaaa', CAST(N'2016-05-02 01:00:00' AS DATETIME), CAST(N'2016-05-03 23:00:00' AS DATETIME)),
 ('bbbbb', CAST(N'2016-05-15 19:30:00' AS DATETIME), CAST(N'2016-05-15 19:00:00' AS DATETIME)),
 ('ccccc', CAST(N'2016-05-15 19:30:00' AS DATETIME), CAST(N'2016-05-15 19:00:00' AS DATETIME)),
 ('ddddd', CAST(N'2016-05-17 19:00:00' AS DATETIME), CAST(N'2016-05-18 02:00:00' AS DATETIME)),

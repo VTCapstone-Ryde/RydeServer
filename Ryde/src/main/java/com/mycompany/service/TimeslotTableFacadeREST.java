@@ -10,8 +10,10 @@ import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
+import static com.mycompany.entity.UserTable_.fbTok;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
+import com.mycompany.session.TimeslotTableFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -53,6 +55,8 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     private UserTableFacadeREST userFacade;
     @EJB
     private TimeslotUserFacade tuFacade;
+    @EJB
+    private TimeslotTableFacade timeslotFacade;
 
     public TimeslotTableFacadeREST() {
         super(TimeslotTable.class);
@@ -170,13 +174,13 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     @GET
     @Path("timeslotsForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
-    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") String groupId) {
-        List<GroupTimeslot> groupTimeslots = em.createQuery("SELECT gt FROM GroupTimeslot gt WHERE gt.groupId.id = :gId", GroupTimeslot.class)
+    public List<TimeslotTable> findTimeslotsForGroup(@PathParam("groupId") Integer groupId) {
+        List<TimeslotTable> timeslots = em.createQuery("SELECT gt.tsId FROM GroupTimeslot gt WHERE gt.groupId.id = :gId", TimeslotTable.class)
                 .setParameter("gId", groupId).getResultList();
-        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
-        for (GroupTimeslot gt : groupTimeslots) {
-            timeslots.add(gt.getTsId());
-        }
+//        ArrayList<TimeslotTable> timeslots = new ArrayList<>();
+//        for (GroupTimeslot gt : groupTimeslots) {
+//            timeslots.add(gt.getTsId());
+//        }
         return timeslots;
     }
 
@@ -284,6 +288,13 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
             timeslots.add(tu.getTsId());
         }
         return timeslots;
+    }
+    
+    @GET
+    @Path("findAllActiveTimeslots/")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findAllActiveTimeslots() {
+        return timeslotFacade.findAllActiveTimeslots();
     }
 
     /**
