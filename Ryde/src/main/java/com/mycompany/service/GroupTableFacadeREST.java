@@ -37,7 +37,7 @@ import javax.ws.rs.core.MediaType;
 public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    private EntityManager em;
     @EJB
     private GroupTimeslotFacade gtFacade;
     @EJB

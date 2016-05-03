@@ -9,6 +9,7 @@ import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.EventFacade;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
@@ -40,10 +41,13 @@ import javax.ws.rs.core.MediaType;
 public class UserTableFacadeREST extends AbstractFacade<UserTable> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    private EntityManager em;
 
     @EJB
     UserTableFacade userFacade;
+    
+    @EJB
+    EventFacade eventFacade;
 
     public UserTableFacadeREST() {
         super(UserTable.class);
@@ -232,5 +236,6 @@ public class UserTableFacadeREST extends AbstractFacade<UserTable> {
         }
         user.setDriverStatus(driver);
         this.edit(user);
+        eventFacade.createDriverStatusEvent(fbTok);
     }
 }

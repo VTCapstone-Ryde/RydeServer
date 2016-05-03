@@ -34,7 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Event.findAll", query = "SELECT e FROM Event e"),
     @NamedQuery(name = "Event.findById", query = "SELECT e FROM Event e WHERE e.id = :id"),
     @NamedQuery(name = "Event.findByDatetime", query = "SELECT e FROM Event e WHERE e.datetime = :datetime"),
-    @NamedQuery(name = "Event.findByEventType", query = "SELECT e FROM Event e WHERE e.eventType = :eventType")})
+    @NamedQuery(name = "Event.findByEventType", query = "SELECT e FROM Event e WHERE e.eventType = :eventType"),
+    @NamedQuery(name = "Event.findEventsByTimeslot", query = "SELECT e FROM Event e WHERE e.tsId = :timeslot")
+})
 public class Event implements Serializable {
 
     private static final long serialVersionUID = 1L;
