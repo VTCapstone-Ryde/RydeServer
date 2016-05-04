@@ -268,9 +268,13 @@ public class GroupManager implements Serializable {
             for (String userId : selectedMembers) {
                 GroupUser addGroupUserRow = new GroupUser();
                 UserTable addedUser = userFacade.findById(Integer.parseInt(userId));
-
+                
+                System.out.println(addedUser.getFirstName());
+                System.out.println(selectedGroup.getTitle());
+                
                 // check if user already exists in group
-                if (userInGroup()) {
+                List<UserTable> list = groupUserFacade.findUsersForGroup(selectedGroup.getId());
+                if (list.contains(addedUser)) {
                     continue;
                 }
 
