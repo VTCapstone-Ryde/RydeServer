@@ -296,6 +296,20 @@ public class TimeslotTableFacadeREST extends AbstractFacade<TimeslotTable> {
     public List<TimeslotTable> findAllActiveTimeslots() {
         return timeslotFacade.findAllActiveTimeslots();
     }
+    
+    @GET
+    @Path("findExpiredTimeslots/")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<TimeslotTable> findExpiredTimeslots() {
+        return timeslotFacade.findExpiredTimeslots();
+    }
+    
+    @GET
+    @Path("findActiveDriversForTimeslot/{tsId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<UserTable> findActiveDriversForTimeslot(@PathParam("tsId") Integer tsId) {
+        return timeslotFacade.findActiveDriversForTimeslot(tsId);
+    }
 
     /**
      * Simple method to generate a random length long character string

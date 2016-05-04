@@ -5,6 +5,7 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.TimeslotTable;
+import com.mycompany.entity.UserTable;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -12,6 +13,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.ws.rs.PathParam;
 
 /**
  *
@@ -48,5 +50,20 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
                 .setParameter("time", time)
                 .getResultList();
         return activeTimeslots;
+    }
+
+    public List<TimeslotTable> findExpiredTimeslots() {
+        Date time = new Date();
+        List<TimeslotTable> expiredTimeslots = getEntityManager().createQuery("SELECT t FROM TimeslotTable t WHERE t.startTime <= :time AND t.endTime <= :time")
+                .setParameter("time", time)
+                .getResultList();
+        return expiredTimeslots;    
+    }
+    
+    public List<UserTable> findActiveDriversForTimeslot(Integer tsId) {
+        Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").setParameter("tsId", tsId).setParameter("driver", true);
+        q.setFirstResult(0);
+        //TODO add empty result handling
+        return q.getResultList();
     }
 }

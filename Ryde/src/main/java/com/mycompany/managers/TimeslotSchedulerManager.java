@@ -4,7 +4,10 @@
  */
 package com.mycompany.managers;
 
-import javax.ejb.Schedule;
+import com.mycompany.entity.TimeslotTable;
+import com.mycompany.session.TimeslotTableFacade;
+import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.Singleton;
 
 /**
@@ -13,9 +16,12 @@ import javax.ejb.Singleton;
  */
 @Singleton
 public class TimeslotSchedulerManager {
+    @EJB
+    TimeslotTableFacade tsFacade;
    
 //    @Schedule(hour="*", minute="*")
     public void runsEveryMinute() {
-            System.out.print(" runs EveryMinute ");
+            List<TimeslotTable> expiredTimeslots = tsFacade.findExpiredTimeslots();
+            
         }
 }
