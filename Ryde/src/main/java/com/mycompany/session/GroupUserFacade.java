@@ -58,9 +58,11 @@ public class GroupUserFacade extends AbstractFacade<GroupUser> {
     public GroupUser findByGroupAndUser(GroupTable groupId, UserTable userId) {
         Query q = getEntityManager().createNamedQuery("GroupUser.findByGroupAndUser").
                 setParameter("groupId", groupId).setParameter("userId", userId);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return (GroupUser) q.getSingleResult();
+        
+        if (!q.getResultList().isEmpty()) {
+            return (GroupUser) q.getSingleResult();
+        }
+        return null;
     }
 
     public void clearEM() {

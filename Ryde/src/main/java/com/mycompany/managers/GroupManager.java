@@ -268,9 +268,13 @@ public class GroupManager implements Serializable {
             for (String userId : selectedMembers) {
                 GroupUser addGroupUserRow = new GroupUser();
                 UserTable addedUser = userFacade.findById(Integer.parseInt(userId));
-
+                
+                System.out.println(addedUser.getFirstName());
+                System.out.println(selectedGroup.getTitle());
+                
                 // check if user already exists in group
-                if (userInGroup()) {
+                List<UserTable> list = groupUserFacade.findUsersForGroup(selectedGroup.getId());
+                if (list.contains(addedUser)) {
                     continue;
                 }
 
@@ -382,6 +386,11 @@ public class GroupManager implements Serializable {
     public String getNameById(int user_id) {
         UserTable user = userFacade.findById(user_id);
         return user.getFirstName() + " " + user.getLastName();
+    }
+    
+    public String getFbIdById(int user_id) {
+        UserTable user = userFacade.findById(user_id);
+        return user.getFbId();
     }
 
     public List<RequestUser> getRequests() {

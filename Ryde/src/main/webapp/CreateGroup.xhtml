@@ -33,10 +33,11 @@
 
                             <p:outputLabel for="advanced" value="Advanced:" />
                             <p:selectManyMenu id="advanced" value="#{groupManager.selectedMembers}"
-                                              var="m" filter="true" filterMatchMode="contains" showCheckbox="true">
-                                <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}" />
+                                              var="m" filter="true" filterMatchMode="contains" showCheckbox="true" style="min-width: 318px;">
+                                <f:selectItems value="#{groupManager.users}" var="member" itemLabel="#{member.firstName} #{member.lastName}" itemValue="#{member.id}"/>
 
                                 <p:column>
+                                    <p:graphicImage url="http://graph.facebook.com/#{groupManager.getFbIdById(m)}/picture?type=small" style="width: 35px;height: 35px;vertical-align: middle"/>
                                     <h:outputText value="#{groupManager.getNameById(m)}" />
                                 </p:column>
                             </p:selectManyMenu>

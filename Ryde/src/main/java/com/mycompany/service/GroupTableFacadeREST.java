@@ -8,9 +8,11 @@ import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.GroupUserFacade;
 import com.mycompany.session.TimeslotUserFacade;
+import com.mycompany.session.RequestUserFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
@@ -44,7 +46,11 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     private TimeslotUserFacade tuFacade;
     @EJB
     private GroupUserFacade guFacade;
-    
+    @EJB
+    private GroupTableFacade groupFacade;
+    @EJB
+    private RequestUserFacade ruFacade;
+   
     public GroupTableFacadeREST() {
         super(GroupTable.class);
     }
@@ -110,53 +116,58 @@ public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
     @Path("user/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findGroupsForUser(@PathParam("id") Integer id) {
-        Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return q.getResultList();
+        return guFacade.findGroupsForUser(id);
+//        Query q = getEntityManager().createNamedQuery("GroupUser.findByUserId").setParameter("id", id);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        return q.getResultList();
     }
     
     @GET
     @Path("timeslot/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public GroupTable findGroupForTimeslot(@PathParam("id") Integer id) {
-        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
-        q.setFirstResult(0);
-        List<GroupTimeslot> result = q.getResultList();
-        //TODO add empty result handling
-        return result.get(0).getGroupId();
+        return gtFacade.findGroupForTimeslot(id);
+//        Query q = getEntityManager().createNamedQuery("GroupTimeslot.findByTimeslotId").setParameter("id", id);
+//        q.setFirstResult(0);
+//        List<GroupTimeslot> result = q.getResultList();
+//        //TODO add empty result handling
+//        return result.get(0).getGroupId();
     }
     
     @GET
     @Path("admin/{id}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findAdminsForGroup(@PathParam("id") Integer id) {
-        Query q = getEntityManager().createNamedQuery("GroupUser.findAdminsByGroupId").setParameter("id", id);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return q.getResultList();
+        return guFacade.findAdminsForGroup(id);
+//        Query q = getEntityManager().createNamedQuery("GroupUser.findAdminsByGroupId").setParameter("id", id);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        return q.getResultList();
     }
 
     @GET
     @Path("title/{title}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<GroupTable> findGroupsByTitle(@PathParam("title") String title) {
-        String addSpacesToTitle = title.replaceAll("\\+", " ");
-        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", addSpacesToTitle);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        return q.getResultList();
+        return groupFacade.findGroupsByTitle(title);
+//        String addSpacesToTitle = title.replaceAll("\\+", " ");
+//        Query q = getEntityManager().createNamedQuery("GroupTable.findByTitle").setParameter("title", addSpacesToTitle);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        return q.getResultList();
     }
     
     @GET
     @Path("/findRequestUserForGroup/{groupId}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<UserTable> findRequestUserForGroup (@PathParam("groupId") Integer groupId) {
-        Query q = getEntityManager().createNamedQuery("RequestUser.findUsersByRequestsForGroupId").setParameter("groupId", groupId);
-        q.setFirstResult(0);
-        //TODO add empty result handling
-        List list = q.getResultList();
-        return q.getResultList();
+        return ruFacade.findRequestUserForGroup(groupId);
+//        Query q = getEntityManager().createNamedQuery("RequestUser.findUsersByRequestsForGroupId").setParameter("groupId", groupId);
+//        q.setFirstResult(0);
+//        //TODO add empty result handling
+//        List list = q.getResultList();
+//        return q.getResultList();
     }
     
     @DELETE

@@ -79,6 +79,10 @@ public class ProfileViewManager implements Serializable {
     public void setPhoneNumber(String phoneNumber) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
+        if (phoneNumber.trim().isEmpty()) {
+            phoneNumber = "Enter a Phone Number.";
+        }
+        
         user.setPhoneNumber(phoneNumber);
         
         userFacade.edit(user);
@@ -91,6 +95,9 @@ public class ProfileViewManager implements Serializable {
     public void setCarMake(String carMake) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
+        if (carMake.trim().isEmpty()) {
+            carMake = "Enter a Car Make.";
+        }
         user.setCarMake(carMake);
         
         userFacade.edit(user);
@@ -103,6 +110,10 @@ public class ProfileViewManager implements Serializable {
     public void setCarModel(String carModel) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
+        if (carModel.trim().isEmpty()) {
+            carModel = "Enter a Car Model.";
+        }
+        
         user.setCarModel(carModel);
         
         userFacade.edit(user);
@@ -114,6 +125,10 @@ public class ProfileViewManager implements Serializable {
     
     public void setCarColor(String carColor) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
+        
+        if (carColor.trim().isEmpty()) {
+            carColor = "Enter a Car Color.";
+        }
         
         user.setCarColor(carColor);
         

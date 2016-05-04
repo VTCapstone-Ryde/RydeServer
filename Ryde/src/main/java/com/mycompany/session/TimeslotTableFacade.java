@@ -11,6 +11,7 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -30,7 +31,17 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
     public TimeslotTableFacade() {
         super(TimeslotTable.class);
     }
-    
+
+    public List<TimeslotTable> findById(Integer id) {
+        Query q = getEntityManager().createNamedQuery("TimeslotTable.findById").setParameter("id", id);
+
+        if (!q.getResultList().isEmpty()) {
+            return q.getResultList();
+        }
+
+        return null;
+    }
+
     public List<TimeslotTable> findAllActiveTimeslots() {
         Date time = new Date();
         List<TimeslotTable> activeTimeslots = getEntityManager().createQuery("SELECT t FROM TimeslotTable t WHERE t.startTime <= :time AND t.endTime >= :time")

@@ -9,6 +9,8 @@ import com.mycompany.entity.Response;
 import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
+import com.mycompany.session.EventFacade;
+import com.mycompany.session.TimeslotTableFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Date;
@@ -38,10 +40,12 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
-    
+
     @EJB
     private UserTableFacade userFacade;
-
+    @EJB
+    private TimeslotTableFacade timeslotFacade;
+    
     public RideFacadeREST() {
         super(Ride.class);
     }
@@ -58,10 +62,11 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Consumes({MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_JSON})
     public Response create(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId, Ride entity) {
-        UserTable user = findByToken(fbTok);
+        UserTable user = userFacade.findByToken(fbTok);
 
-        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-                .setParameter("tsId", tsId).getResultList();
+        List<TimeslotTable> ts = timeslotFacade.findById(tsId);
+//        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+//                .setParameter("tsId", tsId).getResultList();
 
         entity.setDriverUserId(null);
         entity.setRiderUserId(user);
@@ -121,21 +126,21 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     public Response getpos(@PathParam("fbTok") String fbTok, @PathParam("tsId") Integer tsId) {
         UserTable user = userFacade.findByToken(fbTok);
 
-        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
-                .setParameter("tsId", tsId).getResultList();
-        
-        List<Ride> querylist = getEntityManager().createNamedQuery("Ride.findByRiderAndTimeslotIds")
-                .setParameter("riderUserId", user.getId())
-                .setParameter("tsId", tsId)
-                .getResultList();
-        if (querylist.isEmpty() || user == null || ts.isEmpty()) {
+        List<TimeslotTable> ts = timeslotFacade.findById(tsId);
+//        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
+//                .setParameter("tsId", tsId).getResultList();
+        if (user != null && !ts.isEmpty()) {
+            return new Response(getPosition(user.getId(), ts.get(0).getId()));
+        } else {
             return new Response();
         }
-        Ride ride = querylist.get(0);
-        if (ride.getActive()) {
-            return new Response("active", ride);
-        }
-        return new Response("notInQueue", ride);
+            //Talk with pat
+
+//        Ride ride = querylist.get(0);
+//        if (ride.getActive()) {
+//            return new Response("active", ride);
+//        }
+//        return new Response("notInQueue", ride);
     }
 
     @Override
@@ -147,7 +152,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("getQueue/{timeslotId}/{driverToken}")
     @Produces({MediaType.APPLICATION_JSON})
     public List<Ride> getQueueForTimeslot(@PathParam("timeslotId") Integer timeslotId, @PathParam("driverToken") String driverToken) {
-        UserTable driver = findByToken(driverToken);
+        UserTable driver = userFacade.findByToken(driverToken);
         List<Ride> allRides = findAll();
         ArrayList<Ride> ridesForTimeslot = new ArrayList<>();
         for (Ride i : allRides) {
@@ -194,7 +199,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         }
         return null;
     }
-
+    
     public UserTable findByToken(String token) {
         List<UserTable> user = new ArrayList();
 
@@ -245,7 +250,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("rideStatusForUser/{fbToken}")
     @Produces({MediaType.TEXT_PLAIN})
     public String getRideStatusForUser(@PathParam("fbToken") Integer fbToken) {
-        UserTable user = this.findByToken(fbToken.toString());
+        UserTable user = userFacade.findByToken(fbToken.toString());
         Ride ride;
         try {
             if (em.createNamedQuery("findByRider", Ride.class)
@@ -279,7 +284,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @Path("driverInfo/{fbToken}")
     @Produces({MediaType.APPLICATION_JSON})
     public Response getDriverInfoForRider(@PathParam("fbToken") String fbToken) {
-        UserTable user = this.findByToken(fbToken);
+        UserTable user = userFacade.findByToken(fbToken);
         Ride ride;
         Query q = getEntityManager().createNamedQuery("Ride.findByRider").setParameter("riderUserId", user.getId());
         List<Ride> list = q.getResultList();
@@ -297,7 +302,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     @DELETE
     @Path("cancel/{fbTok}")
     public void cancelRide(@PathParam("fbTok") String fbTok) {
-        UserTable user = findByToken(fbTok);
+        UserTable user = userFacade.findByToken(fbTok);
 
         List<Ride> rides = findAllRidesForUser(user.getId());
 
@@ -341,7 +346,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             //Need to be sure this gets lowest id (first position in queue)
             Ride ride = currentNonActiveQueue.get(0);
             ride.setActive(true);
-            UserTable driver = findByToken(driverTok);
+            UserTable driver = userFacade.findByToken(driverTok);
             if (driver == null) {
                 return null;
             }

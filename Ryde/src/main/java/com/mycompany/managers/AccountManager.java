@@ -286,9 +286,6 @@ public class AccountManager implements Serializable {
             user.setPhoneNumber(phoneNumber);
             userFacade.create(user);
             
-            System.out.println("HERE");
-            System.out.println(user.getFirstName() + " " + user.getLastName());
-            
             // put user_id in session map
             FacesContext.getCurrentInstance().getExternalContext().
                 getSessionMap().put("user_id", user.getId());

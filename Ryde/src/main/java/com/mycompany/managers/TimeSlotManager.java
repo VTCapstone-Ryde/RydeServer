@@ -228,14 +228,13 @@ public class TimeSlotManager implements Serializable {
                 if (searchDriverById(user.getId())) {
                     newTimeslotUserRow.setDriver(Boolean.TRUE);
                 } else {
-                    System.out.println("nope");
                     newTimeslotUserRow.setDriver(Boolean.FALSE);
                 }
                 timeSlotUserFacade.create(newTimeslotUserRow);
             }
 
             selectedTimeSlot = null;
-            passcode = "";
+            passcode = null;
             startTime = null;
             endTime = null;
             drivers.getTarget().clear();
@@ -296,5 +295,4 @@ public class TimeSlotManager implements Serializable {
         }
         return sb.toString();
     }
-
 }
