@@ -129,11 +129,24 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
         List<TimeslotTable> ts = timeslotFacade.findById(tsId);
 //        List<TimeslotTable> ts = em.createQuery("SELECT t FROM TimeslotTable t WHERE t.id = :tsId", TimeslotTable.class)
 //                .setParameter("tsId", tsId).getResultList();
+        Response response;
+        Ride ride;
         if (user != null && !ts.isEmpty()) {
-            return new Response(getPosition(user.getId(), ts.get(0).getId()));
-        } else {
-            return new Response();
+            response = new Response(getPosition(user.getId(), ts.get(0).getId()));
+            ride = em.createNamedQuery("Ride.findByRider", Ride.class)
+                .setParameter("riderUserId", user.getId())
+                .getResultList().get(0);
+            if (ride.getActive()) {
+                response.setQueueStatus("active");
+            }
+            else {
+                response.setQueueStatus("notInQueue");
+            }
+            response.setRide(ride);
+            return response;
         }
+        return new Response();
+         
             //Talk with pat
 
 //        Ride ride = querylist.get(0);
@@ -141,6 +154,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 //            return new Response("active", ride);
 //        }
 //        return new Response("notInQueue", ride);
+                
     }
 
     @Override
