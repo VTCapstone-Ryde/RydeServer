@@ -231,8 +231,11 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
             return user.get(0);
         }
     }
-
-    public List<Ride> findAllRidesForTimeslot(Integer tsId) {
+    
+    @GET
+    @Path("findAllRidesForTimeslot/{tsId}")
+    @Produces({MediaType.APPLICATION_JSON})
+    public List<Ride> findAllRidesForTimeslot(@PathParam("tsId") Integer tsId) {
         List<Ride> rides = em.createQuery("SELECT r FROM Ride r WHERE r.tsId.id = :tsId",
                 Ride.class).setParameter("tsId", tsId).getResultList();
 
