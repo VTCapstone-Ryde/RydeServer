@@ -44,6 +44,9 @@ public class EventFacade extends AbstractFacade<Event> {
     
     @EJB
     private GroupTimeslotFacade gtFacade;
+    
+    @EJB
+    private TimeslotUserFacade tuFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -90,9 +93,11 @@ public class EventFacade extends AbstractFacade<Event> {
 
     public Event createDriverStatusEvent(String fbTok) {
         UserTable driver = userFacade.findByToken(fbTok);
+        TimeslotTable timeslot = tuFacade.findUserDriverTimeslots(driver.getId()).get(0);
         Event event = new Event();
         event.setDatetime(new Date());
         event.setDriverUserId(driver);
+        event.setTsId(timeslot);
         if (driver.getDriverStatus() == true) {
             event.setEventType("online");
         } else {
@@ -145,10 +150,10 @@ public class EventFacade extends AbstractFacade<Event> {
                             + driver.getLastName() + " went offline.";
                 } else if (e.getEventType().equals("rideCompleted")) {
                     occurrence += "Driver " + driver.getFirstName() + " "
-                            + driver.getLastName() + " completed ride.";
+                            + driver.getLastName() + " completed a ride.";
                 } else {
                     occurrence += "Driver " + driver.getFirstName() + " "
-                            + driver.getLastName() + " cancelled ride.";
+                            + driver.getLastName() + " cancelled a ride.";
                 }
                 occurrence += "\n";
                 content += occurrence;

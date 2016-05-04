@@ -41,7 +41,7 @@ public class TimeslotSchedulerManager {
             for (TimeslotTable ts: expiredTimeslots) {
                 activeDriver = tsFacade.findActiveDriversForTimeslot(ts.getId());
                 queue = rideFacade.findAllRidesForTimeslot(ts.getId());
-                if (activeDriver.size() == 0 || queue.size() == 0) {
+                if (activeDriver.isEmpty() || queue.isEmpty()) {
                     tsFacade.remove(ts);
                 }
             }
