@@ -16,7 +16,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -38,11 +37,10 @@ import javax.ws.rs.core.MediaType;
 public class RideFacadeREST extends AbstractFacade<Ride> {
 
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
-    private final EntityManager em = Persistence.createEntityManagerFactory("com.mycompany_Ryde_war_1.0PU").createEntityManager();
+    private EntityManager em;
     
     @EJB
-    UserTableFacade userFacade;
- 
+    private UserTableFacade userFacade;
 
     public RideFacadeREST() {
         super(Ride.class);
