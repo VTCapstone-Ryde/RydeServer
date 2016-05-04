@@ -5,14 +5,18 @@
 package com.mycompany.session;
 
 import com.mycompany.entity.Event;
+import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
+import com.mycompany.managers.Constants;
 import com.mycompany.service.UserTableFacadeREST;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +41,9 @@ public class EventFacade extends AbstractFacade<Event> {
     
     @EJB
     private UserTableFacade userFacade;
+    
+    @EJB
+    private GroupTimeslotFacade gtFacade;
 
     @Override
     protected EntityManager getEntityManager() {
@@ -116,9 +123,16 @@ public class EventFacade extends AbstractFacade<Event> {
     
     public File generateReport(TimeslotTable timeslot) {
         List<Event> events = findEventsForTimeslot(timeslot);
+        GroupTable group = gtFacade.findGroupForTimeslot(timeslot.getId());
+        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy'@'hh:mm");
+        String date = sdf.format(timeslot.getStartTime());
         File file = null;
         if (events != null) {
-            file = new File("Test/File/Path" + timeslot.getId());
+            file = new File(Constants.ROOT_DIRECTORY + group.getId());
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            file = new File(Constants.ROOT_DIRECTORY + group.getId() + "/" + date);
             String content = "";
             for (Event e : events) {
                 UserTable driver = e.getDriverUserId();
