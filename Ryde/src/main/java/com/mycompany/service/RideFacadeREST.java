@@ -256,7 +256,11 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
 
         for (int i = 0; i < rides.size(); i++) {
             if (rides.get(i).getRiderUserId().getId().equals(userId)) {
-                position = i + 1;
+                position++;
+                break;
+            }
+            else if (!rides.get(i).getActive()) {
+                position++;
             }
         }
 

@@ -8,6 +8,7 @@ import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.service.RideFacadeREST;
+import com.mycompany.session.EventFacade;
 import com.mycompany.session.TimeslotTableFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.List;
@@ -21,12 +22,15 @@ import javax.ejb.Singleton;
  */
 @Singleton
 public class TimeslotSchedulerManager {
+    
     @EJB
     TimeslotTableFacade tsFacade;
     @EJB
     UserTableFacade userFacade;
     @EJB
     RideFacadeREST rideFacade;
+    @EJB
+    EventFacade eventFacade;
    
     /**
      * Removes expired timeslots
@@ -42,6 +46,7 @@ public class TimeslotSchedulerManager {
                 activeDriver = tsFacade.findActiveDriversForTimeslot(ts.getId());
                 queue = rideFacade.findAllRidesForTimeslot(ts.getId());
                 if (activeDriver.isEmpty() || queue.isEmpty()) {
+                    eventFacade.generateReport(ts);
                     tsFacade.remove(ts);
                 }
             }
