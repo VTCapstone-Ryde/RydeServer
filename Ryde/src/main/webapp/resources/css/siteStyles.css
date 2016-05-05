@@ -3,6 +3,7 @@
 html, body {
     /*background-color: #7ec99d; */
     background-image: url(./images/splashBG.png);
+    background-attachment: fixed;
     /* Stretch the background image to cover the entire screen */
     -webkit-background-size: cover; /* For WebKit */
     -moz-background-size: cover;    /* For Mozilla */
