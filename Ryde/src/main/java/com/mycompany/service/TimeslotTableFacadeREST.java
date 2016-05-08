@@ -10,7 +10,6 @@ import com.mycompany.entity.TimeslotDateResponse;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
-import static com.mycompany.entity.UserTable_.fbTok;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.GroupTimeslotFacade;
 import com.mycompany.session.TimeslotTableFacade;
@@ -24,7 +23,6 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.ws.rs.Consumes;
@@ -40,6 +38,7 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author cloud
+ * @author Patrick Abod
  */
 @Stateless
 @Path("/timeslot")

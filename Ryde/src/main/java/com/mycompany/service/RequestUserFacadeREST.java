@@ -6,7 +6,6 @@ package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.RequestUser;
-import com.mycompany.entity.RequestUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTableFacade;
 import com.mycompany.session.RequestUserFacade;
@@ -16,7 +15,6 @@ import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -30,6 +28,7 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author Cameron
+ * @author Patrick Abod
  */
 @Stateless
 @Path("requestuser")

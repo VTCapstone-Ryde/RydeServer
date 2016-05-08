@@ -4,14 +4,10 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupTable;
 import com.mycompany.entity.GroupTimeslot;
-import com.mycompany.entity.RequestUser;
-import com.mycompany.entity.UserTable;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -26,6 +22,7 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author cloud
+ * @author Patrick Abod
  */
 @Stateless
 @Path("/grouptimeslot")

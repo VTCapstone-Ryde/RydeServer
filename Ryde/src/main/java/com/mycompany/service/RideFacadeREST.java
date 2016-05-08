@@ -9,7 +9,6 @@ import com.mycompany.entity.Response;
 import com.mycompany.entity.Ride;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
-import com.mycompany.session.EventFacade;
 import com.mycompany.session.TimeslotTableFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;

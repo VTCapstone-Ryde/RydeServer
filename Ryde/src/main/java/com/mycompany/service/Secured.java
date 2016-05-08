@@ -14,6 +14,7 @@ import static java.lang.annotation.ElementType.METHOD;
 /**
  *
  * @author Shawn_000
+ * @author Patrick Abod
  */
 @NameBinding
 @Retention(RUNTIME)

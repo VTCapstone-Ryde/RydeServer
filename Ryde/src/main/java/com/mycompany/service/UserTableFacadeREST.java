@@ -4,14 +4,11 @@
  */
 package com.mycompany.service;
 
-import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.GroupUser;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.TimeslotUser;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.EventFacade;
-import com.mycompany.session.GroupUserFacade;
-import com.mycompany.session.TimeslotUserFacade;
 import com.mycompany.session.UserTableFacade;
 import java.util.ArrayList;
 import java.util.Date;
@@ -19,9 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -35,6 +30,7 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author cameron
+ * @author Patrick Abod
  */
 @Stateless
 @Path("/user")
