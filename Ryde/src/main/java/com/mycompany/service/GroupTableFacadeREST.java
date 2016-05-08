@@ -5,7 +5,6 @@
 package com.mycompany.service;
 
 import com.mycompany.entity.GroupTable;
-import com.mycompany.entity.GroupTimeslot;
 import com.mycompany.entity.TimeslotTable;
 import com.mycompany.entity.UserTable;
 import com.mycompany.session.GroupTableFacade;
@@ -17,9 +16,7 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
-import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -33,11 +30,17 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author cloud
+ * @author Patrick Abod
+ * 
+ * This class contains queries to the group database table
  */
 @Stateless
 @Path("/group")
 public class GroupTableFacadeREST extends AbstractFacade<GroupTable> {
 
+    /*  These are all the different facade classes containing their own entity managers
+        that will be used in this class.
+    */
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
     @EJB

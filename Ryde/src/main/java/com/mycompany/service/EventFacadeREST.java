@@ -22,6 +22,9 @@ import javax.ws.rs.core.MediaType;
 /**
  *
  * @author cameron
+ * @author Patrick Abod
+ * 
+ * This class contains basic API calls for events. It should never really be used by the iOS app
  */
 @Stateless
 @Path("/event")
@@ -30,10 +33,12 @@ public class EventFacadeREST extends AbstractFacade<Event> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
 
+    
     public EventFacadeREST() {
         super(Event.class);
     }
 
+    
     @POST
     @Override
     @Consumes({MediaType.APPLICATION_JSON})
