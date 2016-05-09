@@ -1,6 +1,6 @@
 /*
- * Created by Osman Balci on 2016.02.14  * 
- * Copyright © 2016 Osman Balci. All rights reserved. * 
+ * Created by Ryde on 2016.02.14  * 
+ * Copyright © 2016 Ryde. All rights reserved. * 
  */
 package com.mycompany.managers;
 
@@ -21,7 +21,7 @@ import javax.inject.Named;
 @SessionScoped
 /**
  *
- * @author Balci
+ * @author Ryde
  */
 public class ProfileViewManager implements Serializable {
 
@@ -44,38 +44,74 @@ public class ProfileViewManager implements Serializable {
 
     }
 
+    /**
+     * Returns the profile page string
+     * @return profile xhtml page
+     */
     public String viewProfile() {
         return "Profile";
     }
 
+    /**
+     * gets the logged in user
+     * @return the user that is logged in
+     */
     public UserTable getLoggedInUser() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
     }
 
+    /**
+     * gets the groups that the logged in user is in
+     * @return the list of groups
+     */
     public List<GroupTable> getUserGroups() {
         return groupUserFacade.findGroupsForUser(getLoggedInUser().getId());
     }
 
+    /**
+     * gets the timeslots the logged in user is in
+     * @return a list of the timeslots
+     */
     public List<TimeslotTable> getUserTimeSlots() {
         return timeSlotUserFacade.findTimeslotsForUser(getLoggedInUser().getId());
     }
 
+    /**
+     * gets the selected timeslot
+     * @return the selected timeslot
+     */
     public TimeslotTable getSelectedTimeSlot() {
         return selectedTimeSlot;
     }
 
+    /**
+     * sets the selected timeslot
+     * @param selectedTimeSlot the timeslot to select
+     */
     public void setSelectedTimeSlot(TimeslotTable selectedTimeSlot) {
         this.selectedTimeSlot = selectedTimeSlot;
     }
 
+    /**
+     * logs out the current logged in user
+     * @return redirect string to be used by the XHTML
+     */
     public String logout() {
         return "Login?faces-redirect=true";
     }
     
+    /**
+     * gets the phone number of the logged in user
+     * @return the phone number
+     */
     public String getPhoneNumber() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getPhoneNumber();
     }
     
+    /**
+     * sets the phone number of the logged in user
+     * @param phoneNumber string phone number
+     */
     public void setPhoneNumber(String phoneNumber) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
@@ -88,10 +124,18 @@ public class ProfileViewManager implements Serializable {
         userFacade.edit(user);
     }
     
+    /**
+     * gets the car make of the logged in user
+     * @return the car make
+     */
     public String getCarMake() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarMake();
     }
     
+    /**
+     * sets the car make of the logged in user
+     * @param carMake string representing the car make
+     */
     public void setCarMake(String carMake) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
@@ -103,10 +147,18 @@ public class ProfileViewManager implements Serializable {
         userFacade.edit(user);
     }
     
+    /**
+     * gets the car model of the logged in user
+     * @return the car model
+     */
     public String getCarModel() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarModel();
     }
     
+    /**
+     * sets the car model of the logged in user
+     * @param carModel string representing the car model
+     */
     public void setCarModel(String carModel) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
@@ -119,10 +171,18 @@ public class ProfileViewManager implements Serializable {
         userFacade.edit(user);
     }
     
+    /**
+     * gets the car color of the logged in user
+     * @return the car color
+     */
     public String getCarColor() {
         return userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id")).getCarColor();
     }
     
+    /**
+     * sets the car color of the logged in user
+     * @param carColor the color of the car
+     */
     public void setCarColor(String carColor) {
         UserTable user = userFacade.find(FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("user_id"));
         
