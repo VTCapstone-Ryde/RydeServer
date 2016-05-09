@@ -13,11 +13,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import javax.ws.rs.PathParam;
 
 /**
  *
  * @author cloud
+ * @author Patrick Abod
+ * 
+ * This class handles all queries made on the timeslot database table
  */
 @Stateless
 public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
@@ -34,6 +36,11 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
         super(TimeslotTable.class);
     }
 
+    /**
+     * Find a specific timeslot by its id
+     * @param id the id of the timeslot to search
+     * @return the timeslot found in a list
+     */
     public List<TimeslotTable> findById(Integer id) {
         Query q = getEntityManager().createNamedQuery("TimeslotTable.findById").setParameter("id", id);
 
@@ -44,6 +51,10 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
         return null;
     }
 
+    /**
+     * Find all timeslots that are currently active
+     * @return the list of active timeslots
+     */
     public List<TimeslotTable> findAllActiveTimeslots() {
         Date time = new Date();
         List<TimeslotTable> activeTimeslots = getEntityManager().createQuery("SELECT t FROM TimeslotTable t WHERE t.startTime <= :time AND t.endTime >= :time")
@@ -52,6 +63,10 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
         return activeTimeslots;
     }
 
+    /**
+     * Find all times that have expired
+     * @return The list of expired timeslots
+     */
     public List<TimeslotTable> findExpiredTimeslots() {
         Date time = new Date();
         List<TimeslotTable> expiredTimeslots = getEntityManager().createQuery("SELECT t FROM TimeslotTable t WHERE t.startTime <= :time AND t.endTime <= :time")
@@ -60,10 +75,14 @@ public class TimeslotTableFacade extends AbstractFacade<TimeslotTable> {
         return expiredTimeslots;    
     }
     
+    /**
+     * Find the active (online) drivers for a specific timeslot
+     * @param tsId the timeslot id
+     * @return the list of users who are currently driving and online
+     */
     public List<UserTable> findActiveDriversForTimeslot(Integer tsId) {
         Query q = getEntityManager().createNamedQuery("TimeslotUser.findDriversByTimeslotId").setParameter("tsId", tsId).setParameter("driver", true);
         q.setFirstResult(0);
-        //TODO add empty result handling
         return q.getResultList();
     }
 }

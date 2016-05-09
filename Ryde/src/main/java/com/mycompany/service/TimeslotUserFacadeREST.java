@@ -44,6 +44,9 @@ public class TimeslotUserFacadeREST extends AbstractFacade<TimeslotUser> {
     @PersistenceContext(unitName = "com.mycompany_Ryde_war_1.0PU")
     private EntityManager em;
 
+    /*
+        The referenced facade classes containing their respective enitity managers
+    */
     @EJB
     private GroupTimeslotFacade gtFacade;
     @EJB

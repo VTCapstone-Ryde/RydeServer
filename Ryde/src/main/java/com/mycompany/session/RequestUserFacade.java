@@ -17,6 +17,9 @@ import javax.ws.rs.PathParam;
 /**
  *
  * @author cloud
+ * @author Patrick Abod
+ * 
+ * This class handles all queries made on the request user database table
  */
 @Stateless
 public class RequestUserFacade extends AbstractFacade<RequestUser> {
@@ -33,22 +36,36 @@ public class RequestUserFacade extends AbstractFacade<RequestUser> {
         super(RequestUser.class);
     }
 
+    /**
+     * Find all requests for a specific group
+     * @param groupId the id of the group to search
+     * @return The list of request users who request to join the group
+     */
     public List<RequestUser> findRequestsForGroup(Integer groupId) {
         Query q = getEntityManager().createNamedQuery("RequestUser.findRequestUsersByGroupId").setParameter("groupId", groupId);
         q.setFirstResult(0);
-        //TODO add empty result handling
         
         return q.getResultList();
     }
     
+    /**
+     * Find the users who request to join a specific group
+     * @param groupId the id of the group to search
+     * @return the list of users who request to join the group
+     */
     public List<UserTable> findRequestUserForGroup (Integer groupId) {
         Query q = getEntityManager().createNamedQuery("RequestUser.findUsersByRequestsForGroupId").setParameter("groupId", groupId);
         q.setFirstResult(0);
-        //TODO add empty result handling
         
         return q.getResultList();
     }
     
+    /**
+     * Find a request user object based on a user object and group object
+     * @param userId the id of the user
+     * @param groupId the id of the group
+     * @return the request user object found
+     */
     public RequestUser findByUserAndGroup(@PathParam("userId") Integer userId, @PathParam("groupId") Integer groupId) {
         Query q = getEntityManager().createNamedQuery("RequestUser.findByGroupAndUserIDs").
                 setParameter("userId", userId).setParameter("groupId", groupId);
