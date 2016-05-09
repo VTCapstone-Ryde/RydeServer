@@ -23,5 +23,5 @@ Copyright © 2016 Patrick Abod All rights reserved.
     requests for certain resources from outside their own docroot" 
     See page C-46 in [https://glassfish.java.net/docs/4.0/application-deployment-guide.pdf]
   -->
-  <property name="alternatedocroot_1" value="from=/Team2FileStorage/* dir=/home/cs4704/Ryde/"/>
+  <property name="alternatedocroot_1" value="from=/Capstone2StorageLocation/* dir=/home/cs4704/Ryde/"/>
 </glassfish-web-app>

@@ -1,20 +1,17 @@
 /*
- * Created by Osman Balci on 2016.02.14  * 
- * Copyright © 2016 Osman Balci. All rights reserved. * 
+ * Created by Patrick Abod on 2016.02.14  * 
+ * Copyright © 2016 Patrick Abod. All rights reserved. * 
  */
 package com.mycompany.managers;
 
 /**
  *
- * @author Balci
+ * @author Patrick Abod
  */
 public class Constants {
 
-    //-----------------------------------------------------------
-    // Change /Users/Balci/FileStorageLocation/ below to /home/cs4984/Balci/FileStorageLocation/
-    // for deployment to the server by replacing Balci with your last name.
-    //-----------------------------------------------------------
-    public static final String ROOT_DIRECTORY = "/home/cs4704/Ryde/Team2FileStorage/";
+
+    public static final String ROOT_DIRECTORY = "/home/cs4704/Ryde/Capstone2StorageLocation/";
 
     public static final String TEMP_FILE = "tmp_file";
 
