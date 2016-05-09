@@ -7,7 +7,6 @@ package com.mycompany.managers;
 import com.mycompany.entity.UserTable;
 import com.mycompany.entity.GroupTable;
 import com.mycompany.session.UserTableFacade;
-import com.mycompany.session.GroupUserFacade;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -61,7 +60,6 @@ public class AccountManager implements Serializable {
      */
     @EJB
     private UserTableFacade userFacade;
-    private GroupUserFacade groupUserFacade;
 
     /**
      * Creates a new instance of AccountManager
@@ -69,113 +67,181 @@ public class AccountManager implements Serializable {
     public AccountManager() {
     }
 
+    /**
+     * @return the id
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     * @param id the id to set
+     */
     public void setId(Integer id) {
         this.id = id;
     }
 
+    /**
+     * @return the driverStatus
+     */
     public Boolean getDriverStatus() {
         return driverStatus;
     }
 
+    /**
+     * @param driverStatus the driver status to set
+     */
     public void setDriverStatus(Boolean driverStatus) {
         this.driverStatus = driverStatus;
     }
 
+    /**
+     * @return the lastName
+     */
     public String getLastName() {
         lastName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("last_name");
         return lastName;
     }
-
+    
+    /**
+     * @param lastName the last name to set
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * @return the firstName
+     */
     public String getFirstName() {
         firstName = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("first_name");
         return firstName;
     }
 
+    /**
+     * @param firstName the first name to set
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * @return the Facebook token
+     */
     public String getFbTok() {
         return fbTok;
     }
 
+    /**
+     * @param fbTok the Facebook token to set
+     */
     public void setFbTok(String fbTok) {
         this.fbTok = fbTok;
     }
 
+    /**
+     * @return the Facebook ID
+     */
     public String getFbId() {
         fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
         return fbId;
     }
 
+    /**
+     * @param fbId the Facebook ID to set
+     */
     public void setFbId(String fbId) {
         this.fbId = fbId;
     }
 
+    
+    /**
+     * @return the phoneNumber
+     */
     public String getPhoneNumber() {
         return phoneNumber;
     }
 
+    /**
+     * @param phoneNumber the phone number to set
+     */
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
+    /**
+     * @return the carMake
+     */
     public String getCarMake() {
         return carMake;
     }
 
+    /**
+     * @param carMake the car make to set
+     */
     public void setCarMake(String carMake) {
         this.carMake = carMake;
     }
 
+    /**
+     * @return the carModel
+     */
     public String getCarModel() {
         return carModel;
     }
 
+    /**
+     * @param carModel the car model to set
+     */
     public void setCarModel(String carModel) {
         this.carModel = carModel;
     }
 
+    /**
+     * @return the carColor
+     */
     public String getCarColor() {
         return carColor;
     }
 
+    /**
+     * @param carColor the car color to set
+     */
     public void setCarColor(String carColor) {
         this.carColor = carColor;
     }
 
+    /**
+     * @return the security_question
+     */
     public int getSecurity_question() {
         return security_question;
     }
 
+    /**
+     * @param security_question the security question to set
+     */
     public void setSecurity_question(int security_question) {
         this.security_question = security_question;
     }
 
+    /**
+     * @return the security_answer
+     */
     public String getSecurity_answer() {
         return security_answer;
     }
 
+    /**
+     * @param security_answer the security answer to set
+     */
     public void setSecurity_answer(String security_answer) {
         this.security_answer = security_answer;
     }
-
-    public UserTableFacade getUserFacade() {
-        return userFacade;
-    }
-
-    public void setUserFacade(UserTableFacade userFacade) {
-        this.userFacade = userFacade;
-    }
-
+    
+    /**
+     * @return all security questions
+     */
     public Map<String, Object> getSecurity_questions() {
         if (security_questions == null) {
             security_questions = new LinkedHashMap<>();
@@ -200,6 +266,9 @@ public class AccountManager implements Serializable {
         this.statusMessage = statusMessage;
     }
 
+    /**
+     * @return the selected User
+     */
     public UserTable getSelected() {
         if (selected == null) {
             selected = userFacade.find(FacesContext.getCurrentInstance().
@@ -208,18 +277,30 @@ public class AccountManager implements Serializable {
         return selected;
     }
 
+    /**
+     * @param selected the selected User to set
+     */
     public void setSelected(UserTable selected) {
         this.selected = selected;
     }
 
+    /**
+     * @return the selectedGroup
+     */
     public GroupTable getSelectedGroup() {
         return selectedGroup;
     }
 
-    public void setSelectedCar(GroupTable selectedGroup) {
+    /**
+     * @param selectedGroup the selected group to set
+     */
+    public void setSelectedGroup(GroupTable selectedGroup) {
         this.selectedGroup = selectedGroup;
     }
 
+    /**
+     * @param event the ComponentSystemEvent
+     */
     public void validateInformation(ComponentSystemEvent event) {
         FacesContext fc = FacesContext.getCurrentInstance();
 
@@ -247,6 +328,9 @@ public class AccountManager implements Serializable {
         }
     }
 
+    /**
+     * @return all events
+     */
     public List<String> getEvents() {
         events.clear();
         events.add("Scheduled to drive for Capstone Sigma -- 4/1/2016  ");
@@ -258,6 +342,9 @@ public class AccountManager implements Serializable {
         return events;
     }
 
+    /**
+     * @return url path for User Profile
+     */
     public String updateAccount() {
         if (selected != null) {
             try {
@@ -272,6 +359,9 @@ public class AccountManager implements Serializable {
         return "";
     }
 
+    /**
+     * @return Home path on successful user account creation
+     */
     public String createAccount() {
         // Check to see if a user already exists with the username given.
         try {
@@ -281,7 +371,6 @@ public class AccountManager implements Serializable {
             user.setDriverStatus(false);
             fbTok = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("access_token");
             user.setFbTok(fbTok);
-            //fbId = (String) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("fb_id");
             user.setFbId(fbId);
             user.setPhoneNumber(phoneNumber);
             userFacade.create(user);

@@ -10,7 +10,6 @@ import com.mycompany.entity.UserTable;
 import com.mycompany.service.RideFacadeREST;
 import com.mycompany.session.EventFacade;
 import com.mycompany.session.TimeslotTableFacade;
-import com.mycompany.session.UserTableFacade;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.ejb.Schedule;
@@ -23,14 +22,32 @@ import javax.ejb.Singleton;
 @Singleton
 public class TimeslotSchedulerManager {
     
+    /**
+     * The instance variable 'tsFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject
+     * in this instance variable a reference to the @Stateless session bean
+     * TimeslotTableFacade.
+     */
     @EJB
-    TimeslotTableFacade tsFacade;
+    private TimeslotTableFacade tsFacade;
+    
+    /**
+     * The instance variable 'rideFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject
+     * in this instance variable a reference to the @Stateless session bean
+     * RideFacadeRest.
+     */
     @EJB
-    UserTableFacade userFacade;
+    private RideFacadeREST rideFacade;
+    
+    /**
+     * The instance variable 'eventFacade' is annotated with the @EJB annotation.
+     * This means that the GlassFish application server, at runtime, will inject
+     * in this instance variable a reference to the @Stateless session bean
+     * EventFacade.
+     */
     @EJB
-    RideFacadeREST rideFacade;
-    @EJB
-    EventFacade eventFacade;
+    private EventFacade eventFacade;
    
     /**
      * Removes expired timeslots

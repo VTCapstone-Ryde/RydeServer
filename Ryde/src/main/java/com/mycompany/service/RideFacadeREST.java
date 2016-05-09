@@ -332,7 +332,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
 
     /**
-     * TALK W/ PAT
+     * 
      *
      * @param timeslotId
      * @return
@@ -348,7 +348,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
 
     /**
-     * TALK W/ PAT Should be a put?
+     * Should be a put?
      *
      * @param timeslotId
      * @return
@@ -378,7 +378,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
 
     /**
-     * TALK W/ PAT Finds ride that a driver is assigned to
+     * Finds ride that a driver is assigned to
      *
      * @param driverTok
      * @return
@@ -396,7 +396,7 @@ public class RideFacadeREST extends AbstractFacade<Ride> {
     }
 
     /**
-     * TALK W/ PAT Cancels the ride a driver is assigned to Keeps ride in queue
+     * Cancels the ride a driver is assigned to Keeps ride in queue
      *
      * @param tsId
      * @param driverTok
